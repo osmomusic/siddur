@@ -1250,12 +1250,12 @@ function renderAbout(){
     <div style="font-size:26px;font-weight:800;margin-bottom:6px">סידור תהלת ה׳ – נוסח חב״ד</div>
     <div>סידור מנוקד עם הקראה קולית ונגישות לליקויי ראייה</div>
     <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
-    <div><b>פיתוח תוכנה:</b> <span dir="ltr">Osmo Software</span></div>
+    <div><b>פיתוח תוכנה:</b> <span dir="ltr">Osmo Softwares</span></div>
     <div><b>טלפון:</b> <a href="tel:0505788881" dir="ltr" style="color:inherit">050-5788881</a></div>
     <div><b>גרסה:</b> <span dir="ltr">1.0</span></div>
   </div>`;
   window.scrollTo(0,0); document.getElementById('h1').focus();
-  if(cfg.voiceMode) announce("אודות. פיתוח תוכנה: Osmo Software. טלפון: 050-5788881. גרסה 1.0.", SAY.about);
+  if(cfg.voiceMode) announce("אודות. פיתוח תוכנה: Osmo Softwares. טלפון: 050-5788881. גרסה 1.0.", SAY.about);
 }
 
 function renderItem(id){
@@ -1404,7 +1404,7 @@ function renderSide(cur){
   h+=`<div class="sgroup">תהילים</div>`+item('teh','📖','ספר תהילים');
   for(const g of SIDDUR){ h+=`<div class="sgroup">${g.group}</div>`; for(const it of g.items) h+=item(it.id,it.icon,it.title); }
   h+=`<div class="sgroup">מידע</div>`+item('about','ℹ️','אודות');
-  h+=`<div class="sfoot">Osmo Software · גרסה 1.0</div>`;
+  h+=`<div class="sfoot">Osmo Softwares · גרסה 1.0</div>`;
   side.innerHTML=h;
   const on=side.querySelector('.on'); if(on && on.scrollIntoViewIfNeeded) on.scrollIntoViewIfNeeded(false);
 }
