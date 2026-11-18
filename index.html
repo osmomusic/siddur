@@ -167,21 +167,22 @@ body.hc h2.sec span.ic{background:#1a1a1a;color:#ffef3a}
 .tile::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:soft-light;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
 .tile .ic{width:64px;height:64px;border-radius:20px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:30px;flex:none;position:relative;z-index:1}
-.tile .t{flex:1;font-size:30px;font-weight:800;line-height:1.15;position:relative;z-index:1;text-shadow:0 1px 2px rgba(0,0,0,.12)}
+.tile .t{flex:1;font-size:28px;font-weight:800;line-height:1.15;position:relative;z-index:1;text-shadow:0 1px 2px rgba(0,0,0,.12)}
 .tile .t small{display:block;font-size:19px;font-weight:500;opacity:.85;margin-top:6px}
 .tile .chev{font-size:30px;opacity:.85;position:relative;z-index:1}
 .tile:focus-visible{outline:4px solid var(--ink);outline-offset:3px}
 .tile.light{background:var(--card);color:var(--ink);box-shadow:0 6px 18px rgba(80,50,30,.08)}
 .tile.light::after{display:none}
 .tile.light .ic{background:var(--accent-soft)}
-.tile.light .t{font-size:26px;text-shadow:none}
+.tile.light .t{font-size:22px;text-shadow:none}
+.tile.light .t small{font-size:16px}
 .c0{--c1:#e9ad7c;--c2:#dd935c} .c1{--c1:#a98577;--c2:#946e60} .c2{--c1:#d2ad68;--c2:#c39a52}
 .c3{--c1:#8fb0a0;--c2:#709684} .c4{--c1:#a88a98;--c2:#927282} .c5{--c1:#dc8c57;--c2:#c8743e}
 .c6{--c1:#6f6286;--c2:#5b4f72} .c7{--c1:#7e97b8;--c2:#62799c}
 h2.grp{font-size:18px;color:var(--muted);margin:26px 8px 10px;font-weight:700}
 .datepill{display:inline-block;background:rgba(255,255,255,.55);border-radius:30px;padding:10px 22px;font-size:20px;color:var(--ink);margin:4px 0 6px}
 body.dark .datepill{background:rgba(255,255,255,.08)}
-.week{display:flex;flex-direction:row-reverse;justify-content:space-between;gap:6px;margin:22px 0 18px}
+.week{display:flex;flex-direction:row;justify-content:space-between;gap:6px;margin:22px 0 18px}
 .wd{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1}
 .wd b{width:min(60px,12vw);height:min(60px,12vw);border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);color:var(--muted);font-size:18px;font-family:"Frank Ruhl Libre",serif}
 .wd span{font-size:14px;color:var(--muted)}
