@@ -1685,7 +1685,7 @@ function renderObj(it,opt={}){
       let main = tlMode==='he'? shown : (noteTr || translit(b.x,LANG));
       let inner = b.bold? `<span class="b">${esc(main)}</span>` : esc(main);
       if(tlMode==='both' && !isNote) inner+=`<span class="heb" lang="he" dir="rtl">${esc(shown)}</span>`;
-      if(b.num) inner=`<span class="vn" aria-hidden="true">${b.num}</span> `+inner;
+      if(b.num) inner=`<span class="vn" aria-hidden="true">${tlMode!=='he'&&/[\u05D0-\u05EA]/.test(b.num)? (hebToNum(b.num)||b.num) : b.num}</span> `+inner;
       const tla = tlMode==='he'? '' : ` lang="${LANG}" dir="ltr"`;
       h+=`<p class="${cls}${tlMode!=='he'?' tl':''}"${tla} tabindex="0" data-say="${esc(b.x).replace(/"/g,'&quot;')}">${inner}</p>`;
     }
@@ -1920,7 +1920,7 @@ function tlWord(w,L){
     let cons='', v=vowelOf(x);
     if((L0==='כ'||L0==='ך') && has(x,'kamatz') && nx && nx.l==='ל' && i+1===ch.length-1 && !vowelOf(nx)) v='o';
     // ו כאם קריאה: וֹ = o, וּ = u
-    if(L0==='ו' && !v && has(x,'dagesh') && !has(x,'sheva')){ out+=C('u'); prevSheva=false; continue; }
+    if(L0==='ו' && !v && has(x,'dagesh') && !has(x,'sheva')){ out+=C('u'); prevSheva=(i===0); continue; }
     if(L0==='ו' && has(x,'holam') && i>0 && !vowelOf(ch[i-1])){ out+=C('o'); prevSheva=false; continue; }
     if(L0==='ו' && has(x,'holam') && i>0 && vowelOf(ch[i-1])){ /* vo */ }
     // י אחרי תנועה בלי ניקוד משלה = אם קריאה
@@ -1954,7 +1954,7 @@ function tlWord(w,L){
     if(last && v==='a' && has(x,'patach') && (L0==='ח'||L0==='ע'||(L0==='ה'&&has(x,'dagesh')))){ out+=C('a')+cons; break; }
     let vv='';
     if(v) vv=C(v);
-    else if(has(x,'sheva')){ const vocal=(i===0)||prevSheva&&i>1||(has(x,'dagesh')&&i>0&&!/[בגדכפת]/.test(L0)); vv= (vocal&&!last&&L!=='ru')? C('e') : (vocal&&!last? C('e') : ''); }
+    else if(has(x,'sheva')){ const vocal=(i===0)||prevSheva&&(i>1||ch[0].l==='ו')||(has(x,'dagesh')&&i>0&&!/[בגדכפת]/.test(L0)); vv= (vocal&&!last&&L!=='ru')? C('e') : (vocal&&!last? C('e') : ''); }
     // ברוסית: י + תנועה → אותיות יוטציה
     if(L==='ru' && cons==='й' && vv){ const m={'а':'я','е':'е','у':'ю','о':'йо','и':'и'}; out+=m[vv]||('й'+vv); prevSheva=false; continue; }
     if(L==='ru' && !cons && vv==='е' && (i===0||/[аеиоуяю]$/.test(out))) vv='э';
