@@ -1155,7 +1155,8 @@ ${['#e53935','#fb8c00','#fdd835','#43a047','#1e88e5','#5e35b1'].map((c,i)=>`<pat
 <path d="M40 22a14 14 0 0 1 0 20M46 16a22 22 0 0 1 0 32" stroke="url(#gGold)" stroke-width="3.4" fill="none" stroke-linecap="round"/>`)
 };
 ICO['🌅']=ICO['🌄']; ICO['✨']=ICO['🕯️']; ICO['⭐']=ICO['🌙'];
-const icoOf=(e)=>ICO[e]||e;
+let _icoN=0;
+const icoOf=(e)=>{ const v=ICO[e]; if(!v) return e; const n='_'+(++_icoN); return v.replace(/id="(g\w+)"/g,(m,a)=>`id="${a}${n}"`).replace(/url\(#(g\w+)\)/g,(m,a)=>`url(#${a}${n})`); };
 
 const TILE_COLORS={hashkama:0,shacharit:2,mincha:5,maariv:6,bedtime:7,candles:4,nishmat:3,havdalah:1,chanukah:2,food:3,bentch:1,meein:4,sight:7,special:0};
 function tile(id,icon,title,sub,c,extra){ return `<button class="tile c${c}" role="listitem" onclick="go('${id}')"${extra||''}><span class="ic" aria-hidden="true">${icoOf(icon)}</span><span class="t">${title}${sub?`<small>${sub}</small>`:''}</span><span class="chev" aria-hidden="true">‹</span></button>`; }
