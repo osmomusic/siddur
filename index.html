@@ -646,6 +646,9 @@ body.ltr .devcredit{left:10px!important;right:auto!important}
   html:not(.touch) .bsd{top:72px}
   html:not(.touch) .devcredit{top:94px!important}
 }
+.devcredit{top:calc(3px + env(safe-area-inset-top))!important;left:56px!important;right:auto!important}
+body.ltr .devcredit{left:56px!important}
+@media (min-width:960px) and (hover:hover) and (pointer:fine){ html:not(.touch) .devcredit{top:67px!important} }
 </style>
 </head>
 <body>
