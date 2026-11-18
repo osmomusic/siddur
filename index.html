@@ -1918,7 +1918,8 @@ function doSearch(q){
     if(e.body.includes(n) && n.length>3) sc+=15;
     if(sc>0) res.push({...e,score:sc});
   }
-  return res.sort((a,b)=>b.score-a.score).slice(0,12);
+  res.sort((a,b)=>b.score-a.score); const top=res.length?res[0].score:0;
+  return res.filter(x=>x.score>=Math.max(10,top*0.25)).slice(0,10);
 }
 function searchBox(){ return `<form class="sbox" role="search" onsubmit="event.preventDefault();runSearch(this.q.value)"><label for="sq" class="sr">חיפוש תפילה, ברכה או פרק תהילים</label><span class="sic" aria-hidden="true">🔍</span><input id="sq" name="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="חיפוש: ברכת המזון, תפילין, תהילים כ״ג…" oninput="runSearch(this.value,true)"><button type="submit" aria-label="חיפוש">חיפוש</button></form><div id="sres" aria-live="polite"></div>`; }
 function runSearch(q,live){
