@@ -2081,7 +2081,7 @@ function saveRemForm(){
 function remPreview(){
   const box=document.getElementById('remPrev'); if(!box) return; const r=remCfg(); const now=new Date(); let rows=[];
   for(let k=0;k<3;k++){ const day=new Date(now.getFullYear(),now.getMonth(),now.getDate()+k,12); for(const e of remTimes(day,r)) if(e.t>now) rows.push(e); }
-  rows=rows.slice(0,6);
+  rows=rows.sort((a,b)=>a.t-b.t).slice(0,7);
   box.innerHTML=rows.length? rows.map(e=>`<li><b>${esc(T(e.title))}</b> – ${esc(e.t.toLocaleDateString(LANG==='he'?'he-IL':LANG,{weekday:'long'}))} ${hm(e.t)}${r.before?` <small>(${esc(T('תזכורת'))} ${r.before} ${esc(T('דק׳ לפני'))})</small>`:''}</li>`).join('') : `<li>${esc(T('לא נבחרו תפילות'))}</li>`;
 }
 async function remLiveToggle(){
