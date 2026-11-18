@@ -204,6 +204,8 @@ body.reading .tabbar{display:none}
 @media (min-width:960px){ .tabbar{display:none} body:not(.reading) .player{display:block} }
 body.hc .tile{background:#000;color:#ffef3a;border:2px solid #ffef3a;box-shadow:none}
 body.hc .tile::after{display:none}
+.zman{color:var(--muted);font-size:15px;line-height:1.7;margin:0 4px 14px}
+.zman b{color:var(--ink)}
 .foot{color:var(--muted);font-size:14px;line-height:1.6;margin-top:28px}
 </style>
 </head>
@@ -278,6 +280,11 @@ body.hc .tile::after{display:none}
     <div class="field" style="margin-top:0"><small>מכריז בקול על כל מסך, מתחיל להקריא אוטומטית כשנכנסים לתפילה, והחלקה ימינה/שמאלה על הטקסט עוברת פסקה. משתמשי VoiceOver יכולים להשאיר כבוי ולהשתמש בכפתורי הנגן.</small></div>
     <label class="sw"><input type="checkbox" id="sAuto"> המשך אוטומטי לפסקה הבאה</label>
     <label class="sw"><input type="checkbox" id="sNikud"> הצג ניקוד</label>
+    <div class="field">
+      <label for="sCity">מיקום לזמני התפילה</label>
+      <select id="sCity"><option value="jerusalem">ירושלים</option><option value="telaviv">תל אביב והמרכז</option><option value="haifa">חיפה והקריות</option><option value="kfarchabad">כפר חב״ד</option><option value="beersheva">באר שבע</option><option value="tzfat">צפת</option><option value="eilat">אילת</option><option value="geo">המיקום שלי (GPS)</option></select>
+      <small>לפיו נקבע מתי מוצגת מנחה ומתי עוברים לערבית: אחרי השקיעה ערבית מופיעה ראשונה, ואחרי צאת הכוכבים ערבית וקריאת שמע שעל המיטה.</small>
+    </div>
     <div class="field">
       <label for="sTheme">מסך</label>
       <select id="sTheme"><option value="auto">אוטומטי – לפי הגדרות המכשיר</option><option value="light">בהיר</option><option value="dark">כהה</option></select>
@@ -1230,11 +1237,47 @@ function homeHeader(title){
 }
 let lastMenu='';
 function setTab(t){ document.querySelectorAll('#tabbar [data-t]').forEach(b=>{ const on=b.dataset.t===t; b.classList.toggle('on',on); if(on) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); }); }
+/* ===================== זמני היום – לפי מיקום (שקיעה, צאת הכוכבים וכו׳) ===================== */
+const CITIES={jerusalem:['ירושלים',31.778,35.235,40],telaviv:['תל אביב',32.08,34.78,20],haifa:['חיפה והקריות',32.82,35.0,30],beersheva:['באר שבע',31.25,34.79,20],tzfat:['צפת',32.965,35.496,30],eilat:['אילת',29.557,34.952,20],kfarchabad:['כפר חב״ד',31.99,34.85,20]};
+function locNow(){ if(cfg.geo) return {name:'המיקום שלי',lat:cfg.geo[0],lon:cfg.geo[1],candles:20}; const c=CITIES[cfg.city||'jerusalem']||CITIES.jerusalem; return {name:c[0],lat:c[1],lon:c[2],candles:c[3]}; }
+function sunAt(date,lat,lon,elev){
+  const rad=Math.PI/180, d=new Date(date.getFullYear(),date.getMonth(),date.getDate(),12);
+  const Jd=d.getTime()/864e5+2440587.5, n=Math.ceil(Jd-2451545+0.0008), Js=n-lon/360;
+  const M=(357.5291+0.98560028*Js)%360, C=1.9148*Math.sin(M*rad)+0.02*Math.sin(2*M*rad)+0.0003*Math.sin(3*M*rad);
+  const L=(M+C+180+102.9372)%360, Jt=2451545+Js+0.0053*Math.sin(M*rad)-0.0069*Math.sin(2*L*rad);
+  const sd=Math.sin(L*rad)*Math.sin(23.4397*rad), cd=Math.cos(Math.asin(sd));
+  const cw=(Math.sin(elev*rad)-Math.sin(lat*rad)*sd)/(Math.cos(lat*rad)*cd);
+  if(cw<-1||cw>1) return null; const w=Math.acos(cw)/rad;
+  const toD=J=>new Date((J-2440587.5)*864e5);
+  return {rise:toD(Jt-w/360), set:toD(Jt+w/360), noon:toD(Jt)};
+}
+function zmanim(now=new Date()){
+  const L=locNow(); const s=sunAt(now,L.lat,L.lon,-0.833), a=sunAt(now,L.lat,L.lon,-16.1), t=sunAt(now,L.lat,L.lon,-6);
+  return {loc:L, alot:a.rise, sunrise:s.rise, chatzot:s.noon, sunset:s.set, tzeit:t.set, candles:new Date(s.set.getTime()-L.candles*60000)};
+}
+const hm=d=>d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',hour12:false});
+function chanukahNow(){ const h=hebDate(); return !!h && ((h.month==='Kislev'&&h.day>=25)||(h.month==='Tevet'&&h.day<=3)); }
+function prayerPlan(now=new Date()){
+  const z=zmanim(now), wd=now.getDay(); let ids, label, key;
+  if(now<z.alot){ ids=['bedtime','maariv']; label='לילה'; key='night'; }
+  else if(now<z.chatzot){ ids=['hashkama','shacharit']; label='שחרית'; key='morning'; }
+  else if(now<z.sunset){ ids=['mincha']; label='מנחה'; key='mincha'; }
+  else if(now<z.tzeit){ ids=['maariv','mincha']; label='אחרי השקיעה – ערבית'; key='dusk'; }
+  else { ids=['maariv','bedtime']; label='ערבית'; key='evening'; }
+  if(wd===5 && now>=z.chatzot && now<z.sunset){ ids=['candles'].concat(ids); key+='-erev'; }
+  if(wd===6 && now<z.chatzot && now>=z.alot){ ids=ids.concat(['nishmat']); key+='-shabbat'; }
+  if(wd===6 && now>=z.tzeit){ ids=['havdalah'].concat(ids); key+='-motzash'; }
+  if(chanukahNow() && ((wd!==5 && now>=z.sunset) || (wd===5 && now>=z.chatzot && now<z.sunset))){ ids=['chanukah'].concat(ids); key+='-chanukah'; }
+  return {ids,label,key,z};
+}
+let planKey=null;
+setInterval(()=>{ try{ if(location.hash.replace('#','')==='' && !R_.playing){ const p=prayerPlan(); if(p.key!==planKey) renderHome(); } }catch(e){} },60000);
+
 function renderHome(){
   stopReading(); R_.blocks=[]; updPlayer(); setTab(''); lastMenu='';
-  const hr=new Date().getHours();
-  const tod = hr<12? ['hashkama','shacharit'] : hr<18? ['mincha'] : ['maariv','bedtime'];
+  const plan=prayerPlan(); planKey=plan.key; const tod=plan.ids, z=plan.z;
   let h=homeHeader('המסע של היום')+`<div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
+  h+=`<p class="zman">עכשיו: <b>${plan.label}</b> · ${esc(z.loc.name)}<br>זריחה ${hm(z.sunrise)} · חצות ${hm(z.chatzot)} · שקיעה ${hm(z.sunset)} · צאת הכוכבים ${hm(z.tzeit)}${new Date().getDay()===5?` · הדלקת נרות ${hm(z.candles)}`:''}</p>`;
   h+=`<button class="tile light" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span class="ic" aria-hidden="true">🔊</span><span class="t">${cfg.voiceMode?'מצב קולי לליקויי ראייה: פעיל':'הפעל מצב קולי לליקויי ראייה'}<small style="color:var(--muted)">הכרזה קולית של המסכים והקראה אוטומטית של התפילה</small></span></button>`;
   h+=`<div class="tiles" role="list" style="margin-top:14px">`;
   const it=id=>findItem(id);
@@ -1453,7 +1496,7 @@ function openSet(){
   loadVoices();
   sRate.value=cfg.rate; rateV.textContent=cfg.rate.toFixed(1);
   sFs.value=cfg.fs; fsV.textContent=cfg.fs;
-  sVoiceMode.checked=cfg.voiceMode; sAuto.checked=cfg.auto; sUi.value=Math.round((cfg.ui||1)*100); uiV.textContent=sUi.value+'%'; sTheme.value=cfg.theme||'auto'; sGender.value=cfg.devGender||'male'; sEngine.value=cfg.engine||'chant'; sAshk.value=cfg.ashk?'1':'0'; sPitch.value=cfg.pitch||0; pitchV.textContent=(cfg.pitch>0?'+':'')+(cfg.pitch||0); sHc.checked=cfg.hc; sNikud.checked=cfg.nikud!==false;
+  sVoiceMode.checked=cfg.voiceMode; sAuto.checked=cfg.auto; sCity.value=cfg.geo?'geo':(cfg.city||'jerusalem'); sUi.value=Math.round((cfg.ui||1)*100); uiV.textContent=sUi.value+'%'; sTheme.value=cfg.theme||'auto'; sGender.value=cfg.devGender||'male'; sEngine.value=cfg.engine||'chant'; sAshk.value=cfg.ashk?'1':'0'; sPitch.value=cfg.pitch||0; pitchV.textContent=(cfg.pitch>0?'+':'')+(cfg.pitch||0); sHc.checked=cfg.hc; sNikud.checked=cfg.nikud!==false;
   try{dlg.showModal()}catch(e){dlg.setAttribute('open','')}
 }
 sVoice.onchange=()=>{
@@ -1473,6 +1516,12 @@ sAshk.onchange=()=>{cfg.ashk=sAshk.value==='1';saveCfg();stopAll();utter("בָּ
 sPitch.oninput=()=>{cfg.pitch=+sPitch.value;if(cfg.engine!=='device')sVoice.value=builtinFor(cfg.pitch);pitchV.textContent=(cfg.pitch>0?'+':'')+cfg.pitch;saveCfg()};
 sPitch.onchange=()=>{stopAll();utter("בָּרוּךְ אַתָּה יְיָ.")};
 sUi.oninput=()=>{cfg.ui=+sUi.value/100;uiV.textContent=sUi.value+'%';saveCfg();applyCfg()};
+sCity.onchange=()=>{
+  if(sCity.value==='geo'){
+    if(!navigator.geolocation){ document.getElementById('live').textContent='המכשיר לא תומך במיקום'; return; }
+    navigator.geolocation.getCurrentPosition(p=>{ cfg.geo=[+p.coords.latitude.toFixed(3),+p.coords.longitude.toFixed(3)]; saveCfg(); document.getElementById('live').textContent='המיקום נשמר'; },()=>{ document.getElementById('live').textContent='לא התקבלה הרשאת מיקום'; sCity.value=cfg.city||'jerusalem'; },{timeout:10000});
+  } else { cfg.city=sCity.value; cfg.geo=null; saveCfg(); }
+};
 sTheme.onchange=()=>{cfg.theme=sTheme.value;saveCfg();applyCfg()};
 sNikud.onchange=()=>{cfg.nikud=sNikud.checked;saveCfg()};
 dlgOk.onclick=()=>{dlg.close(); route();};
