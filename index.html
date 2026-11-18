@@ -342,6 +342,15 @@ figure.logo::after{inset:0;border-radius:24px;z-index:2}
 body.hc figure.logo{box-shadow:none}
 /* לוגו בשחור־לבן */
 figure.logo img{filter:grayscale(1) contrast(1.08) brightness(1.02)}
+/* שפות */
+body.ltr{text-align:left}
+body.ltr .prayer{direction:rtl;text-align:right}
+body.ltr .tile{text-align:left}
+body.ltr .tile .chev{transform:scaleX(-1)}
+body.ltr .bsd{left:auto;right:14px}
+body.ltr .reader-head .iconbtn:first-child{transform:scaleX(-1)}
+.langnote{font-size:15px;color:var(--muted);background:var(--accent-soft);border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin:0 0 12px}
+.langbtn{font-size:22px}
 </style>
 </head>
 <body>
@@ -373,6 +382,11 @@ figure.logo img{filter:grayscale(1) contrast(1.08) brightness(1.02)}
 <dialog id="dlg" aria-labelledby="dlgT">
   <div class="dlg">
     <h2 id="dlgT">הגדרות הקראה ונגישות</h2>
+    <div class="field">
+      <label for="sLang">שפה <span class="nolang" dir="ltr">· Language · Idioma · Langue · Язык</span></label>
+      <select id="sLang" class="nolang"><option value="he">עברית</option><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="ru">Русский</option></select>
+      <small>הטקסט של התפילות מוצג בעברית המקורית</small>
+    </div>
     <div id="noVoice" class="warn" hidden>לא נמצא קול עברי במכשיר. באייפון: הגדרות ← נגישות ← תוכן מוקרא ← קולות ← עברית, והורד את הקול „Carmit”.</div>
     <div class="field">
       <label for="sVoice">קול ההקראה</label>
@@ -851,7 +865,7 @@ function hebDate(d=new Date()){
   }catch(e){return null}
 }
 function hebDateStr(){
-  try{ return new Intl.DateTimeFormat('he-u-ca-hebrew',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date()); }catch(e){return ''}
+  try{ const L=(typeof LANG!=='undefined'&&LANG!=='he')?LANG:'he'; return new Intl.DateTimeFormat(L+'-u-ca-hebrew',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date()); }catch(e){return ''}
 }
 function season(){
   const h=hebDate(); if(!h) return {rain:null,dew:null};
@@ -955,9 +969,232 @@ function numWords(n){
 }
 
 /* ===================== הגדרות ===================== */
-const DEF={voice:'',rate:0.9,fs:24,voiceMode:false,auto:true,hc:false,nikud:true,theme:'auto',ui:1};
+/* ===================== שפות ממשק: עברית, English, Español, Français, Русский =====================
+   טקסט התפילות נשאר בעברית המקורית. מתורגמים: התפריטים, הכותרות, הכפתורים, ההגדרות וההכרזות הקוליות. */
+const LANGS={he:{name:'עברית',dir:'rtl',tts:'he'},en:{name:'English',dir:'ltr',tts:'en'},es:{name:'Español',dir:'ltr',tts:'es'},fr:{name:'Français',dir:'ltr',tts:'fr'},ru:{name:'Русский',dir:'ltr',tts:'ru'}};
+const LI={en:0,es:1,fr:2,ru:3};
+const TR={
+/* ניווט וכללי */
+'המסע של היום':['Today','Hoy','Aujourd’hui','Сегодня'],
+'היום':['Today','Hoy','Aujourd’hui','Сегодня'],
+'סידור':['Siddur','Sidur','Siddour','Сидур'],
+'תהילים':['Tehillim','Tehilim','Tehilim','Теилим'],
+'אודות':['About','Acerca de','À propos','О программе'],
+'הגדרות':['Settings','Ajustes','Réglages','Настройки'],
+'מידע':['Info','Información','Infos','Информация'],
+'חזרה':['Back','Atrás','Retour','Назад'],
+'חזרה לסידור':['Back to the siddur','Volver al sidur','Retour au siddour','Назад к сидуру'],
+'תפריט הסידור':['Siddur menu','Menú del sidur','Menu du siddour','Меню сидура'],
+'ניווט ראשי':['Main navigation','Navegación principal','Navigation principale','Главное меню'],
+'נגן הקראה':['Read-aloud player','Reproductor de lectura','Lecteur vocal','Озвучивание'],
+'הרבי מליובאוויטש':['The Lubavitcher Rebbe','El Rebe de Lubavitch','Le Rabbi de Loubavitch','Любавичский Ребе'],
+'סידור תהלת ה׳':['Siddur Tehillat Hashem','Sidur Tehilat Hashem','Siddour Tehilat Hachem','Сидур «Теилат а-Шем»'],
+'סידור תהלת ה׳ – נוסח חב״ד':['Siddur Tehillat Hashem – Nusach Chabad','Sidur Tehilat Hashem – Nusaj Jabad','Siddour Tehilat Hachem – rite ’Habad','Сидур «Теилат а-Шем» – нусах Хабад'],
+'נוסח חב״ד · מנוקד עם הקראה':['Nusach Chabad · vowelized, with read-aloud','Nusaj Jabad · vocalizado, con lectura','Rite ’Habad · vocalisé, avec lecture','Нусах Хабад · с огласовками и озвучиванием'],
+'סידור מנוקד עם הקראה קולית ונגישות לליקויי ראייה':['A vowelized siddur with read-aloud, accessible for the visually impaired','Sidur vocalizado con lectura en voz alta, accesible para personas con discapacidad visual','Siddour vocalisé avec lecture à voix haute, accessible aux malvoyants','Сидур с огласовками и озвучиванием, доступный для слабовидящих'],
+'פיתוח תוכנה:':['Software development:','Desarrollo de software:','Développement :','Разработка:'],
+'טלפון:':['Phone:','Teléfono:','Téléphone :','Телефон:'],
+'גרסה:':['Version:','Versión:','Version :','Версия:'],
+'גרסה 1.0':['Version 1.0','Versión 1.0','Version 1.0','Версия 1.0'],
+/* נגן */
+'הקרא':['Read','Leer','Lire','Читать'],
+'עצור':['Stop','Parar','Arrêter','Стоп'],
+'עצור הקראה':['Stop reading','Detener lectura','Arrêter la lecture','Остановить чтение'],
+'הקרא מהפסקה הנוכחית':['Read from the current paragraph','Leer desde el párrafo actual','Lire depuis le paragraphe actuel','Читать с текущего абзаца'],
+'פסקה קודמת':['Previous paragraph','Párrafo anterior','Paragraphe précédent','Предыдущий абзац'],
+'פסקה הבאה':['Next paragraph','Párrafo siguiente','Paragraphe suivant','Следующий абзац'],
+'פסקה':['Paragraph','Párrafo','Paragraphe','Абзац'],
+'מתוך':['of','de','sur','из'],
+'בחר תפילה כדי להתחיל':['Choose a prayer to begin','Elige una oración para empezar','Choisissez une prière pour commencer','Выберите молитву'],
+'הגדרות הקראה ותצוגה':['Reading and display settings','Ajustes de lectura y pantalla','Réglages de lecture et d’affichage','Настройки чтения и экрана'],
+'הגדרות הקראה ונגישות':['Reading and accessibility settings','Ajustes de lectura y accesibilidad','Réglages de lecture et d’accessibilité','Настройки чтения и доступности'],
+'הקטנת טקסט':['Smaller text','Texto más pequeño','Texte plus petit','Уменьшить текст'],
+'הגדלת טקסט':['Larger text','Texto más grande','Texte plus grand','Увеличить текст'],
+'מעבר למסך כהה':['Switch to dark mode','Modo oscuro','Mode sombre','Тёмная тема'],
+'מעבר למסך בהיר':['Switch to light mode','Modo claro','Mode clair','Светлая тема'],
+'בחירת שפה':['Choose language','Elegir idioma','Choisir la langue','Выбор языка'],
+/* דף הבית */
+'עכשיו:':['Now:','Ahora:','Maintenant :','Сейчас:'],
+'זריחה':['Sunrise','Amanecer','Lever du soleil','Восход'],
+'חצות':['Midday','Mediodía','Midi','Полдень'],
+'שקיעה':['Sunset','Puesta del sol','Coucher du soleil','Закат'],
+'צאת הכוכבים':['Nightfall','Salida de las estrellas','Tombée de la nuit','Выход звёзд'],
+'הדלקת נרות':['Candle lighting','Encendido de velas','Allumage des bougies','Зажигание свечей'],
+'לילה':['Night','Noche','Nuit','Ночь'],
+'שחרית':['Shacharit','Shajarit','Cha’harit','Шахарит'],
+'מנחה':['Mincha','Minjá','Min’ha','Минха'],
+'ערבית':['Maariv','Arvit','Arvit','Маарив'],
+'אחרי השקיעה – ערבית':['After sunset – Maariv','Tras la puesta del sol – Arvit','Après le coucher du soleil – Arvit','После заката – Маарив'],
+'הפעל מצב קולי לליקויי ראייה':['Turn on voice mode for the visually impaired','Activar modo de voz para personas con discapacidad visual','Activer le mode vocal pour malvoyants','Включить голосовой режим для слабовидящих'],
+'מצב קולי לליקויי ראייה: פעיל':['Voice mode for the visually impaired: on','Modo de voz: activado','Mode vocal : activé','Голосовой режим: включён'],
+'מצב קולי לליקויי ראייה':['Voice mode for the visually impaired','Modo de voz para personas con discapacidad visual','Mode vocal pour malvoyants','Голосовой режим для слабовидящих'],
+'הכרזה קולית של המסכים והקראה אוטומטית של התפילה':['Spoken screen announcements and automatic prayer reading','Anuncio hablado de pantallas y lectura automática de la oración','Annonce vocale des écrans et lecture automatique de la prière','Озвучивание экранов и автоматическое чтение молитвы'],
+'תהילים יומי':['Daily Tehillim','Tehilim diario','Tehilim du jour','Теилим на каждый день'],
+'תהילים אישי':['Personal Tehillim','Tehilim personal','Tehilim personnel','Личный псалом'],
+'פרק לפי הגיל':['Chapter by your age','Capítulo según la edad','Chapitre selon l’âge','Глава по возрасту'],
+'כל הסידור':['Full siddur','Todo el sidur','Tout le siddour','Весь сидур'],
+'כל התפילות והברכות':['All prayers and blessings','Todas las oraciones y bendiciones','Toutes les prières et bénédictions','Все молитвы и благословения'],
+'נוסח הטקסט מבוסס על סידור „תהלת ה׳” (נוסח האר״י). השם הקדוש מוצג „יְיָ” כמנהג סידורי חב״ד, ומוקרא „אֲדֹנָי”. „משיב הרוח” ו„טל ומטר” נבחרים אוטומטית לפי התאריך העברי (מנהג ארץ ישראל).':['The text follows Siddur Tehillat Hashem (Nusach Ha’Ari). The Divine Name is written “יְיָ” as in Chabad siddurim and read aloud as “Adonai”. The seasonal insertions for rain and dew are chosen automatically by the Hebrew date (Land of Israel custom).','El texto sigue el Sidur Tehilat Hashem (Nusaj HaArí). El Nombre Divino se escribe «יְיָ», como en los sidurim de Jabad, y se lee «Adonai». Las menciones de lluvia y rocío se eligen automáticamente según la fecha hebrea (costumbre de la Tierra de Israel).','Le texte suit le Siddour Tehilat Hachem (rite du Ari). Le Nom divin est écrit « יְיָ » comme dans les siddourim ’Habad et lu « Adonaï ». Les mentions de la pluie et de la rosée sont choisies automatiquement selon la date hébraïque (coutume d’Israël).','Текст основан на сидуре «Теилат а-Шем» (нусах Ари). Святое Имя записано как «יְיָ», как в сидурах Хабада, и озвучивается как «Адонай». Упоминания дождя и росы выбираются автоматически по еврейской дате (обычай Земли Израиля).'],
+'קיצורי מקלדת: רווח – הקרא/עצור, חיצים – פסקה הבאה/קודמת, Esc – חזרה.':['Keyboard: Space – read/stop, arrows – next/previous paragraph, Esc – back.','Teclado: Espacio – leer/parar, flechas – párrafo siguiente/anterior, Esc – atrás.','Clavier : Espace – lire/arrêter, flèches – paragraphe suivant/précédent, Échap – retour.','Клавиатура: Пробел – читать/стоп, стрелки – следующий/предыдущий абзац, Esc – назад.'],
+/* קבוצות ותפילות */
+'תפילות יומיות':['Daily prayers','Oraciones diarias','Prières quotidiennes','Ежедневные молитвы'],
+'שבת':['Shabbat','Shabat','Chabbat','Шабат'],
+'חגים ומועדים':['Holidays','Festividades','Fêtes','Праздники'],
+'ברכות':['Blessings','Bendiciones','Bénédictions','Благословения'],
+'סדר השכמת הבוקר':['Upon waking','Al despertar','Au réveil','При пробуждении'],
+'מודה אני, ברכות השחר, טלית ותפילין':['Modeh Ani, morning blessings, tallit and tefillin','Modé Aní, bendiciones matutinas, talit y tefilín','Modé Ani, bénédictions du matin, talit et tefilin','Моде ани, утренние благословения, талит и тфилин'],
+'הנחת תפילין מהירה':['Quick tefillin','Tefilín rápido','Tefilin express','Быстрое наложение тфилин'],
+'ברכה, הנחה וקריאת שמע עד „אמת”':['Blessing, putting on, and Shema through “Emet”','Bendición, colocación y Shemá hasta «Emet»','Bénédiction, pose et Chéma jusqu’à « Emet »','Благословение, наложение и Шма до «Эмет»'],
+'שחרית לימות החול':['Weekday Shacharit','Shajarit de días laborables','Cha’harit de semaine','Шахарит в будни'],
+'מנחה לימות החול':['Weekday Mincha','Minjá de días laborables','Min’ha de semaine','Минха в будни'],
+'ערבית לימות החול':['Weekday Maariv','Arvit de días laborables','Arvit de semaine','Маарив в будни'],
+'קריאת שמע שעל המיטה':['Bedtime Shema','Shemá antes de dormir','Chéma du coucher','Шма перед сном'],
+'סדר הדלקת נרות שבת':['Shabbat candle lighting','Encendido de velas de Shabat','Allumage des bougies de Chabbat','Зажигание субботних свечей'],
+'נשמת כל חי':['Nishmat Kol Chai','Nishmat Kol Jai','Nichmat Kol ’Haï','Нишмат коль хай'],
+'שחרית לשבת ויום טוב':['Shacharit for Shabbat and Yom Tov','Shajarit de Shabat y Yom Tov','Cha’harit de Chabbat et Yom Tov','Шахарит на Шабат и праздники'],
+'הבדלה':['Havdalah','Havdalá','Havdala','Авдала'],
+'ברכות ההבדלה':['Havdalah blessings','Bendiciones de Havdalá','Bénédictions de la Havdala','Благословения авдалы'],
+'הדלקת נרות חנוכה':['Chanukah candle lighting','Encendido de velas de Janucá','Allumage des bougies de ’Hanouka','Зажигание ханукальных свечей'],
+'ברכות הנרות':['Candle blessings','Bendiciones de las velas','Bénédictions des bougies','Благословения на свечи'],
+'מה מברכים?':['Which blessing?','¿Qué bendición?','Quelle bénédiction ?','Какое благословение?'],
+'ברכות הנהנין':['Blessings on food','Bendiciones sobre alimentos','Bénédictions sur la nourriture','Благословения на еду'],
+'ברכות הנהנין וברכה אחרונה':['Blessings before and after food','Bendiciones antes y después de comer','Bénédictions avant et après manger','Благословения до и после еды'],
+'ברכת המזון':['Grace after meals','Bendición después de comer','Birkat Hamazone','Благословение после еды'],
+'כולל זימון, רצה ויעלה ויבוא':['Includes Zimun, Retzei and Yaaleh Veyavo','Incluye Zimún, Retzé y Yaalé Veyavó','Avec Zimoun, Retsé et Yaalé Veyavo','С зимуном, «Рцэ» и «Яале ве-яво»'],
+'ברכה מעין שלוש':['Al Hamichya','Al Hamijiá','Al Hamih’ya','Аль а-михья'],
+'על המחיה, על הגפן, על העץ':['For grain, wine and fruit','Por cereales, vino y frutas','Pour céréales, vin et fruits','На мучное, вино и плоды'],
+'ברכות הראייה והריח':['Blessings on sights and scents','Bendiciones de la vista y el olfato','Bénédictions de la vue et des odeurs','Благословения на увиденное и запахи'],
+'רעמים, ברקים, קשת, ים, אילנות, בשמים':['Thunder, lightning, rainbow, sea, blossoming trees, fragrances','Truenos, relámpagos, arcoíris, mar, árboles, fragancias','Tonnerre, éclairs, arc-en-ciel, mer, arbres, parfums','Гром, молния, радуга, море, деревья, ароматы'],
+'ברכות מיוחדות':['Special blessings','Bendiciones especiales','Bénédictions spéciales','Особые благословения'],
+'שהחיינו, הגומל, תפילת הדרך':['Shehecheyanu, Hagomel, Traveler’s prayer','Shehejeyanu, Hagomel, oración del viajero','Chéhé’héyanou, Hagomel, prière du voyageur','Шеэхеяну, а-Гомель, молитва путника'],
+/* כותרות חלקים */
+'מודה אני ונטילת ידיים':['Modeh Ani and hand washing','Modé Aní y lavado de manos','Modé Ani et ablution des mains','Моде ани и омовение рук'],
+'אשר יצר':['Asher Yatzar','Asher Yatzar','Acher Yatsar','Ашер яцар'],
+'אלהי נשמה':['Elokai Neshama','Elokai Neshamá','Elo-kaï Nechama','Элокай нешама'],
+'ברכות השחר':['Morning blessings','Bendiciones matutinas','Bénédictions du matin','Утренние благословения'],
+'ברכות התורה':['Blessings on the Torah','Bendiciones de la Torá','Bénédictions de la Torah','Благословения Торы'],
+'טלית':['Tallit','Talit','Talit','Талит'],
+'תפילין':['Tefillin','Tefilín','Tefilin','Тфилин'],
+'תפילין של יד':['Hand tefillin','Tefilín del brazo','Tefilin du bras','Ручной тфилин'],
+'תפילין של ראש':['Head tefillin','Tefilín de la cabeza','Tefilin de la tête','Головной тфилин'],
+'חליצת התפילין':['Removing the tefillin','Quitar los tefilín','Retrait des tefilin','Снятие тфилин'],
+'תפילה קודם התפילה':['Before praying','Antes de rezar','Avant la prière','Перед молитвой'],
+'הליכה לבית הכנסת':['Going to the synagogue','Al ir a la sinagoga','En allant à la synagogue','По пути в синагогу'],
+'ברוך שאמר':['Baruch She’amar','Baruj Sheamar','Baroukh Chéamar','Барух шеамар'],
+'אשרי':['Ashrei','Ashrei','Achré','Ашрей'],
+'ישתבח':['Yishtabach','Yishtabaj','Yichtaba’h','Иштабах'],
+'ברכות קריאת שמע':['Blessings of the Shema','Bendiciones del Shemá','Bénédictions du Chéma','Благословения Шма'],
+'קריאת שמע':['Shema','Shemá','Chéma','Шма'],
+'אמת ויציב':['Emet Veyatziv','Emet Veyatziv','Emet Veyatsiv','Эмет ве-яцив'],
+'אמת ואמונה והשכיבנו':['Emet Ve’emuna and Hashkiveinu','Emet Veemuná y Hashkivenu','Emet Veémouna et Hachkivénou','Эмет ве-эмуна и Ашкивейну'],
+'שמונה עשרה':['Amidah','Amidá','Amida','Амида'],
+'עלינו לשבח':['Aleinu','Aleinu','Alénou','Алейну'],
+/* תהילים */
+'ספר תהילים':['Book of Tehillim','Libro de Tehilim','Livre des Tehilim','Книга Теилим'],
+'לפי ימי השבוע':['By day of the week','Por día de la semana','Selon le jour de la semaine','По дням недели'],
+'פסוקים לפי השם':['Verses by name','Versículos según el nombre','Versets selon le prénom','Стихи по имени'],
+'פרק קי״ט לפי אותיות השם':['Psalm 119 by the letters of the name','Salmo 119 según las letras del nombre','Psaume 119 selon les lettres du prénom','Псалом 119 по буквам имени'],
+'כמנהג חב״ד – הגיל ועוד אחד':['Chabad custom – your age plus one','Costumbre de Jabad – la edad más uno','Coutume ’Habad – l’âge plus un','Обычай Хабада – возраст плюс один'],
+'לפי היום בחודש העברי':['By the day of the Hebrew month','Según el día del mes hebreo','Selon le jour du mois hébraïque','По дню еврейского месяца'],
+'בחירת פרק':['Choose a chapter','Elegir capítulo','Choisir un chapitre','Выбор главы'],
+'פרק אישי':['Personal chapter','Capítulo personal','Chapitre personnel','Личная глава'],
+'נשמה':['Neshama','Neshamá','Nechama','Нешама'],
+'שם בעברית (אפשר גם „בן/בת” ושם האם)':['Name in Hebrew (you may add “ben/bat” and the mother’s name)','Nombre en hebreo (puede añadir «ben/bat» y el nombre de la madre)','Prénom en hébreu (on peut ajouter « ben/bat » et le prénom de la mère)','Имя на иврите (можно добавить «бен/бат» и имя матери)'],
+'הצג פסוקים':['Show verses','Mostrar versículos','Afficher les versets','Показать стихи'],
+'גיל (בשנים שמלאו)':['Age (completed years)','Edad (años cumplidos)','Âge (années révolues)','Возраст (полных лет)'],
+'הצג את הפרק':['Show the chapter','Mostrar el capítulo','Afficher le chapitre','Показать главу'],
+'טוען את ספר תהילים…':['Loading Tehillim…','Cargando Tehilim…','Chargement des Tehilim…','Загрузка Теилим…'],
+'לא הצלחתי לטעון את ספר תהילים. בדוק את החיבור ונסה שוב.':['Could not load Tehillim. Check your connection and try again.','No se pudo cargar Tehilim. Compruebe la conexión e inténtelo de nuevo.','Impossible de charger les Tehilim. Vérifiez la connexion et réessayez.','Не удалось загрузить Теилим. Проверьте соединение и попробуйте снова.'],
+'תהילים פרק':['Tehillim chapter','Tehilim capítulo','Tehilim chapitre','Теилим, глава'],
+'תהילים ליום':['Tehillim for day','Tehilim del día','Tehilim du jour','Теилим на день'],
+'פרק אישי – פרק':['Personal chapter – chapter','Capítulo personal – capítulo','Chapitre personnel – chapitre','Личная глава – глава'],
+'בחודש':['of the month','del mes','du mois','месяца'],
+'היום,':['Today,','Hoy,','Aujourd’hui,','Сегодня,'],
+'יום':['Day','Día','Jour','День'],
+'פרק':['Chapter','Capítulo','Chapitre','Глава'],
+'אות':['Letter','Letra','Lettre','Буква'],
+'ראשון':['Sunday','domingo','dimanche','воскресенье'],'שני':['Monday','lunes','lundi','понедельник'],'שלישי':['Tuesday','martes','mardi','вторник'],
+'רביעי':['Wednesday','miércoles','mercredi','среда'],'חמישי':['Thursday','jueves','jeudi','четверг'],'שישי':['Friday','viernes','vendredi','пятница'],
+/* הגדרות */
+'שפה':['Language','Idioma','Langue','Язык'],
+'קול ההקראה':['Reading voice','Voz de lectura','Voix de lecture','Голос чтения'],
+'מהירות הקראה:':['Reading speed:','Velocidad de lectura:','Vitesse de lecture :','Скорость чтения:'],
+'גודל הטקסט בתפריטים ובמסכים:':['Menu and screen text size:','Tamaño del texto de menús:','Taille du texte des menus :','Размер текста меню:'],
+'גודל אותיות התפילה:':['Prayer text size:','Tamaño del texto de la oración:','Taille du texte de la prière :','Размер текста молитвы:'],
+'מכריז בקול על כל מסך, מתחיל להקריא אוטומטית כשנכנסים לתפילה, והחלקה ימינה/שמאלה על הטקסט עוברת פסקה. משתמשי VoiceOver יכולים להשאיר כבוי ולהשתמש בכפתורי הנגן.':['Announces every screen aloud, starts reading automatically when you open a prayer, and swiping left/right moves between paragraphs. VoiceOver users can leave it off and use the player buttons.','Anuncia cada pantalla en voz alta, empieza a leer al abrir una oración y deslizar a izquierda/derecha cambia de párrafo. Los usuarios de VoiceOver pueden dejarlo apagado y usar los botones.','Annonce chaque écran à voix haute, lance la lecture à l’ouverture d’une prière, et un glissement gauche/droite change de paragraphe. Les utilisateurs de VoiceOver peuvent le laisser désactivé.','Озвучивает каждый экран, автоматически начинает чтение молитвы, а свайп влево/вправо переключает абзацы. Пользователи VoiceOver могут оставить его выключенным.'],
+'המשך אוטומטי לפסקה הבאה':['Continue automatically to the next paragraph','Continuar automáticamente al siguiente párrafo','Passer automatiquement au paragraphe suivant','Автоматически переходить к следующему абзацу'],
+'הצג ניקוד':['Show vowel marks (nikud)','Mostrar vocales (nikud)','Afficher les voyelles (nikoud)','Показывать огласовки (никуд)'],
+'מיקום לזמני התפילה':['Location for prayer times','Ubicación para los horarios','Lieu pour les horaires','Место для времён молитвы'],
+'לפיו נקבע מתי מוצגת מנחה ומתי עוברים לערבית: אחרי השקיעה ערבית מופיעה ראשונה, ואחרי צאת הכוכבים ערבית וקריאת שמע שעל המיטה.':['Used to decide when Mincha is shown and when to switch to Maariv: after sunset Maariv comes first, and after nightfall Maariv and the bedtime Shema.','Determina cuándo se muestra Minjá y cuándo se pasa a Arvit: tras la puesta del sol aparece primero Arvit, y tras la salida de las estrellas Arvit y el Shemá antes de dormir.','Détermine quand afficher Min’ha et quand passer à Arvit : après le coucher du soleil Arvit apparaît en premier, puis Arvit et le Chéma du coucher à la tombée de la nuit.','Определяет, когда показывать Минху и когда переходить к Мааривy: после заката первым идёт Маарив, а после выхода звёзд – Маарив и Шма перед сном.'],
+'ירושלים':['Jerusalem','Jerusalén','Jérusalem','Иерусалим'],'תל אביב והמרכז':['Tel Aviv and center','Tel Aviv y el centro','Tel Aviv et le centre','Тель-Авив и центр'],'תל אביב':['Tel Aviv','Tel Aviv','Tel Aviv','Тель-Авив'],
+'חיפה והקריות':['Haifa and the Krayot','Haifa y los Krayot','Haïfa et les Krayot','Хайфа и Крайот'],'כפר חב״ד':['Kfar Chabad','Kfar Jabad','Kfar ’Habad','Кфар-Хабад'],'באר שבע':['Beersheba','Beerseba','Beer-Sheva','Беэр-Шева'],
+'צפת':['Safed','Safed','Safed','Цфат'],'אילת':['Eilat','Eilat','Eilat','Эйлат'],'המיקום שלי':['My location','Mi ubicación','Ma position','Моё местоположение'],
+'מסך':['Screen','Pantalla','Écran','Экран'],'אוטומטי – לפי הגדרות המכשיר':['Automatic – device setting','Automático – según el dispositivo','Automatique – selon l’appareil','Авто – как на устройстве'],
+'בהיר':['Light','Claro','Clair','Светлый'],'כהה':['Dark','Oscuro','Sombre','Тёмный'],
+'ניגודיות גבוהה (צהוב על שחור)':['High contrast (yellow on black)','Alto contraste (amarillo sobre negro)','Contraste élevé (jaune sur noir)','Высокий контраст (жёлтый на чёрном)'],
+'סגירה':['Close','Cerrar','Fermer','Закрыть'],
+'ברירת מחדל של המכשיר':['Device default','Predeterminada del dispositivo','Par défaut de l’appareil','По умолчанию'],
+'המכשיר לא תומך במיקום':['This device does not support location','El dispositivo no admite ubicación','L’appareil ne prend pas en charge la localisation','Устройство не поддерживает геолокацию'],
+'המיקום נשמר':['Location saved','Ubicación guardada','Position enregistrée','Местоположение сохранено'],
+'לא התקבלה הרשאת מיקום':['Location permission was not granted','No se concedió permiso de ubicación','Autorisation de localisation refusée','Доступ к местоположению не предоставлен'],
+'מסך כהה':['Dark mode','Modo oscuro','Mode sombre','Тёмная тема'],'מסך בהיר':['Light mode','Modo claro','Mode clair','Светлая тема'],
+'גודל טקסט:':['Text size:','Tamaño del texto:','Taille du texte :','Размер текста:'],
+'הטקסט של התפילות מוצג בעברית המקורית':['Prayers are shown in the original Hebrew','Las oraciones se muestran en el hebreo original','Les prières sont affichées en hébreu original','Молитвы показаны на языке оригинала – иврите'],
+/* הכרזות קוליות */
+'המסע של היום. בחר תפילה מהרשימה.':['Today. Choose a prayer from the list.','Hoy. Elige una oración de la lista.','Aujourd’hui. Choisissez une prière dans la liste.','Сегодня. Выберите молитву из списка.'],
+'סידור. בחר תפילה מהרשימה.':['Siddur. Choose a prayer from the list.','Sidur. Elige una oración de la lista.','Siddour. Choisissez une prière dans la liste.','Сидур. Выберите молитву из списка.'],
+'ספר תהילים':['Book of Tehillim','Libro de Tehilim','Livre des Tehilim','Книга Теилим'],
+};
+/* ניסוחים שמופיעים בתוך משפטים */
+const TR_RX=[
+ [/פסקה (\d+) מתוך (\d+)/, (m,a,b)=>`${T('פסקה')} ${a} ${T('מתוך')} ${b}`],
+ [/^❚❚ עצור$/, ()=>'❚❚ '+T('עצור')], [/^▶ הקרא$/, ()=>'▶ '+T('הקרא')],
+ [/^אודות\. פיתוח תוכנה: (.+?)\. טלפון: (.+?)\. גרסה (.+?)\.$/, (m,a,b,c)=>`${T('אודות')}. ${T('פיתוח תוכנה:')} ${a}. ${T('טלפון:')} ${b}. ${T('גרסה:')} ${c}.`],
+];
+let LANG='he';
+function T(he){ if(LANG==='he') return he; const r=TR[he]; return r? r[LI[LANG]] : he; }
+const TR_KEYS=()=>TR_KEYS._k||(TR_KEYS._k=Object.keys(TR).filter(k=>k.length>1).sort((a,b)=>b.length-a.length));
+function trText(s){
+  if(LANG==='he' || !/[א-ת]/.test(s)) return s;
+  const lead=s.match(/^\s*/)[0], trail=s.match(/\s*$/)[0], core=s.trim();
+  if(TR[core]) return lead+T(core)+trail;
+  for(const [rx,fn] of TR_RX) if(rx.test(core)) return lead+core.replace(rx,fn)+trail;
+  let out=core;
+  for(const k of TR_KEYS()){ if(out.includes(k)){ const re=new RegExp('(^|[\\s·,:(–\\-—„“"])'+k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=$|[\\s·,:)–\\-—.?!”"])','g'); out=out.replace(re,(m,p)=>p+T(k)); } }
+  return lead+out+trail;
+}
+const I18N_SKIP='.blk,.vn,.gbtn,.wd b,.bsd,script,style,svg,textarea,input,.nolang';
+function i18nApply(root){
+  if(LANG==='he' || !root) return;
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{ const p=n.parentElement; if(!p||p.closest(I18N_SKIP)) return NodeFilter.FILTER_REJECT; return /[א-ת]/.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT; }});
+  const list=[]; while(w.nextNode()) list.push(w.currentNode);
+  for(const n of list){ const v=trText(n.nodeValue); if(v!==n.nodeValue) n.nodeValue=v; }
+  const els=root.querySelectorAll? root.querySelectorAll('[aria-label],[alt],[title],[placeholder]') : [];
+  for(const el of [root,...els]){ if(!el.getAttribute || (el.closest && el.closest('.blk'))) continue;
+    for(const a of ['aria-label','alt','title','placeholder']){ const v=el.getAttribute(a); if(v && /[א-ת]/.test(v)){ const t=trText(v); if(t!==v) el.setAttribute(a,t); } } }
+}
+let _i18nObs=null, _i18nBusy=false;
+function i18nStart(){
+  if(_i18nObs) _i18nObs.disconnect();
+  document.documentElement.lang = LANG==='he'?'he':LANG;
+  document.documentElement.dir = LANGS[LANG].dir;
+  document.body.classList.toggle('ltr', LANGS[LANG].dir==='ltr');
+  if(LANG==='he') return;
+  i18nApply(document.body);
+  _i18nObs=new MutationObserver(ms=>{ if(_i18nBusy) return; _i18nBusy=true;
+    try{ for(const m of ms){ if(m.type==='characterData') i18nApply(m.target.parentElement); else if(m.type==='attributes') i18nApply(m.target); else m.addedNodes.forEach(n=> n.nodeType===1? i18nApply(n) : (n.parentElement&&i18nApply(n.parentElement))); } }
+    finally{ _i18nBusy=false; } });
+  _i18nObs.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['aria-label','alt','title','placeholder']});
+}
+function setLang(l){ if(!LANGS[l]) l='he'; const was=LANG; cfg.lang=l; saveCfg(); LANG=l; if(was!==l) location.reload(); }
+/* קול בשפת הממשק – להכרזות בלבד (התפילה עצמה מוקראת בעברית) */
+function langVoice(){ const p=LANGS[LANG].tts; const vs=synth? synth.getVoices():[]; return vs.find(v=>v.lang&&v.lang.toLowerCase().startsWith(p)&&/female|samantha|karen|monica|paulina|amelie|milena|google/i.test(v.name)) || vs.find(v=>v.lang&&v.lang.toLowerCase().startsWith(p)) || null; }
+function sayInLang(text){ if(!synth) return; const u=new SpeechSynthesisUtterance(text); const v=langVoice(); u.lang={en:'en-US',es:'es-ES',fr:'fr-FR',ru:'ru-RU'}[LANG]; if(v) u.voice=v; u.rate=Math.min(1.2,cfg.rate+0.1); synth.speak(u); }
+
+const DEF={voice:'',rate:0.9,fs:24,voiceMode:false,auto:true,hc:false,nikud:true,theme:'auto',ui:1,lang:'he'};
 let cfg={...DEF};
 try{cfg={...DEF,...JSON.parse(localStorage.getItem('siddurCfg')||'{}')}}catch(e){}
+LANG=LANGS[cfg.lang]?cfg.lang:'he';
 function saveCfg(){try{localStorage.setItem('siddurCfg',JSON.stringify(cfg))}catch(e){}}
 function applyCfg(){
   document.documentElement.style.setProperty('--fs',cfg.fs+'px');
@@ -1016,7 +1253,7 @@ function deviceUtter(text,onend){
 let annToken=0;
 function announce(text,say){ // מצב קולי – הכרזה
   document.getElementById('live').textContent=text;
-  if(cfg.voiceMode){ stopReading(); stopAll(); const t=++annToken; utter(say||text,()=>{},'read'); return t; }
+  if(cfg.voiceMode){ stopReading(); stopAll(); const t=++annToken; if(LANG!=='he'){ sayInLang(trText(text)); return t; } utter(say||text,()=>{},'read'); return t; }
 }
 
 /* ===================== קורא ===================== */
@@ -1207,7 +1444,8 @@ function tile(id,icon,title,sub,c,extra){ return `<button class="tile c${c}" rol
 function weekStrip(){
   const now=new Date(); const wdN=['א','ב','ג','ד','ה','ו','ש']; let h='<div class="week" aria-hidden="true">';
   for(let k=-3;k<=3;k++){ const d=new Date(now.getTime()+k*864e5); const hd=hebDayOfMonth(d);
-    h+=`<div class="wd ${k<0?'past':k===0?'today':''}"><b>${hd?heb(hd).replace(/[׳״]/g,''):''}</b><span>${wdN[d.getDay()]}</span></div>`; }
+    const wl=LANG==='he'? wdN[d.getDay()] : new Intl.DateTimeFormat(LANG,{weekday:'short'}).format(d).replace('.','');
+    h+=`<div class="wd ${k<0?'past':k===0?'today':''}"><b>${hd?heb(hd).replace(/[׳״]/g,''):''}</b><span>${wl}</span></div>`; }
   return h+'</div>';
 }
 function dailyRange(){
@@ -1216,7 +1454,7 @@ function dailyRange(){
   return heb(r[0])+' – '+heb(r[1]);
 }
 function homeHeader(title){
-  return `<header class="top"><h1 id="h1" tabindex="-1">${title}</h1><span style="display:flex;gap:6px;flex-wrap:wrap">${tszBtns()}<button class="iconbtn" id="themeBtn" aria-label="${document.body.classList.contains('dark')?'מעבר למסך בהיר':'מעבר למסך כהה'}" onclick="toggleTheme()">${document.body.classList.contains('dark')?'☀️':'🌙'}</button><button class="iconbtn" aria-label="הגדרות הקראה ונגישות" onclick="openSet()">⚙︎</button></span></header>`;
+  return `<header class="top"><h1 id="h1" tabindex="-1">${title}</h1><span style="display:flex;gap:6px;flex-wrap:wrap">${tszBtns()}<button class="iconbtn" id="themeBtn" aria-label="${document.body.classList.contains('dark')?'מעבר למסך בהיר':'מעבר למסך כהה'}" onclick="toggleTheme()">${document.body.classList.contains('dark')?'☀️':'🌙'}</button><button class="iconbtn langbtn" aria-label="בחירת שפה" onclick="openSet('lang')">🌐</button><button class="iconbtn" aria-label="הגדרות הקראה ונגישות" onclick="openSet()">⚙︎</button></span></header>`;
 }
 let lastMenu='';
 function setTab(t){ document.querySelectorAll('#tabbar [data-t]').forEach(b=>{ const on=b.dataset.t===t; b.classList.toggle('on',on); if(on) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); }); }
@@ -1312,7 +1550,8 @@ function renderObj(it,opt={}){
   setTab(opt.back==='teh'?'teh':(lastMenu||''));
   let h=`<div class="reader-head"><button class="iconbtn" aria-label="חזרה" onclick="go('${opt.back||lastMenu}')">›</button><h1 id="h1" tabindex="-1">${it.title}</h1><span class="tsz">${tszBtns()}</span></div>`;
   if(opt.pre) h+=opt.pre;
-  h+=`<div class="prayer">`;
+  if(LANG!=='he') h+=`<p class="langnote">🌐 ${T('הטקסט של התפילות מוצג בעברית המקורית')}</p>`;
+  h+=`<div class="prayer" dir="rtl" lang="he">`;
   for(const part of it.parts){
     if(it.parts.length>1 || opt.partTitles) h+=`<h3>${part.title}</h3>`;
     const list = part.blocks.flatMap(b=> b.t==='season'? seasonBlocks(b.k) : [b]);
@@ -1475,12 +1714,13 @@ document.getElementById('bPrev').onclick=()=>step(-1);
 document.getElementById('bSet').onclick=()=>openSet();
 
 const dlg=document.getElementById('dlg');
-function openSet(){
-  loadVoices();
+function openSet(focus){
+  loadVoices(); sLang.value=LANG;
   sRate.value=cfg.rate; rateV.textContent=cfg.rate.toFixed(1);
   sFs.value=cfg.fs; fsV.textContent=cfg.fs;
   sVoiceMode.checked=cfg.voiceMode; sAuto.checked=cfg.auto; sCity.value=cfg.geo?'geo':(cfg.city||'jerusalem'); sUi.value=Math.round((cfg.ui||1)*100); uiV.textContent=sUi.value+'%'; sTheme.value=cfg.theme||'auto'; sHc.checked=cfg.hc; sNikud.checked=cfg.nikud!==false;
   try{dlg.showModal()}catch(e){dlg.setAttribute('open','')}
+  if(focus==='lang') setTimeout(()=>sLang.focus(),50);
 }
 sVoice.onchange=()=>{cfg.voice=sVoice.value;saveCfg();stopAll();unlockAudio();deviceUtter("זה הקול שנבחר")};
 sRate.oninput=()=>{cfg.rate=+sRate.value;rateV.textContent=cfg.rate.toFixed(1);saveCfg()};
@@ -1498,6 +1738,7 @@ sCity.onchange=()=>{
 };
 sTheme.onchange=()=>{cfg.theme=sTheme.value;saveCfg();applyCfg()};
 sNikud.onchange=()=>{cfg.nikud=sNikud.checked;saveCfg()};
+sLang.onchange=()=>setLang(sLang.value);
 dlgOk.onclick=()=>{dlg.close(); route();};
 function tszBtns(){
   return `<button class="tbtn" aria-label="הקטנת טקסט" onclick="zoomText(-1)">א<small>−</small></button><button class="tbtn" aria-label="הגדלת טקסט" onclick="zoomText(1)">א<small>+</small></button>`;
@@ -1519,7 +1760,7 @@ function toggleVoiceMode(){
   unlockAudio(); if(cfg.voiceMode) utter(SAY.vm,()=>renderHome(),'read'); else { stopAll(); renderHome(); }
 }
 
-applyCfg(); loadVoices(); route();
+applyCfg(); loadVoices(); i18nStart(); route();
 try{ matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{ if(cfg.theme==='auto') applyCfg(); }); }catch(e){}
 </script>
 </body>
