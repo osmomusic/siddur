@@ -405,6 +405,10 @@ body.dark .sbox button{color:#0c1a36}
 #sres .tiles{margin-bottom:18px}
 section.seo{margin:28px 0 6px;font-size:17px;line-height:1.85;color:var(--muted)}
 section.seo p{margin:0 0 10px}
+/* תעתיק */
+.prayer .blk.tl{direction:ltr;text-align:left;font-family:"Noto Serif Hebrew","Frank Ruhl Libre",Georgia,serif;line-height:1.75}
+.prayer .blk.tl .heb{display:block;direction:rtl;text-align:right;font-family:"Frank Ruhl Libre",serif;font-size:.78em;color:var(--muted);margin-top:4px}
+.prayer .blk.tl .vn{margin-inline-end:6px}
 </style>
 </head>
 <body>
@@ -440,6 +444,10 @@ section.seo p{margin:0 0 10px}
       <label for="sLang">שפה <span class="nolang" dir="ltr">· Language · Idioma · Langue · Язык</span></label>
       <select id="sLang" class="nolang"><option value="he">עברית</option><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="ru">Русский</option></select>
       <small>הטקסט של התפילות מוצג בעברית המקורית</small>
+    </div>
+    <div class="field" id="scriptField">
+      <label for="sScript">הצגת התפילות בשפה שנבחרה</label>
+      <select id="sScript"><option value="translit">תעתיק – באותיות של השפה</option><option value="both">תעתיק ומתחתיו עברית</option><option value="he">עברית בלבד</option></select>
     </div>
     <div id="noVoice" class="warn" hidden>לא נמצא קול עברי במכשיר. באייפון: הגדרות ← נגישות ← תוכן מוקרא ← קולות ← עברית, והורד את הקול „Carmit”.</div>
     <div class="field">
@@ -1241,6 +1249,11 @@ TR['SEO_P2']=['Includes Shacharit, Mincha and Maariv, quick tefillin, bedtime Sh
 TR['דבר מלכות']=['Dvar Malchus','Dvar Maljut','Dvar Malkhout','Двар Малхут'];
 TR['החוברת השבועית – נפתחת באתר דבר מלכות']=['Weekly booklet – opens on the Dvar Malchus site','Folleto semanal – se abre en el sitio de Dvar Maljut','Livret hebdomadaire – s’ouvre sur le site Dvar Malkhout','Еженедельная брошюра – откроется на сайте «Двар Малхут»'];
 TR['לימוד']=['Study','Estudio','Étude','Изучение'];
+TR['התפילה מוצגת בתעתיק. ההקראה הקולית בעברית. אפשר לשנות בהגדרות.']=['The prayer is shown in transliteration; the audio is read in Hebrew. You can change this in Settings.','La oración se muestra transliterada; la lectura en voz alta es en hebreo. Puede cambiarlo en Ajustes.','La prière est affichée en translittération ; la lecture audio est en hébreu. Modifiable dans Réglages.','Молитва показана в транслитерации; озвучивание – на иврите. Это можно изменить в настройках.'];
+TR['הצגת התפילות בשפה שנבחרה']=['How to show the prayers','Cómo mostrar las oraciones','Affichage des prières','Как показывать молитвы'];
+TR['תעתיק – באותיות של השפה']=['Transliteration','Transliteración','Translittération','Транслитерация'];
+TR['תעתיק ומתחתיו עברית']=['Transliteration with Hebrew below','Transliteración con hebreo debajo','Translittération avec l’hébreu dessous','Транслитерация и иврит под ней'];
+TR['עברית בלבד']=['Hebrew only','Solo hebreo','Hébreu seulement','Только иврит'];
 /* ניסוחים שמופיעים בתוך משפטים */
 const TR_RX=[
  [/פסקה (\d+) מתוך (\d+)/, (m,a,b)=>`${T('פסקה')} ${a} ${T('מתוך')} ${b}`],
@@ -1658,7 +1671,7 @@ function renderObj(it,opt={}){
   setTab(opt.back==='teh'?'teh':(lastMenu||''));
   let h=`<div class="reader-head"><button class="iconbtn" aria-label="חזרה" onclick="go('${opt.back||lastMenu}')">›</button><h1 id="h1" tabindex="-1">${it.title}</h1><span class="tsz">${tszBtns()}</span></div>`;
   if(opt.pre) h+=opt.pre;
-  if(LANG!=='he') h+=`<p class="langnote">🌐 ${T('הטקסט של התפילות מוצג בעברית המקורית')}</p>`;
+  if(LANG!=='he') h+=`<p class="langnote">🌐 ${T((cfg.script||'translit')==='he'?'הטקסט של התפילות מוצג בעברית המקורית':'התפילה מוצגת בתעתיק. ההקראה הקולית בעברית. אפשר לשנות בהגדרות.')}</p>`;
   h+=`<div class="prayer" dir="rtl" lang="he">`;
   for(const part of it.parts){
     if(it.parts.length>1 || opt.partTitles) h+=`<h3>${part.title}</h3>`;
@@ -1667,9 +1680,13 @@ function renderObj(it,opt={}){
       if(b.t==='h'){ h+=`<h3 style="font-size:calc(var(--fs)*.7);border:0;margin:18px 0 2px">${b.x}</h3>`; continue; }
       const cls=b.t==='note'?'blk note':'blk';
       const shown = cfg.nikud===false? stripNikud(b.x) : b.x;
-      let inner = b.bold? `<span class="b">${esc(shown)}</span>` : esc(shown);
+      const tlMode = (LANG!=='he' && b.t!=='note')? (cfg.script||'translit') : 'he';
+      let main = tlMode==='he'? shown : translit(b.x,LANG);
+      let inner = b.bold? `<span class="b">${esc(main)}</span>` : esc(main);
+      if(tlMode==='both') inner+=`<span class="heb" lang="he" dir="rtl">${esc(shown)}</span>`;
       if(b.num) inner=`<span class="vn" aria-hidden="true">${b.num}</span> `+inner;
-      h+=`<p class="${cls}" tabindex="0" data-say="${esc(b.x).replace(/"/g,'&quot;')}">${inner}</p>`;
+      const tla = tlMode==='he'? '' : ` lang="${LANG}" dir="ltr"`;
+      h+=`<p class="${cls}${tlMode!=='he'?' tl':''}"${tla} tabindex="0" data-say="${esc(b.x).replace(/"/g,'&quot;')}">${inner}</p>`;
     }
   }
   if(opt.post) h+=opt.post;
@@ -1823,7 +1840,7 @@ document.getElementById('bSet').onclick=()=>openSet();
 
 const dlg=document.getElementById('dlg');
 function openSet(focus){
-  loadVoices(); sLang.value=LANG;
+  loadVoices(); sLang.value=LANG; sScript.value=cfg.script||'translit'; document.getElementById('scriptField').hidden=(LANG==='he');
   sRate.value=cfg.rate; rateV.textContent=cfg.rate.toFixed(1);
   sFs.value=cfg.fs; fsV.textContent=cfg.fs;
   sVoiceMode.checked=cfg.voiceMode; sAuto.checked=cfg.auto; sCity.value=cfg.geo?'geo':(cfg.city||'jerusalem'); sUi.value=Math.round((cfg.ui||1)*100); uiV.textContent=sUi.value+'%'; sTheme.value=cfg.theme||'auto'; sHc.checked=cfg.hc; sNikud.checked=cfg.nikud!==false;
@@ -1847,6 +1864,7 @@ sCity.onchange=()=>{
 sTheme.onchange=()=>{cfg.theme=sTheme.value;saveCfg();applyCfg()};
 sNikud.onchange=()=>{cfg.nikud=sNikud.checked;saveCfg()};
 sLang.onchange=()=>setLang(sLang.value);
+sScript.onchange=()=>{cfg.script=sScript.value;saveCfg()};
 dlgOk.onclick=()=>{dlg.close(); route();};
 function tszBtns(){
   return `<button class="tbtn" aria-label="הקטנת טקסט" onclick="zoomText(-1)">א<small>−</small></button><button class="tbtn" aria-label="הגדלת טקסט" onclick="zoomText(1)">א<small>+</small></button>`;
@@ -1866,6 +1884,97 @@ function toggleTheme(){
 function toggleVoiceMode(){
   cfg.voiceMode=!cfg.voiceMode; saveCfg();
   unlockAudio(); if(cfg.voiceMode) utter(SAY.vm,()=>renderHome(),'read'); else { stopAll(); renderHome(); }
+}
+
+/* ===================== תעתיק – קריאת התפילה באותיות של השפה שנבחרה =====================
+   מנוע תעתיק מהטקסט המנוקד (הגייה ישראלית). השם הקדוש נכתב „Adonai”. */
+const TL_SCHEME={
+  en:{ch:'ch',sh:'sh',s:'s',tz:'tz',y:'y',v:'v',h:'h',k:'k',g:'g',z:'z',f:'f',b:'b',p:'p',a:'a',e:'e',i:'i',o:'o',u:'u',ei:'ei',ai:'ai',oi:'oi',ui:'ui',ap:"'"},
+  es:{ch:'j',sh:'sh',s:'s',tz:'tz',y:'y',v:'v',h:'h',k:'k',g:'g',z:'z',f:'f',b:'b',p:'p',a:'a',e:'e',i:'i',o:'o',u:'u',ei:'ei',ai:'ai',oi:'oi',ui:'ui',ap:"'"},
+  fr:{ch:'kh',sh:'ch',s:'s',tz:'ts',y:'y',v:'v',h:'h',k:'k',g:'g',z:'z',f:'f',b:'b',p:'p',a:'a',e:'é',i:'i',o:'o',u:'ou',ei:'éi',ai:'aï',oi:'oï',ui:'ouï',ap:"'"},
+  ru:{ch:'х',sh:'ш',s:'с',tz:'ц',y:'й',v:'в',h:'h',k:'к',g:'г',z:'з',f:'ф',b:'б',p:'п',a:'а',e:'е',i:'и',o:'о',u:'у',ei:'ей',ai:'ай',oi:'ой',ui:'уй',ap:''},
+};
+const TL_EXTRA={ru:{d:'д',t:'т',l:'л',m:'м',n:'н',r:'р'}};
+const NIK={sheva:'ְ',hatafE:'ֱ',hatafA:'ֲ',hatafO:'ֳ',hirik:'ִ',tsere:'ֵ',segol:'ֶ',patach:'ַ',kamatz:'ָ',holam:'ֹ',holamH:'ֺ',kubutz:'ֻ',dagesh:'ּ',shin:'ׁ',sin:'ׂ',kamatzK:'ׇ'};
+function tlWord(w,L){
+  const S=TL_SCHEME[L], X=TL_EXTRA[L]||{};
+  // פירוק לאותיות עם הסימנים שלהן
+  const ch=[]; for(const c of w){ if(/[א-ת]/.test(c)) ch.push({l:c,m:''}); else if(/[ְ-ׇ]/.test(c)&&ch.length) ch[ch.length-1].m+=c; }
+  if(!ch.length) return w;
+  const has=(x,k)=>x.m.includes(NIK[k]);
+  const vowelOf=x=>{
+    if(has(x,'patach')||has(x,'hatafA')) return 'a';
+    if(has(x,'kamatzK')||has(x,'hatafO')) return 'o';
+    if(has(x,'kamatz')) return 'a';
+    if(has(x,'tsere')) return 'e'; if(has(x,'segol')||has(x,'hatafE')) return 'e';
+    if(has(x,'hirik')) return 'i';
+    if(has(x,'holam')||has(x,'holamH')) return 'o';
+    if(has(x,'kubutz')) return 'u';
+    return '';
+  };
+  let out='', prevSheva=false;
+  const C=k=>S[k]||X[k]||k;
+  for(let i=0;i<ch.length;i++){
+    const x=ch[i], L0=x.l, last=i===ch.length-1, nx=ch[i+1];
+    let cons='', v=vowelOf(x);
+    if((L0==='כ'||L0==='ך') && has(x,'kamatz') && nx && nx.l==='ל' && i+1===ch.length-1 && !vowelOf(nx)) v='o';
+    // ו כאם קריאה: וֹ = o, וּ = u
+    if(L0==='ו' && !v && has(x,'dagesh') && !has(x,'sheva')){ out+=C('u'); prevSheva=false; continue; }
+    if(L0==='ו' && has(x,'holam') && i>0 && !vowelOf(ch[i-1])){ out+=C('o'); prevSheva=false; continue; }
+    if(L0==='ו' && has(x,'holam') && i>0 && vowelOf(ch[i-1])){ /* vo */ }
+    // י אחרי תנועה בלי ניקוד משלה = אם קריאה
+    if(L0==='י' && !v && !has(x,'sheva') && !has(x,'dagesh') && i>0){
+      const pv=vowelOf(ch[i-1]);
+      if(pv==='i'){ prevSheva=false; continue; }
+      if(pv==='e'){ if(has(ch[i-1],'segol')){ prevSheva=false; continue; } if(L==='ru'){ out=/э$/.test(out)? out+'й' : out.replace(/е$/,'')+'ей'; } else { const e=C('e'); out=out.endsWith(e)? out.slice(0,-e.length)+C('ei') : out+C('i'); } prevSheva=false; continue; }
+      if(pv==='a'){ out=out.replace(new RegExp(C('a')+'$'),'')+C('ai'); prevSheva=false; continue; }
+      if(pv==='o'){ out=out.replace(new RegExp(C('o')+'$'),'')+C('oi'); prevSheva=false; continue; }
+      if(pv==='u'){ out=out.replace(new RegExp(C('u')+'$'),'')+C('ui'); prevSheva=false; continue; }
+    }
+    switch(L0){
+      case 'א': case 'ע': cons=''; break;
+      case 'ב': cons=has(x,'dagesh')?C('b'):C('v'); break;
+      case 'ג': cons=C('g'); break; case 'ד': cons=C('d'); break;
+      case 'ה': cons=(last&&!has(x,'dagesh')&&!v)?'':C('h'); break;
+      case 'ו': cons=C('v'); break; case 'ז': cons=C('z'); break;
+      case 'ח': cons=C('ch'); break; case 'ט': cons=C('t'); break;
+      case 'י': cons=C('y'); break;
+      case 'כ': case 'ך': cons=has(x,'dagesh')?C('k'):C('ch'); break;
+      case 'ל': cons=C('l'); break; case 'מ': case 'ם': cons=C('m'); break;
+      case 'נ': case 'ן': cons=C('n'); break; case 'ס': cons=C('s'); break;
+      case 'פ': case 'ף': cons=has(x,'dagesh')?C('p'):C('f'); break;
+      case 'צ': case 'ץ': cons=C('tz'); break; case 'ק': cons=C('k'); break;
+      case 'ר': cons=C('r'); break;
+      case 'ש': cons=has(x,'sin')?C('s'):C('sh'); break;
+      case 'ת': cons=C('t'); break;
+    }
+    if(L==='ru' && cons==='h') cons='';           // ה ברוסית – לא נהגית
+    // פתח גנובה בסוף מילה
+    if(last && v==='a' && has(x,'patach') && (L0==='ח'||L0==='ע'||(L0==='ה'&&has(x,'dagesh')))){ out+=C('a')+cons; break; }
+    let vv='';
+    if(v) vv=C(v);
+    else if(has(x,'sheva')){ const vocal=(i===0)||prevSheva&&i>1||(has(x,'dagesh')&&i>0&&!/[בגדכפת]/.test(L0)); vv= (vocal&&!last&&L!=='ru')? C('e') : (vocal&&!last? C('e') : ''); }
+    // ברוסית: י + תנועה → אותיות יוטציה
+    if(L==='ru' && cons==='й' && vv){ const m={'а':'я','е':'е','у':'ю','о':'йо','и':'и'}; out+=m[vv]||('й'+vv); prevSheva=false; continue; }
+    if(L==='ru' && !cons && vv==='е' && (i===0||/[аеиоуяю]$/.test(out))) vv='э';
+    out+=cons+vv;
+    prevSheva=has(x,'sheva') && !v;
+  }
+  return out;
+}
+const TL_WORDS={ 'כָּל':'kol','כָל':'chol','כָּל־':'kol-' };
+function translit(text,L){
+  if(!TL_SCHEME[L]) return text;
+  let t=speakable(text).replace(/־/g,'-');
+  let res=t.replace(/[א-ת][א-ת֑-ׇ]*/g,w=>{
+    const plain=w.replace(/[֑-ֽֿ֯׀׃-׆]/g,'');
+    if(TL_WORDS[plain]){ const r=TL_WORDS[plain]; return L==='ru'? r.replace('kol','коль').replace('chol','холь') : (L==='es'? r.replace('chol','jol') : L==='fr'? r.replace('chol','khol'):r); }
+    if(/^אֲדֹנָי$/.test(plain)) return {en:'Adonai',es:'Adonai',fr:'Adonaï',ru:'Адонай'}[L];
+    if(/^אֱלֹהִים$/.test(plain)) return {en:'Elohim',es:'Elohim',fr:'Elohim',ru:'Элоким'}[L];
+    return tlWord(plain,L);
+  });
+  res=res.replace(/(^|[.!?:]\s+)(\p{Ll})/gu,(m,p,c)=>p+c.toUpperCase());
+  return res.replace(/\s+([,.:;])/g,'$1');
 }
 
 /* ===================== חיפוש באתר ===================== */
