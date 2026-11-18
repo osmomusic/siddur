@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>סידור תהלת ה׳ – נוסח חב״ד עם הקראה</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700&family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Noto+Serif+Hebrew:wght@400;500;600;700&family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   /* סגנון חב״ד קלאסי – כחול נייבי עמוק, זהב, ורקע קלף */
@@ -252,6 +252,70 @@ body.dark figure.rebbe figcaption{color:var(--accent)}
 body.hc figure.rebbe .ring{background:#fff;box-shadow:none}
 @keyframes rebbeShine{0%,60%{background-position:150% 0}100%{background-position:-100% 0}}
 @media (prefers-reduced-motion:reduce){figure.rebbe .ring::after{animation:none;display:none}}
+
+/* ===== גופן מכובד לסידור ===== */
+body{font-family:"Noto Serif Hebrew","Frank Ruhl Libre",serif}
+.tabbar button,.tbtn,.prayer h3,.blk.note,.vn,.tile .t small,.tile.light .t,.zman,.datepill{font-family:"Noto Serif Hebrew",serif}
+header.top h1{font-family:"Frank Ruhl Libre",serif;font-weight:900;letter-spacing:.5px;
+  background:linear-gradient(180deg,var(--navy) 0%,var(--navy) 55%,#24497f 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:none;filter:drop-shadow(0 1px 0 rgba(236,210,140,.6))}
+body.dark header.top h1{background:linear-gradient(180deg,#f8eccb,#d8b260);-webkit-background-clip:text;background-clip:text}
+.tile .t{font-weight:700;font-size:26px;letter-spacing:.2px;text-shadow:0 1px 3px rgba(0,0,0,.28)}
+.tile .t small{font-weight:400;font-size:17px;opacity:.9}
+.prayer h3{font-family:"Frank Ruhl Libre",serif;font-weight:700;letter-spacing:.3px}
+
+/* ===== פילטרים: מרקם קלף, הילה ונצנוץ ===== */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .3 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(236,210,140,.28),transparent 55%),radial-gradient(ellipse at 50% 120%,rgba(13,42,82,.10),transparent 60%)}
+body.dark::before{mix-blend-mode:screen;opacity:.12}
+body.dark::after{background:radial-gradient(ellipse at 50% 0%,rgba(216,178,96,.14),transparent 55%)}
+body.hc::before,body.hc::after{display:none}
+#app,main,.wrap{position:relative;z-index:1}
+.tile{overflow:hidden;isolation:isolate}
+.tile::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(160deg,rgba(255,255,255,.18) 0%,transparent 38%),
+    repeating-linear-gradient(45deg,rgba(236,210,140,.05) 0 2px,transparent 2px 14px)}
+.tile::after{content:"";position:absolute;top:0;bottom:0;width:45%;left:-60%;z-index:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent,rgba(255,240,200,.32),transparent);transform:skewX(-18deg);transition:left .8s ease}
+.tile:hover::after,.tile:focus-visible::after{left:120%}
+.tile.light::before{background:linear-gradient(160deg,rgba(236,210,140,.18),transparent 45%)}
+.tile .ic{transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s}
+.tabbar{backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);background:color-mix(in srgb,var(--card) 82%,transparent)}
+.datepill{box-shadow:0 4px 14px rgba(13,42,82,.08),inset 0 0 0 1px rgba(236,210,140,.35)}
+
+/* ===== אנימציה בכפתורים ===== */
+.tile{transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,filter .25s}
+.tile:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(13,42,82,.28),0 0 0 1px rgba(236,210,140,.7),inset 0 0 0 3px rgba(236,210,140,.18);filter:saturate(1.08) brightness(1.04)}
+.tile:hover .ic{transform:scale(1.1) rotate(-6deg);box-shadow:inset 0 0 0 1px rgba(236,210,140,.9),0 0 16px rgba(236,210,140,.45)}
+.tile:active{transform:scale(.97);transition-duration:.08s}
+.tile .chev{transition:transform .3s}
+.tile:hover .chev{transform:translateX(-5px)}
+.tiles>*{animation:tileIn .55s cubic-bezier(.2,.8,.2,1) both}
+.tiles>*:nth-child(1){animation-delay:.03s}.tiles>*:nth-child(2){animation-delay:.08s}.tiles>*:nth-child(3){animation-delay:.13s}
+.tiles>*:nth-child(4){animation-delay:.18s}.tiles>*:nth-child(5){animation-delay:.23s}.tiles>*:nth-child(6){animation-delay:.28s}
+.tiles>*:nth-child(7){animation-delay:.33s}.tiles>*:nth-child(n+8){animation-delay:.38s}
+@keyframes tileIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.iconbtn,.tbtn,.gbtn,.pbtn{transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s,background-color .2s}
+.iconbtn:hover,.tbtn:hover,.gbtn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(13,42,82,.16),0 0 0 2px var(--accent)}
+.iconbtn:active,.tbtn:active,.gbtn:active,.pbtn:active{transform:scale(.92)}
+#themeBtn:hover{transform:rotate(-20deg) scale(1.06)}
+.pbtn.play{position:relative;overflow:hidden}
+.pbtn.play::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 0 rgba(236,210,140,.6);animation:pulseGold 2.4s ease-out infinite}
+@keyframes pulseGold{0%{box-shadow:0 0 0 0 rgba(236,210,140,.55)}100%{box-shadow:0 0 0 14px rgba(236,210,140,0)}}
+.tabbar button{transition:background-color .3s,color .3s,transform .2s}
+.tabbar button:active{transform:scale(.9)}
+.tabbar button.on span:first-child,.tabbar button.on .ti{display:inline-block;animation:tabPop .45s cubic-bezier(.34,1.56,.64,1)}
+@keyframes tabPop{0%{transform:scale(.6)}100%{transform:scale(1)}}
+.wd.today b{animation:todayGlow 3s ease-in-out infinite}
+@keyframes todayGlow{0%,100%{box-shadow:0 0 0 2px var(--accent)}50%{box-shadow:0 0 0 2px var(--accent),0 0 14px rgba(236,210,140,.75)}}
+#app>*{animation:viewIn .35s ease both}
+@keyframes viewIn{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .tile:hover{transform:none}
+}
 </style>
 </head>
 <body>
