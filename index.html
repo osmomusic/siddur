@@ -475,6 +475,51 @@ html.touch body:not(.reading) .player{display:none!important}
 html.touch .player{right:0!important}
 html.touch .player .in{max-width:720px;margin-inline:auto}
 html.touch .askbar{left:12px!important;max-width:720px}
+/* ===================== עיצוב יוקרתי ===================== */
+:root{--gold-foil:linear-gradient(135deg,#8a6524 0%,#d9b765 22%,#fff1c2 38%,#c79c48 55%,#f3dc9c 72%,#8a6524 100%)}
+/* רקע: דוגמת זהב עדינה על קלף */
+body::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23b08a3e' stroke-opacity='.11' stroke-width='1'%3E%3Cpath d='M36 4l8 14 14 8-14 8-8 14-8-14-14-8 14-8z'/%3E%3Ccircle cx='36' cy='26' r='3'/%3E%3Cpath d='M0 62h72M0 64h72' stroke-opacity='.05'/%3E%3C/g%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .3 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.55}
+/* כותרת ראשית עם קישוט זהב */
+header.top h1{position:relative;padding-bottom:14px}
+header.top h1::after{content:"";position:absolute;inset-inline-start:0;bottom:0;width:150px;height:10px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 10'%3E%3Cdefs%3E%3ClinearGradient id='g'%3E%3Cstop offset='0' stop-color='%23b08a3e' stop-opacity='0'/%3E%3Cstop offset='.5' stop-color='%23d9b765'/%3E%3Cstop offset='1' stop-color='%23b08a3e' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 5h62M88 5h62' stroke='url(%23g)' stroke-width='1.4'/%3E%3Cpath d='M75 0l5 5-5 5-5-5z' fill='%23c79c48'/%3E%3Ccircle cx='66' cy='5' r='1.6' fill='%23c79c48'/%3E%3Ccircle cx='84' cy='5' r='1.6' fill='%23c79c48'/%3E%3C/svg%3E") no-repeat center/contain}
+body.ltr header.top h1::after{inset-inline-start:0}
+/* אריחים: אבני חן עם מסגרת זהב כפולה */
+.tile{border-radius:26px;border:1px solid rgba(236,210,140,.55);
+  box-shadow:0 14px 34px -10px rgba(10,26,56,.45),0 2px 6px rgba(10,26,56,.18),inset 0 0 0 1px rgba(255,241,194,.08),inset 0 0 0 5px rgba(10,26,56,.12),inset 0 0 0 6px rgba(236,210,140,.22)}
+.tile::before{background:radial-gradient(120% 90% at 85% 0%,rgba(255,241,194,.22),transparent 55%),linear-gradient(160deg,rgba(255,255,255,.10) 0%,transparent 40%),repeating-linear-gradient(45deg,rgba(236,210,140,.045) 0 2px,transparent 2px 14px)}
+.tile .t{font-family:"Frank Ruhl Libre",serif;font-weight:700;letter-spacing:.3px}
+.tile .t small{font-family:"Noto Serif Hebrew",serif;font-style:normal;opacity:.88;letter-spacing:.1px}
+.tile .ic{border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,241,194,.35),rgba(255,255,255,.06));box-shadow:inset 0 0 0 1.5px rgba(236,210,140,.75),0 0 0 4px rgba(10,26,56,.15)}
+.tile .chev{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:20px;background:rgba(10,26,56,.22);box-shadow:inset 0 0 0 1px rgba(236,210,140,.6);color:#f3dc9c}
+.tile.light{background:linear-gradient(160deg,#fffdf7,#f6ecd4);color:var(--ink);border:1px solid #d9c592;box-shadow:0 10px 26px -12px rgba(10,26,56,.3),inset 0 0 0 5px #fffdf7,inset 0 0 0 6px rgba(176,138,62,.35)}
+.tile.light .ic{background:radial-gradient(circle at 35% 30%,#fffdf7,#efe2c2)}
+/* כותרות קבוצה עם יהלום */
+h2.grp{letter-spacing:1.5px;font-size:19px}
+h2.grp::before{background:linear-gradient(90deg,transparent,#c79c48)}
+h2.grp::after{background:linear-gradient(90deg,#c79c48,transparent)}
+h2.grp{background:radial-gradient(circle,#c79c48 0 3px,transparent 3.5px) center/8px 8px no-repeat}
+/* תאריך, חיפוש וכפתורים */
+.datepill{border:1px solid #d9c592;background:linear-gradient(180deg,rgba(255,253,247,.95),rgba(246,236,212,.9));box-shadow:0 6px 18px -8px rgba(10,26,56,.25),inset 0 0 0 3px rgba(255,253,247,.9),inset 0 0 0 4px rgba(176,138,62,.25);font-family:"Frank Ruhl Libre",serif;letter-spacing:.3px}
+.sbox{border:1px solid #d9c592;box-shadow:0 8px 22px -12px rgba(10,26,56,.3),inset 0 0 0 1px rgba(255,241,194,.6)}
+.sbox button,.ok,.pbtn.play{background:linear-gradient(180deg,#183a6e,#0c2347)!important;color:#f3dc9c!important;box-shadow:inset 0 1px 0 rgba(255,241,194,.25),0 6px 14px -6px rgba(10,26,56,.5)}
+.iconbtn,.tbtn{border:1px solid #d9c592;background:linear-gradient(180deg,#fffdf7,#f4e9cf);box-shadow:0 4px 10px -6px rgba(10,26,56,.35),inset 0 0 0 1px rgba(255,255,255,.7)}
+/* סרגל תחתון כחול עמוק עם זהב */
+.tabbar{background:linear-gradient(180deg,rgba(18,44,86,.96),rgba(9,26,54,.97))!important;border:1px solid rgba(236,210,140,.6)!important;box-shadow:0 14px 34px -10px rgba(5,14,32,.6),inset 0 1px 0 rgba(255,241,194,.18)}
+.tabbar button{color:#efe3c4}
+.tabbar button.on{background:var(--gold-foil)!important;color:#0c2347!important;font-weight:800;box-shadow:0 4px 12px -4px rgba(0,0,0,.4)}
+/* פסקאות התפילה: קלף עם שוליים מוזהבים */
+.prayer .blk.cur{background:linear-gradient(180deg,rgba(248,237,207,.9),rgba(241,228,192,.85));box-shadow:inset -4px 0 0 #c79c48,0 6px 16px -10px rgba(10,26,56,.35)}
+.prayer h3{color:#8a6524;letter-spacing:.6px}
+.card,.amsg.bot,.acard{border-color:#e0cf9f}
+.acard .aic{background:radial-gradient(circle at 35% 30%,#fffdf7,#efe2c2);box-shadow:inset 0 0 0 1px #c79c48}
+.amsg.me{background:linear-gradient(180deg,#183a6e,#0c2347);color:#f3dc9c}
+figure.rebbe figcaption{font-size:17px;letter-spacing:2px}
+/* מסך כהה – לילה כחול עם זהב */
+body.dark .tile.light{background:linear-gradient(160deg,#13284f,#0d1d3c);color:#f2ead6;border-color:rgba(216,178,96,.5);box-shadow:inset 0 0 0 5px #0f2142,inset 0 0 0 6px rgba(216,178,96,.3)}
+body.dark .datepill,body.dark .iconbtn,body.dark .tbtn{background:linear-gradient(180deg,#13284f,#0d1d3c);border-color:rgba(216,178,96,.5);box-shadow:none}
+body.dark .prayer .blk.cur{background:linear-gradient(180deg,#22305a,#1b2850)}
+body.hc .tabbar{background:#000!important;border-color:#ff0!important} body.hc .tabbar button,body.hc .tabbar button.on{background:#000!important;color:#ff0!important}
 </style>
 </head>
 <body>
@@ -1104,6 +1149,8 @@ function numWords(n){
 const LANGS={he:{name:'עברית',dir:'rtl',tts:'he'},en:{name:'English',dir:'ltr',tts:'en'},es:{name:'Español',dir:'ltr',tts:'es'},fr:{name:'Français',dir:'ltr',tts:'fr'},ru:{name:'Русский',dir:'ltr',tts:'ru'}};
 const LI={en:0,es:1,fr:2,ru:3};
 const TR={
+'הסידור מקריא לכם – בקול, בנחת, מילה במילה':['The siddur reads to you – aloud, gently, word by word','El sidur le lee – en voz alta, con calma, palabra por palabra','Le siddour vous lit – à voix haute, posément, mot à mot','Сидур читает вам – вслух, спокойно, слово за словом'],
+'סידור מהודר, מנוקד ומוקרא – נגיש לכל יהודי, בכל מקום':['An elegant siddur, vowelized and read aloud – accessible to every Jew, everywhere','Un sidur elegante, vocalizado y leído en voz alta – accesible para todo judío, en todo lugar','Un siddour raffiné, vocalisé et lu à voix haute – accessible à chaque Juif, partout','Изящный сидур с огласовками и озвучиванием – доступен каждому еврею, везде'],
 /* ניווט וכללי */
 'המסע של היום':['Today','Hoy','Aujourd’hui','Сегодня'],
 'היום':['Today','Hoy','Aujourd’hui','Сегодня'],
@@ -1161,9 +1208,9 @@ const TR={
 'הכרזה קולית של המסכים והקראה אוטומטית של התפילה':['Spoken screen announcements and automatic prayer reading','Anuncio hablado de pantallas y lectura automática de la oración','Annonce vocale des écrans et lecture automatique de la prière','Озвучивание экранов и автоматическое чтение молитвы'],
 'תהילים יומי':['Daily Tehillim','Tehilim diario','Tehilim du jour','Теилим на каждый день'],
 'תהילים אישי':['Personal Tehillim','Tehilim personal','Tehilim personnel','Личный псалом'],
-'פרק לפי הגיל':['Chapter by your age','Capítulo según la edad','Chapitre selon l’âge','Глава по возрасту'],
+'הפרק שלכם לשנה זו':['Your psalm for this year','Tu salmo para este año','Votre psaume de l’année','Ваш псалом на этот год'],
 'כל הסידור':['Full siddur','Todo el sidur','Tout le siddour','Весь сидур'],
-'כל התפילות והברכות':['All prayers and blessings','Todas las oraciones y bendiciones','Toutes les prières et bénédictions','Все молитвы и благословения'],
+'כל התפילות והברכות – במקום אחד':['Every prayer and blessing – in one place','Todas las oraciones y bendiciones – en un solo lugar','Toutes les prières et bénédictions – en un seul lieu','Все молитвы и благословения – в одном месте'],
 'נוסח הטקסט מבוסס על סידור „תהלת ה׳” (נוסח האר״י). השם הקדוש מוצג „יְיָ” כמנהג סידורי חב״ד, ומוקרא „אֲדֹנָי”. „משיב הרוח” ו„טל ומטר” נבחרים אוטומטית לפי התאריך העברי (מנהג ארץ ישראל).':['The text follows Siddur Tehillat Hashem (Nusach Ha’Ari). The Divine Name is written “יְיָ” as in Chabad siddurim and read aloud as “Adonai”. The seasonal insertions for rain and dew are chosen automatically by the Hebrew date (Land of Israel custom).','El texto sigue el Sidur Tehilat Hashem (Nusaj HaArí). El Nombre Divino se escribe «יְיָ», como en los sidurim de Jabad, y se lee «Adonai». Las menciones de lluvia y rocío se eligen automáticamente según la fecha hebrea (costumbre de la Tierra de Israel).','Le texte suit le Siddour Tehilat Hachem (rite du Ari). Le Nom divin est écrit « יְיָ » comme dans les siddourim ’Habad et lu « Adonaï ». Les mentions de la pluie et de la rosée sont choisies automatiquement selon la date hébraïque (coutume d’Israël).','Текст основан на сидуре «Теилат а-Шем» (нусах Ари). Святое Имя записано как «יְיָ», как в сидурах Хабада, и озвучивается как «Адонай». Упоминания дождя и росы выбираются автоматически по еврейской дате (обычай Земли Израиля).'],
 'קיצורי מקלדת: רווח – הקרא/עצור, חיצים – פסקה הבאה/קודמת, Esc – חזרה.':['Keyboard: Space – read/stop, arrows – next/previous paragraph, Esc – back.','Teclado: Espacio – leer/parar, flechas – párrafo siguiente/anterior, Esc – atrás.','Clavier : Espace – lire/arrêter, flèches – paragraphe suivant/précédent, Échap – retour.','Клавиатура: Пробел – читать/стоп, стрелки – следующий/предыдущий абзац, Esc – назад.'],
 /* קבוצות ותפילות */
@@ -1315,7 +1362,7 @@ TR['150 פרקים']=['150 chapters','150 capítulos','150 chapitres','150 гл�
 TR['SEO_P1']=['Siddur Tehillat Hashem in Nusach Chabad (Nusach Ha’Ari) – the Rebbe’s siddur – online and free, fully vowelized, with read-aloud in Hebrew. Designed for the visually impaired: large text, high contrast, voice mode and full screen-reader support.','El Sidur Tehilat Hashem en Nusaj Jabad (Nusaj HaArí) – el sidur del Rebe – en línea y gratis, totalmente vocalizado, con lectura en voz alta en hebreo. Pensado para personas con discapacidad visual: letra grande, alto contraste, modo de voz y lector de pantalla.','Le Siddour Tehilat Hachem au rite ’Habad (rite du Ari) – le siddour du Rabbi – en ligne et gratuit, entièrement vocalisé, avec lecture à voix haute en hébreu. Conçu pour les malvoyants : grands caractères, contraste élevé, mode vocal et lecteur d’écran.','Сидур «Теилат а-Шем» по нусаху Хабад (нусах Ари) – сидур Ребе – онлайн и бесплатно, с полными огласовками и озвучиванием на иврите. Создан для слабовидящих: крупный шрифт, высокий контраст, голосовой режим и поддержка экранного диктора.'];
 TR['SEO_P2']=['Includes Shacharit, Mincha and Maariv, quick tefillin, bedtime Shema, Shabbat candles, Havdalah, Chanukah, Grace after meals, blessings on food, daily Tehillim, verses by name and your personal psalm. The interface is available in Hebrew, English, Spanish, French and Russian.','Incluye Shajarit, Minjá y Arvit, tefilín rápido, Shemá antes de dormir, velas de Shabat, Havdalá, Janucá, Birkat Hamazón, bendiciones sobre alimentos, Tehilim diario, versículos según el nombre y el salmo personal. Interfaz en hebreo, inglés, español, francés y ruso.','Comprend Cha’harit, Min’ha et Arvit, tefilin express, Chéma du coucher, bougies de Chabbat, Havdala, ’Hanouka, Birkat Hamazone, bénédictions alimentaires, Tehilim du jour, versets selon le prénom et psaume personnel. Interface en hébreu, anglais, espagnol, français et russe.','Шахарит, Минха и Маарив, быстрое наложение тфилин, Шма перед сном, субботние свечи, авдала, Ханука, Биркат а-мазон, благословения на еду, Теилим на каждый день, стихи по имени и личный псалом. Интерфейс на иврите, английском, испанском, французском и русском.'];
 TR['דבר מלכות']=['Dvar Malchus','Dvar Maljut','Dvar Malkhout','Двар Малхут'];
-TR['החוברת השבועית – נפתחת באתר דבר מלכות']=['Weekly booklet – opens on the Dvar Malchus site','Folleto semanal – se abre en el sitio de Dvar Maljut','Livret hebdomadaire – s’ouvre sur le site Dvar Malkhout','Еженедельная брошюра – откроется на сайте «Двар Малхут»'];
+TR['החוברת השבועית מאוצר תורתו של הרבי']=['The weekly booklet of the Rebbe’s teachings','Folleto semanal – se abre en el sitio de Dvar Maljut','Livret hebdomadaire – s’ouvre sur le site Dvar Malkhout','Еженедельная брошюра – откроется на сайте «Двар Малхут»'];
 TR['לימוד']=['Study','Estudio','Étude','Изучение'];
 TR['התפילה מוצגת בתעתיק. ההקראה הקולית בעברית. אפשר לשנות בהגדרות.']=['The prayer is shown in transliteration; the audio is read in Hebrew. You can change this in Settings.','La oración se muestra transliterada; la lectura en voz alta es en hebreo. Puede cambiarlo en Ajustes.','La prière est affichée en translittération ; la lecture audio est en hébreu. Modifiable dans Réglages.','Молитва показана в транслитерации; озвучивание – на иврите. Это можно изменить в настройках.'];
 TR['הצגת התפילות בשפה שנבחרה']=['How to show the prayers','Cómo mostrar las oraciones','Affichage des prières','Как показывать молитвы'];
@@ -1325,7 +1372,7 @@ TR['עברית בלבד']=['Hebrew only','Solo hebreo','Hébreu seulement','То
 TR['פיתוח תוכנה']=['Software by','Desarrollo:','Développement :','Разработка:'];
 Object.assign(TR,{
 'מתזכר תפילה':['Prayer reminder','Recordatorio de oración','Rappel de prière','Напоминание о молитве'],
-'תזכורת לשחרית, מנחה וערבית בלוח השנה':['Calendar reminders for Shacharit, Mincha and Maariv','Recordatorios de Shajarit, Minjá y Arvit en el calendario','Rappels de Cha’harit, Min’ha et Arvit dans l’agenda','Напоминания о Шахарит, Минхе и Маариве в календаре'],
+'הזמן הנכון לכל תפילה – ישר אל לוח השנה':['The right time for every prayer – straight to your calendar','Recordatorios de Shajarit, Minjá y Arvit en el calendario','Rappels de Cha’harit, Min’ha et Arvit dans l’agenda','Напоминания о Шахарит, Минхе и Маариве в календаре'],
 'הדלקת נרות שבת':['Shabbat candle lighting','Encendido de velas de Shabat','Allumage des bougies de Chabbat','Зажигание субботних свечей'],
 'בזריחה':['at sunrise','al amanecer','au lever du soleil','на восходе'],'חצי שעה לפני השקיעה':['half an hour before sunset','media hora antes de la puesta del sol','une demi-heure avant le coucher du soleil','за полчаса до заката'],
 'בצאת הכוכבים':['at nightfall','a la salida de las estrellas','à la tombée de la nuit','с выходом звёзд'],'בשעה קבועה':['at a fixed time','a una hora fija','à heure fixe','в фиксированное время'],
@@ -1344,7 +1391,7 @@ Object.assign(TR,{
 'באייפון: פותחים את הקובץ ← „הוסף הכל”. באנדרואיד: פותחים עם Google Calendar. הזמנים משתנים כל יום לפי השקיעה והזריחה, ולכן כדאי ליצור קובץ חדש כשהתקופה מסתיימת.':['iPhone: open the file → “Add All”. Android: open it with Google Calendar. Times change daily with sunrise and sunset, so create a new file when the period ends.','iPhone: abra el archivo → «Añadir todo». Android: ábralo con Google Calendar. Los horarios cambian cada día, así que cree un archivo nuevo al terminar el período.','iPhone : ouvrez le fichier → « Tout ajouter ». Android : ouvrez-le avec Google Agenda. Les horaires changent chaque jour : créez un nouveau fichier à la fin de la période.','iPhone: откройте файл → «Добавить все». Android: откройте в Google Календаре. Время меняется каждый день, поэтому по окончании периода создайте новый файл.']
 });
 Object.assign(TR,{'שאל':['Ask','Preguntar','Demander','Спросить'],'שאל שאלה':['Ask a question','Haz una pregunta','Poser une question','Задать вопрос'],
-'איזה פרק תהילים לרפואה, לפרנסה, לשמירה – וסיפורים מהתנ״ך':['Which psalm for healing, livelihood, protection – and Bible stories','Qué salmo para curación, sustento, protección – e historias bíblicas','Quel psaume pour la guérison, la subsistance, la protection – et récits bibliques','Какой псалом для исцеления, заработка, защиты – и библейские истории'],
+'מדריך אישי לתהילים, לתפילה ולסיפורי התנ״ך':['A personal guide to Tehillim, prayer and Bible stories','Qué salmo para curación, sustento, protección – e historias bíblicas','Quel psaume pour la guérison, la subsistance, la protection – et récits bibliques','Какой псалом для исцеления, заработка, защиты – и библейские истории'],
 'מדריך לתפילה ולתהילים – לא רב. לשאלות הלכתיות פנו לרב.':['A guide to prayer and Tehillim – not a rabbi. For halachic questions, ask a rabbi.','Guía de oración y Tehilim – no es un rabino. Para preguntas halájicas, consulte a un rabino.','Un guide de prière et de Tehilim – pas un rabbin. Pour les questions de halakha, demandez à un rabbin.','Путеводитель по молитве и Теилим – не раввин. С галахическими вопросами обращайтесь к раввину.'],
 'שאל על תהילים, תפילות…':['Ask about Tehillim, prayers…','Pregunta sobre Tehilim, oraciones…','Questions sur les Tehilim, les prières…','Спросите о Теилим, молитвах…'],
 'איזה פרק תהילים עוזר לחרדה?':['Which psalm helps with anxiety?','¿Qué salmo ayuda con la ansiedad?','Quel psaume aide contre l’angoisse ?','Какой псалом помогает при тревоге?'],
@@ -1364,7 +1411,7 @@ const TR_RX=[
  [/^אודות\. פיתוח תוכנה: (.+?)\. טלפון: (.+?)\. גרסה (.+?)\.$/, (m,a,b,c)=>`${T('אודות')}. ${T('פיתוח תוכנה:')} ${a}. ${T('טלפון:')} ${b}. ${T('גרסה:')} ${c}.`],
 ];
 let LANG='he';
-const HE_SEO={SEO_P1:'סידור תהלת ה׳ בנוסח חב״ד (נוסח האר״י) – הסידור של הרבי – אונליין ובחינם, מנוקד במלואו ועם הקראה קולית. הסידור מותאם לליקויי ראייה ולעיוורים: אותיות גדולות עד פי ארבעה, ניגודיות גבוהה, מצב קולי שמכריז על כל מסך ותמיכה מלאה בקוראי מסך.',SEO_P2:'בסידור: שחרית, מנחה וערבית לימות החול, הנחת תפילין מהירה, קריאת שמע שעל המיטה, הדלקת נרות שבת, הבדלה, נרות חנוכה, ברכת המזון, ברכות הנהנין, ברכות הראייה, תהילים יומי, פסוקים לפי השם ופרק תהילים אישי. הממשק זמין בעברית, באנגלית, בספרדית, בצרפתית וברוסית – סידור חב״ד עם הקראה לכל יהודי, בכל מקום.'};
+const HE_SEO={SEO_P1:'סידור „תהלת ה׳” בנוסח חב״ד – נוסח האר״י הקדוש, הסידור שבו התפלל הרבי – מוגש כאן במהדורה דיגיטלית מהודרת: מנוקד במלואו, מוקרא בקול ונגיש לכל אחד. אותיות גדולות עד פי ארבעה, ניגודיות גבוהה ומצב קולי מלא הופכים אותו לסידור של ממש גם לליקויי ראייה ולעיוורים.',SEO_P2:'מהשכמת הבוקר ועד קריאת שמע שעל המיטה: שחרית, מנחה וערבית, הנחת תפילין, נרות שבת וחנוכה, הבדלה, ברכת המזון וברכות הנהנין – לצד ספר תהילים השלם, תהילים יומי, פסוקים לפי השם והפרק האישי. בעברית, באנגלית, בספרדית, בצרפתית וברוסית – סידור אחד, לכל יהודי, בכל מקום.'};
 function T(he){ if(LANG==='he') return HE_SEO[he]||he; const r=TR[he]; return r? r[LI[LANG]] : he; }
 const TR_KEYS=()=>TR_KEYS._k||(TR_KEYS._k=Object.keys(TR).filter(k=>k.length>1).sort((a,b)=>b.length-a.length));
 function trText(s){
@@ -1669,7 +1716,7 @@ const icoOf=(e)=>{ const v=ICO[e]; if(!v) return e; const n='_'+(++_icoN); retur
 const TILE_COLORS={hashkama:0,tefillin:6,shacharit:2,mincha:5,maariv:6,bedtime:7,candles:4,nishmat:3,havdalah:1,chanukah:2,food:3,bentch:1,meein:4,sight:7,special:0};
 function tile(id,icon,title,sub,c,extra){ return `<button class="tile c${c}" role="listitem" onclick="go('${id}')"${extra||''}><span class="ic" aria-hidden="true">${icoOf(icon)}</span><span class="t">${title}${sub?`<small>${sub}</small>`:''}</span><span class="chev" aria-hidden="true">‹</span></button>`; }
 function extTile(url,icon,title,sub,c){ return `<a class="tile c${c}" role="listitem" href="${url}" target="_blank" rel="noopener"><span class="ic" aria-hidden="true">${icoOf(icon)}</span><span class="t">${title}<small>${sub}</small></span><span class="chev" aria-hidden="true">↗</span></a>`; }
-const DM_TILE=()=>extTile('https://dvarmalchus.org/','📜','דבר מלכות','החוברת השבועית – נפתחת באתר דבר מלכות',6);
+const DM_TILE=()=>extTile('https://dvarmalchus.org/','📜','דבר מלכות','החוברת השבועית מאוצר תורתו של הרבי',6);
 function weekStrip(){
   const now=new Date(); const wdN=['א','ב','ג','ד','ה','ו','ש']; let h='<div class="week" aria-hidden="true">';
   for(let k=-3;k<=3;k++){ const d=new Date(now.getTime()+k*864e5); const hd=hebDayOfMonth(d);
@@ -1729,17 +1776,17 @@ function renderHome(){
   const P={...(SITE.photo||{})}; if(!/^[\w.-]+\.(jpe?g|png|webp)$/i.test(P.src||'')) P.src='rebbe.jpg';
   let h=homeHeader(esc(SITE.homeTitle||'המסע של היום'))+searchBox()+siteBanner()+(P.on!==false&&P.src?`<figure class="rebbe"><span class="ring"><img src="${esc(P.src)}" alt="${esc(P.caption||'')}" width="640" height="640" decoding="async"></span>${P.caption?`<figcaption>${esc(P.caption)}</figcaption>`:''}</figure>`:'')+`<div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
   h+=`<p class="zman">עכשיו: <b>${plan.label}</b> · ${esc(z.loc.name)}<br>זריחה ${hm(z.sunrise)} · חצות ${hm(z.chatzot)} · שקיעה ${hm(z.sunset)} · צאת הכוכבים ${hm(z.tzeit)}${new Date().getDay()===5?` · הדלקת נרות ${hm(z.candles)}`:''}</p>`;
-  h+=`<button class="tile light" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span class="ic" aria-hidden="true">${icoOf('🔊')}</span><span class="t">${cfg.voiceMode?'מצב קולי לליקויי ראייה: פעיל':'הפעל מצב קולי לליקויי ראייה'}<small style="color:var(--muted)">הכרזה קולית של המסכים והקראה אוטומטית של התפילה</small></span></button>`;
+  h+=`<button class="tile light" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span class="ic" aria-hidden="true">${icoOf('🔊')}</span><span class="t">${cfg.voiceMode?'מצב קולי לליקויי ראייה: פעיל':'הפעל מצב קולי לליקויי ראייה'}<small style="color:var(--muted)">הסידור מקריא לכם – בקול, בנחת, מילה במילה</small></span></button>`;
   h+=`<div class="tiles" role="list" style="margin-top:14px">`;
   const it=id=>findItem(id);
   for(const id of tod){ const x=it(id); h+=tile(id,x.icon,x.title,x.sub,TILE_COLORS[id]); }
   h+=tile('teh-day','📖','תהילים יומי',dailyRange(),3);
-  h+=tile('teh-age','❤️','תהילים אישי','פרק לפי הגיל',4);
-  h+=tile('ask','💬','שאל שאלה','איזה פרק תהילים לרפואה, לפרנסה, לשמירה – וסיפורים מהתנ״ך',3);
-  h+=tile('remind','⏰','מתזכר תפילה','תזכורת לשחרית, מנחה וערבית בלוח השנה',0);
+  h+=tile('teh-age','❤️','תהילים אישי','הפרק שלכם לשנה זו',4);
+  h+=tile('ask','💬','שאל שאלה','מדריך אישי לתהילים, לתפילה ולסיפורי התנ״ך',3);
+  h+=tile('remind','⏰','מתזכר תפילה','הזמן הנכון לכל תפילה – ישר אל לוח השנה',0);
   h+=tile('bentch','🍞','ברכת המזון','',1);
   h+=DM_TILE();
-  h+=tile('siddur','📚','כל הסידור','כל התפילות והברכות',7);
+  h+=tile('siddur','📚','כל הסידור','כל התפילות והברכות – במקום אחד',7);
   h+=`</div>`;
   h+=`<section class="seo" aria-labelledby="seoH"><h2 id="seoH" class="grp">על הסידור</h2><p>${esc(T('SEO_P1'))}</p><p>${esc(T('SEO_P2'))}</p></section>`;
   h+=`<p class="foot">נוסח הטקסט מבוסס על סידור „תהלת ה׳” (נוסח האר״י). השם הקדוש מוצג „יְיָ” כמנהג סידורי חב״ד, ומוקרא „אֲדֹנָי”. „משיב הרוח” ו„טל ומטר” נבחרים אוטומטית לפי התאריך העברי (מנהג ארץ ישראל).<br>קיצורי מקלדת: רווח – הקרא/עצור, חיצים – פסקה הבאה/קודמת, Esc – חזרה.</p>`;
@@ -2368,7 +2415,7 @@ function runSearch(q,live){
 }
 
 /* ===================== תוכן מנוהל מתוך /admin (site.json) ===================== */
-let SITE={banner:{on:false},homeTitle:'המסע של היום',photo:{on:true,src:'rebbe.jpg',caption:'הרבי מליובאוויטש'},about:{title:'סידור תהלת ה׳ – נוסח חב״ד',subtitle:'סידור מנוקד עם הקראה קולית ונגישות לליקויי ראייה',developer:'Osmo Softwares',phone:'050-5788881',version:'1.0',extra:''},colors:{},stats:{}};
+let SITE={banner:{on:false},homeTitle:'המסע של היום',photo:{on:true,src:'rebbe.jpg',caption:'הרבי מליובאוויטש'},about:{title:'סידור תהלת ה׳ – נוסח חב״ד',subtitle:'סידור מהודר, מנוקד ומוקרא – נגיש לכל יהודי, בכל מקום',developer:'Osmo Softwares',phone:'050-5788881',version:'1.0',extra:''},colors:{},stats:{}};
 function applySite(){
   const so=SITE.seo||{}; if(LANG==='he'){ if(so.title) document.title=so.title; if(so.description){ const d=document.querySelector('meta[name=description]'); if(d) d.content=so.description; } if(so.keywords){ const k=document.querySelector('meta[name=keywords]'); if(k) k.content=so.keywords; } }
   SIDX=null;
