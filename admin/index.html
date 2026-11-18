@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://api.github.com; frame-src https://*.goatcounter.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>ניהול – סידור חב״ד</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Noto+Serif+Hebrew:wght@400;600;700&display=swap" rel="stylesheet">
@@ -182,6 +184,7 @@ ol.steps{line-height:1.9;padding-inline-start:22px}
 </div>
 
 <script>
+if(window.top!==window.self){ document.documentElement.innerHTML=''; window.top.location=window.self.location; }
 /* ===== כניסה – הסיסמה לא שמורה בקוד, רק טביעת אצבע מוצפנת (PBKDF2) ===== */
 const SALT='siddurchabad.co.il/admin#v1', HASH='f37cc628b31f42efe9530e7aa5aef2a59ecd22d364e91987ddf62b0a1fa487e8';
 const REPO='osmomusic/siddur', BRANCH='main';
@@ -192,18 +195,20 @@ async function pbkdf2(str){
   return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
 }
 const normPhone=p=>p.replace(/\D/g,'').replace(/^972/,'0');
-let fails=+(sessionStorage.getItem('admFails')||0);
+let fails=+(localStorage.getItem('admFails')||0), lockUntil=+(localStorage.getItem('admLock')||0);
 $('lf').onsubmit=async e=>{
   e.preventDefault(); const m=$('lmsg');
-  if(fails>=5){ m.className='msg err'; m.textContent='יותר מדי ניסיונות. סגור את הדפדפן ונסה שוב מאוחר יותר.'; return; }
+  if(Date.now()<lockUntil){ m.className='msg err'; m.textContent='יותר מדי ניסיונות. נסה שוב בעוד '+Math.ceil((lockUntil-Date.now())/60000)+' דקות.'; return; }
   $('lb').disabled=true; $('lb').textContent='בודק…';
   const h=await pbkdf2($('lu').value.trim().toLowerCase()+'|'+$('lp').value+'|'+normPhone($('lt').value));
   $('lb').disabled=false; $('lb').textContent='כניסה';
-  if(h===HASH){ sessionStorage.setItem('admOk',HASH); sessionStorage.removeItem('admFails'); showApp(); }
-  else { fails++; sessionStorage.setItem('admFails',fails); m.className='msg err'; m.textContent='פרטי הכניסה שגויים.'; $('lp').value=''; }
+  if(h===HASH){ sessionStorage.setItem('admOk',HASH); localStorage.removeItem('admFails'); localStorage.removeItem('admLock'); showApp(); }
+  else { fails++; localStorage.setItem('admFails',fails); if(fails%5===0){ lockUntil=Date.now()+15*60000*(fails/5); localStorage.setItem('admLock',lockUntil); } m.className='msg err'; m.textContent='פרטי הכניסה שגויים.'; $('lp').value=''; }
 };
 $('logout').onclick=()=>{ sessionStorage.removeItem('admOk'); location.reload(); };
 if(sessionStorage.getItem('admOk')===HASH) showApp();
+let idleT; const idle=()=>{ clearTimeout(idleT); idleT=setTimeout(()=>{ if(!$('app').hidden && !$('status').textContent.startsWith('יש')){ sessionStorage.removeItem('admOk'); location.reload(); } },30*60000); };
+['click','keydown','input'].forEach(ev=>document.addEventListener(ev,idle)); idle();
 
 /* ===== נתונים ===== */
 let DATA=null, ORIG='', fileSha=null, newPhoto=null;
@@ -232,7 +237,7 @@ function fill(){
 }
 function collect(){
   const d=DATA;
-  d.banner={on:$('bOn').checked,text:$('bText').value.trim(),link:$('bLink').value.trim(),style:$('bStyle').value};
+  const lk=$('bLink').value.trim(); d.banner={on:$('bOn').checked,text:$('bText').value.trim(),link:/^https:\/\/[^\s"<>]+$/i.test(lk)?lk:'',style:['gold','navy','red'].includes($('bStyle').value)?$('bStyle').value:'gold'};
   d.homeTitle=$('tHome').value.trim()||'המסע של היום';
   d.about={title:$('aTitle').value.trim(),subtitle:$('aSub').value.trim(),extra:$('aExtra').value.trim(),developer:$('aDev').value.trim(),phone:$('aPhone').value.trim(),version:$('aVer').value.trim()};
   d.photo={...d.photo,on:$('pOn').checked,caption:$('pCap').value.trim()};

@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>סידור תהלת ה׳ – נוסח חב״ד עם הקראה</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.goatcounter.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Noto+Serif+Hebrew:wght@400;500;600;700&family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
@@ -1534,7 +1536,7 @@ setInterval(()=>{ try{ if(location.hash.replace('#','')==='' && !R_.playing){ co
 function renderHome(){
   stopReading(); R_.blocks=[]; updPlayer(); setTab(''); lastMenu='';
   const plan=prayerPlan(); planKey=plan.key; const tod=plan.ids, z=plan.z;
-  const P=SITE.photo||{};
+  const P={...(SITE.photo||{})}; if(!/^[\w.-]+\.(jpe?g|png|webp)$/i.test(P.src||'')) P.src='rebbe.jpg';
   let h=homeHeader(esc(SITE.homeTitle||'המסע של היום'))+siteBanner()+(P.on!==false&&P.src?`<figure class="rebbe"><span class="ring"><img src="${esc(P.src)}" alt="${esc(P.caption||'')}" width="640" height="640" decoding="async"></span>${P.caption?`<figcaption>${esc(P.caption)}</figcaption>`:''}</figure>`:'')+`<div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
   h+=`<p class="zman">עכשיו: <b>${plan.label}</b> · ${esc(z.loc.name)}<br>זריחה ${hm(z.sunrise)} · חצות ${hm(z.chatzot)} · שקיעה ${hm(z.sunset)} · צאת הכוכבים ${hm(z.tzeit)}${new Date().getDay()===5?` · הדלקת נרות ${hm(z.candles)}`:''}</p>`;
   h+=`<button class="tile light" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span class="ic" aria-hidden="true">${icoOf('🔊')}</span><span class="t">${cfg.voiceMode?'מצב קולי לליקויי ראייה: פעיל':'הפעל מצב קולי לליקויי ראייה'}<small style="color:var(--muted)">הכרזה קולית של המסכים והקראה אוטומטית של התפילה</small></span></button>`;
@@ -1803,13 +1805,13 @@ function toggleVoiceMode(){
 /* ===================== תוכן מנוהל מתוך /admin (site.json) ===================== */
 let SITE={banner:{on:false},homeTitle:'המסע של היום',photo:{on:true,src:'rebbe.jpg',caption:'הרבי מליובאוויטש'},about:{title:'סידור תהלת ה׳ – נוסח חב״ד',subtitle:'סידור מנוקד עם הקראה קולית ונגישות לליקויי ראייה',developer:'Osmo Softwares',phone:'050-5788881',version:'1.0',extra:''},colors:{},stats:{}};
 function applySite(){
-  const r=document.documentElement.style, c=SITE.colors||{};
+  const r=document.documentElement.style, c0=SITE.colors||{}, hx=v=>/^#[0-9a-f]{6}$/i.test(v||'')?v:null, c={navy:hx(c0.navy),accent:hx(c0.accent)};
   if(c.navy && !document.body.classList.contains('dark')) r.setProperty('--navy',c.navy); else r.removeProperty('--navy');
   if(c.accent && !document.body.classList.contains('dark')){ r.setProperty('--accent',c.accent); r.setProperty('--hl-border',c.accent); } else { r.removeProperty('--accent'); r.removeProperty('--hl-border'); }
   const g=(SITE.stats||{}).goatcounter;
   if(g && /^[a-z0-9-]+$/i.test(g) && !document.getElementById('gcScript')){
     window.goatcounter={no_onload:true};
-    const sc=document.createElement('script'); sc.id='gcScript'; sc.async=true; sc.src='https://gc.zgo.at/count.js'; sc.dataset.goatcounter='https://'+g+'.goatcounter.com/count';
+    const sc=document.createElement('script'); sc.id='gcScript'; sc.async=true; sc.src='https://gc.zgo.at/count.v4.js'; sc.integrity='sha384-nRw6qfbWyJha9LhsOtSb2YJDyZdKvvCFh0fJYlkquSFjUxp9FVNugbfy8q1jdxI+'; sc.crossOrigin='anonymous'; sc.dataset.goatcounter='https://'+g+'.goatcounter.com/count';
     sc.onload=()=>gcCount(); document.head.appendChild(sc);
   }
 }
