@@ -1905,12 +1905,13 @@ function doSearch(q){
   const words=n.split(' ').filter(Boolean); const res=[];
   // פרק תהילים לפי מספר או אותיות: "תהילים 23", "פרק כג", "psalm 23"
   const num=n.match(/(?:^|\s)(\d{1,3})(?:\s|$)/); let ch=num? +num[1] : 0;
-  if(!ch){ const hm=n.match(/(?:פרק|תהילים|תהלים|מזמור)\s+([א-ת]{1,4})(?:\s|$)/); if(hm){ const v=hebToNum(hm[1]); if(v>=1&&v<=150) ch=v; } }
-  if(ch>=1&&ch<=150 && (/תהי?לים|פרק|מזמור|psalm|tehil|salmo|psaume|псал|теилим|глава|chapter|cap[ií]tulo|chapitre/.test(n) || /^\d{1,3}$/.test(n)))
+  if(!ch){ const hm=n.match(/(?:פרק|תהי?לימ|מזמור)\s+([א-ת]{1,4})(?:\s|$)/); if(hm){ const v=hebToNum(hm[1]); if(v>=1&&v<=150) ch=v; } }
+  if(ch>=1&&ch<=150 && (/תהי?לימ|פרק|מזמור|psalm|tehil|salmo|psaume|псал|теилим|глава|chapter|cap[ií]tulo|chapitre/.test(n) || /^\d{1,3}$/.test(n)))
     res.push({id:'teh-'+ch,icon:'📖',title:'תהילים פרק '+heb(ch),sub:'',c:3,score:100});
   for(const e of searchIndex()){
     let sc=0;
     if(e.head.includes(n)) sc+=50;
+    if(normQ(e.title).includes(n)) sc+=30;
     for(const w of words){ if(w.length<2) continue; if(e.head.includes(w)) sc+=10; else if(w.length>2 && e.body.includes(w)) sc+=2; }
     if(e.body.includes(n) && n.length>3) sc+=15;
     if(sc>0) res.push({...e,score:sc});
