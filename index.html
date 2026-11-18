@@ -331,6 +331,15 @@ figure.logo::after{content:"";position:absolute;inset:3px;border-radius:19px;poi
   background:linear-gradient(115deg,transparent 35%,rgba(255,240,200,.28) 50%,transparent 65%);background-size:250% 100%;animation:rebbeShine 8s ease-in-out infinite}
 body.hc figure.logo{background:#fff;box-shadow:none}
 @media (min-width:900px){figure.logo{max-width:560px}}
+/* לוגו מוטבע */
+figure.logo{margin:22px auto 22px;padding:0;background:none;border-radius:24px;
+  box-shadow:inset 0 0 0 1px rgba(176,138,62,.55),0 1px 0 rgba(255,255,255,.8),0 -1px 0 rgba(13,42,82,.12)}
+figure.logo img{border-radius:24px;position:relative;z-index:0;
+  -webkit-mask-image:radial-gradient(ellipse 120% 115% at 50% 50%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 120% 115% at 50% 50%,#000 62%,transparent 100%)}
+figure.logo::before{content:"";position:absolute;inset:0;border-radius:24px;pointer-events:none;z-index:1;
+  box-shadow:inset 0 6px 14px rgba(5,14,32,.55),inset 0 -3px 8px rgba(255,240,200,.18),inset 0 0 0 1px rgba(236,210,140,.35)}
+figure.logo::after{inset:0;border-radius:24px;z-index:2}
+body.hc figure.logo{box-shadow:none}
 </style>
 </head>
 <body>
@@ -1224,7 +1233,7 @@ setInterval(()=>{ try{ if(location.hash.replace('#','')==='' && !R_.playing){ co
 function renderHome(){
   stopReading(); R_.blocks=[]; updPlayer(); setTab(''); lastMenu='';
   const plan=prayerPlan(); planKey=plan.key; const tod=plan.ids, z=plan.z;
-  let h=homeHeader('המסע של היום')+`<figure class="logo"><img src="logo.jpg" alt="SiddurChabad.co.il – סידור חב״ד" width="960" height="625" decoding="async"></figure><div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
+  let h=homeHeader('המסע של היום')+`<div class="datepill">${esc(hebDateStr())}</div><figure class="logo"><img src="logo.jpg" alt="SiddurChabad.co.il – סידור חב״ד" width="960" height="625" decoding="async"></figure>`+weekStrip();
   h+=`<p class="zman">עכשיו: <b>${plan.label}</b> · ${esc(z.loc.name)}<br>זריחה ${hm(z.sunrise)} · חצות ${hm(z.chatzot)} · שקיעה ${hm(z.sunset)} · צאת הכוכבים ${hm(z.tzeit)}${new Date().getDay()===5?` · הדלקת נרות ${hm(z.candles)}`:''}</p>`;
   h+=`<button class="tile light" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span class="ic" aria-hidden="true">${icoOf('🔊')}</span><span class="t">${cfg.voiceMode?'מצב קולי לליקויי ראייה: פעיל':'הפעל מצב קולי לליקויי ראייה'}<small style="color:var(--muted)">הכרזה קולית של המסכים והקראה אוטומטית של התפילה</small></span></button>`;
   h+=`<div class="tiles" role="list" style="margin-top:14px">`;
