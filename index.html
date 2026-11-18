@@ -382,7 +382,7 @@ body.ltr{text-align:left}
 body.ltr .prayer{direction:rtl;text-align:right}
 body.ltr .tile{text-align:left}
 body.ltr .tile .chev{transform:scaleX(-1)}
-body.ltr .bsd{left:auto;right:14px}
+body.ltr .bsd{left:14px;right:auto}
 body.ltr .reader-head .iconbtn:first-child{transform:scaleX(-1)}
 .langnote{font-size:15px;color:var(--muted);background:var(--accent-soft);border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin:0 0 12px}
 .langbtn{font-size:22px}
@@ -409,10 +409,15 @@ section.seo p{margin:0 0 10px}
 .prayer .blk.tl{direction:ltr;text-align:left;font-family:"Noto Serif Hebrew","Frank Ruhl Libre",Georgia,serif;line-height:1.75}
 .prayer .blk.tl .heb{display:block;direction:rtl;text-align:right;font-family:"Frank Ruhl Libre",serif;font-size:.78em;color:var(--muted);margin-top:4px}
 .prayer .blk.tl .vn{margin-inline-end:6px}
+/* קרדיט פיתוח */
+.devcredit{position:absolute;top:calc(8px + env(safe-area-inset-top));right:14px;font-size:13px;color:var(--muted);z-index:30;font-family:"Noto Serif Hebrew",serif;letter-spacing:.2px}
+.devcredit span{color:var(--accent);font-weight:600}
+body.hc .devcredit,body.hc .devcredit span{color:#ff0}
 </style>
 </head>
 <body>
 <div class="bsd" aria-hidden="true">בס״ד</div>
+<div class="devcredit">פיתוח תוכנה <span dir="ltr">Osmo Softwares ©</span></div>
 <div id="live" class="sr" aria-live="polite" aria-atomic="true"></div>
 <div class="shell">
 <nav id="side" aria-label="תפריט הסידור"></nav>
@@ -2056,6 +2061,7 @@ function runSearch(q,live){
 /* ===================== תוכן מנוהל מתוך /admin (site.json) ===================== */
 let SITE={banner:{on:false},homeTitle:'המסע של היום',photo:{on:true,src:'rebbe.jpg',caption:'הרבי מליובאוויטש'},about:{title:'סידור תהלת ה׳ – נוסח חב״ד',subtitle:'סידור מנוקד עם הקראה קולית ונגישות לליקויי ראייה',developer:'Osmo Softwares',phone:'050-5788881',version:'1.0',extra:''},colors:{},stats:{}};
 function applySite(){
+  try{ const dv=(SITE.about||{}).developer; const sp=document.querySelector('.devcredit span'); if(dv&&sp) sp.textContent=dv+' ©'; }catch(e){}
   const so=SITE.seo||{}; if(LANG==='he'){ if(so.title) document.title=so.title; if(so.description){ const d=document.querySelector('meta[name=description]'); if(d) d.content=so.description; } if(so.keywords){ const k=document.querySelector('meta[name=keywords]'); if(k) k.content=so.keywords; } }
   SIDX=null;
   const r=document.documentElement.style, c0=SITE.colors||{}, hx=v=>/^#[0-9a-f]{6}$/i.test(v||'')?v:null, c={navy:hx(c0.navy),accent:hx(c0.accent)};
