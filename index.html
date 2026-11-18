@@ -1235,7 +1235,7 @@ setInterval(()=>{ try{ if(location.hash.replace('#','')==='' && !R_.playing){ co
 function renderHome(){
   stopReading(); R_.blocks=[]; updPlayer(); setTab(''); lastMenu='';
   const plan=prayerPlan(); planKey=plan.key; const tod=plan.ids, z=plan.z;
-  let h=homeHeader('המסע של היום')+`<div class="datepill">${esc(hebDateStr())}</div><figure class="logo"><img src="logo.jpg" alt="SiddurChabad.co.il – סידור חב״ד" width="960" height="625" decoding="async"></figure>`+weekStrip();
+  let h=homeHeader('המסע של היום')+`<figure class="rebbe"><span class="ring"><img src="rebbe.jpg" alt="הרבי מליובאוויטש" width="640" height="640" decoding="async"></span><figcaption>הרבי מליובאוויטש</figcaption></figure><div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
   h+=`<p class="zman">עכשיו: <b>${plan.label}</b> · ${esc(z.loc.name)}<br>זריחה ${hm(z.sunrise)} · חצות ${hm(z.chatzot)} · שקיעה ${hm(z.sunset)} · צאת הכוכבים ${hm(z.tzeit)}${new Date().getDay()===5?` · הדלקת נרות ${hm(z.candles)}`:''}</p>`;
   h+=`<button class="tile light" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span class="ic" aria-hidden="true">${icoOf('🔊')}</span><span class="t">${cfg.voiceMode?'מצב קולי לליקויי ראייה: פעיל':'הפעל מצב קולי לליקויי ראייה'}<small style="color:var(--muted)">הכרזה קולית של המסכים והקראה אוטומטית של התפילה</small></span></button>`;
   h+=`<div class="tiles" role="list" style="margin-top:14px">`;
