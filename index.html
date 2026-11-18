@@ -8,16 +8,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700&family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* סגנון חב״ד מעודכן – כחול נייבי וזהב על רקע שמנת */
-  --bg1:#dfe6f3; --bg2:#f8f5ee; --card:#ffffff; --ink:#0f2547; --muted:#5b6882;
-  --accent:#b8892b; --accent-soft:#f4ecd8; --line:#dde2ec; --hl:#fbf2d9; --hl-border:#c9a227;
-  --navy:#0f2a5c; --gold:#e9c46a;
+  /* סגנון „המסע של היום” – שמנת־אפרסק חם, כחול כהה לטקסט, אריחים צבעוניים */
+  --bg1:#efd6bd; --bg2:#faf5ee; --card:#ffffff; --ink:#24324f; --muted:#7a8296;
+  --accent:#dc955f; --accent-soft:#f7e8d8; --line:#ebe1d6; --hl:#fff1d6; --hl-border:#dc955f;
+  --navy:#dc955f; --gold:#ffffff;
   --fs:24px;
 }
 body.dark{
-  --bg1:#0b1838; --bg2:#060d20; --card:#0f1f40; --ink:#f3ecd9; --muted:#a6b0c6; --accent:#d9b45a;
-  --accent-soft:#17294e; --line:#24375e; --hl:#2a2614; --hl-border:#d9b45a;
-  --navy:#d9b45a; --gold:#0b1838;
+  --bg1:#2a2019; --bg2:#14110f; --card:#221c18; --ink:#f3ece2; --muted:#b3a99c; --accent:#e3a06e;
+  --accent-soft:#33281f; --line:#3a3029; --hl:#3a2a1c; --hl-border:#e3a06e;
+  --navy:#e3a06e; --gold:#1a120c;
 }
 body.dark .warn{background:#3a1d1a;color:#ffd7cf}
 body.dark .card{box-shadow:none}
@@ -36,7 +36,7 @@ body{
 }
 button{font-family:inherit;color:inherit}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.wrap{max-width:720px;margin:0 auto;padding:16px 18px 140px}
+.wrap{max-width:720px;margin:0 auto;padding:16px 18px 150px}
 header.top{display:flex;align-items:center;gap:12px;padding:18px 0 8px}
 header.top h1{font-size:40px;font-weight:800;margin:0;flex:1;line-height:1.1}
 .date{color:var(--muted);font-size:16px;margin:2px 0 18px}
@@ -140,13 +140,12 @@ header.top{flex-wrap:wrap}
 .tbtn small{font-size:12px}
 .tbtn:focus-visible{outline:4px solid var(--accent);outline-offset:2px}
 
-header.top h1{color:var(--navy)}
+header.top h1{color:var(--ink)}
 body.dark header.top h1{color:var(--ink)}
-h2.sec{color:var(--navy)}
+h2.sec{color:var(--ink)}
 body.dark h2.sec{color:var(--ink)}
-h2.sec span.ic{background:var(--navy);color:var(--gold);box-shadow:inset 0 0 0 1px var(--accent)}
+h2.sec span.ic{background:var(--accent-soft)}
 .row .ic{box-shadow:inset 0 0 0 1px rgba(201,162,39,.35)}
-.card{border-top:3px solid var(--accent)}
 .big{background:linear-gradient(135deg,var(--accent-soft),var(--card))}
 .ok{background:var(--navy)!important;color:var(--gold)!important}
 .gbtn:hover,.row:hover{background:var(--accent-soft)}
@@ -155,6 +154,55 @@ body.hc .card{border-top-color:var(--line)}
 body.hc header.top h1,body.hc h2.sec{color:var(--ink)}
 body.hc .pbtn.play,body.hc .ok{background:#ffef3a!important;color:#000!important}
 body.hc h2.sec span.ic{background:#1a1a1a;color:#ffef3a}
+
+/* אריחים צבעוניים */
+.tiles{display:flex;flex-direction:column;gap:14px}
+.tile{position:relative;width:100%;display:flex;align-items:center;gap:16px;min-height:104px;padding:18px 20px;border:0;border-radius:30px;cursor:pointer;
+  color:#fff;text-align:right;font-family:Heebo,sans-serif;overflow:hidden;
+  background:
+    radial-gradient(120% 90% at 85% 10%,rgba(255,255,255,.22),transparent 55%),
+    radial-gradient(90% 80% at 10% 100%,rgba(0,0,0,.10),transparent 60%),
+    linear-gradient(135deg,var(--c1),var(--c2));
+  box-shadow:0 8px 22px rgba(80,50,30,.14)}
+.tile::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:soft-light;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
+.tile .ic{width:64px;height:64px;border-radius:20px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:30px;flex:none;position:relative;z-index:1}
+.tile .t{flex:1;font-size:30px;font-weight:800;line-height:1.15;position:relative;z-index:1;text-shadow:0 1px 2px rgba(0,0,0,.12)}
+.tile .t small{display:block;font-size:19px;font-weight:500;opacity:.85;margin-top:6px}
+.tile .chev{font-size:30px;opacity:.85;position:relative;z-index:1}
+.tile:focus-visible{outline:4px solid var(--ink);outline-offset:3px}
+.tile.light{background:var(--card);color:var(--ink);box-shadow:0 6px 18px rgba(80,50,30,.08)}
+.tile.light::after{display:none}
+.tile.light .ic{background:var(--accent-soft)}
+.tile.light .t{font-size:26px;text-shadow:none}
+.c0{--c1:#e9ad7c;--c2:#dd935c} .c1{--c1:#a98577;--c2:#946e60} .c2{--c1:#d2ad68;--c2:#c39a52}
+.c3{--c1:#8fb0a0;--c2:#709684} .c4{--c1:#a88a98;--c2:#927282} .c5{--c1:#dc8c57;--c2:#c8743e}
+.c6{--c1:#6f6286;--c2:#5b4f72} .c7{--c1:#7e97b8;--c2:#62799c}
+h2.grp{font-size:18px;color:var(--muted);margin:26px 8px 10px;font-weight:700}
+.datepill{display:inline-block;background:rgba(255,255,255,.55);border-radius:30px;padding:10px 22px;font-size:20px;color:var(--ink);margin:4px 0 6px}
+body.dark .datepill{background:rgba(255,255,255,.08)}
+.week{display:flex;flex-direction:row-reverse;justify-content:space-between;gap:6px;margin:22px 0 18px}
+.wd{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1}
+.wd b{width:min(60px,12vw);height:min(60px,12vw);border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);color:var(--muted);font-size:18px;font-family:"Frank Ruhl Libre",serif}
+.wd span{font-size:14px;color:var(--muted)}
+.wd.past b{background:#d6cdca;border-color:#d6cdca;color:#fff}
+.wd.today b{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.wd.today span{color:var(--ink);font-weight:700}
+header.top{align-items:flex-start}
+header.top h1{font-size:52px;font-weight:800}
+/* סרגל לשוניות תחתון */
+.tabbar{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:21;display:flex;justify-content:space-around;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:40px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.08);max-width:720px;margin:0 auto}
+body.dark .tabbar{background:rgba(34,28,24,.94)}
+.tabbar button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:30px;font-family:Heebo,sans-serif;font-size:14px;color:var(--ink);cursor:pointer}
+.tabbar button .ti{font-size:24px;line-height:1}
+.tabbar button.on{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.tabbar button:focus-visible{outline:3px solid var(--accent)}
+body:not(.reading) .player{display:none}
+body.reading .tabbar{display:none}
+@media (min-width:960px){ .tabbar{display:none} body:not(.reading) .player{display:block} }
+body.hc .tile{background:#000;color:#ffef3a;border:2px solid #ffef3a;box-shadow:none}
+body.hc .tile::after{display:none}
 .foot{color:var(--muted);font-size:14px;line-height:1.6;margin-top:28px}
 </style>
 </head>
@@ -174,6 +222,14 @@ body.hc h2.sec span.ic{background:#1a1a1a;color:#ffef3a}
   </div>
   <div class="pstat" id="pstat" aria-hidden="true"></div>
 </div>
+
+<nav class="tabbar" id="tabbar" aria-label="ניווט ראשי">
+  <button onclick="openSet()" aria-label="הגדרות"><span class="ti" aria-hidden="true">⚙️</span>הגדרות</button>
+  <button data-t="about" onclick="go('about')"><span class="ti" aria-hidden="true">ℹ️</span>אודות</button>
+  <button data-t="" onclick="go('')"><span class="ti" aria-hidden="true">🔥</span>היום</button>
+  <button data-t="teh" onclick="go('teh')"><span class="ti" aria-hidden="true">📖</span>תהילים</button>
+  <button data-t="siddur" onclick="go('siddur')"><span class="ti" aria-hidden="true">📚</span>סידור</button>
+</nav>
 
 <dialog id="dlg" aria-labelledby="dlgT">
   <div class="dlg">
@@ -769,7 +825,7 @@ function applyCfg(){
   const dark = cfg.theme==='dark' || (cfg.theme==='auto' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
   document.body.classList.toggle('dark', dark && !cfg.hc);
   let m=document.querySelector('meta[name=theme-color]'); if(!m){m=document.createElement('meta');m.name='theme-color';document.head.appendChild(m);}
-  m.content = cfg.hc? '#000000' : dark? '#0b1838' : '#dfe6f3';
+  m.content = cfg.hc? '#000000' : dark? '#2a2019' : '#efd6bd';
 }
 
 /* ===================== מנוע „קול חזן” מובנה – סינתזת פורמנטים + נוסח תפילה ===================== */
@@ -1142,6 +1198,7 @@ function toggle(){
 }
 function step(d){ const i=R_.idx+d; if(i<0||i>=R_.blocks.length) return; if(R_.playing) playFrom(i); else { R_.idx=i; mark(i); R_.blocks[i].focus({preventScroll:true}); } }
 function updPlayer(){
+  document.body.classList.toggle('reading', R_.blocks.length>0);
   const p=document.getElementById('bPlay');
   p.textContent = R_.playing? '❚❚ עצור' : '▶ הקרא';
   p.setAttribute('aria-label', R_.playing? 'עצור הקראה':'הקרא מהפסקה הנוכחית');
@@ -1154,32 +1211,57 @@ const app=document.getElementById('app');
 function findItem(id){ for(const g of SIDDUR) for(const it of g.items) if(it.id===id) return it; }
 function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
 
+const TILE_COLORS={hashkama:0,shacharit:2,mincha:5,maariv:6,bedtime:7,candles:4,nishmat:3,havdalah:1,chanukah:2,food:3,bentch:1,meein:4,sight:7,special:0};
+function tile(id,icon,title,sub,c,extra){ return `<button class="tile c${c}" role="listitem" onclick="go('${id}')"${extra||''}><span class="ic" aria-hidden="true">${icon}</span><span class="t">${title}${sub?`<small>${sub}</small>`:''}</span><span class="chev" aria-hidden="true">‹</span></button>`; }
+function weekStrip(){
+  const now=new Date(); const wdN=['א','ב','ג','ד','ה','ו','ש']; let h='<div class="week" aria-hidden="true">';
+  for(let k=-3;k<=3;k++){ const d=new Date(now.getTime()+k*864e5); const hd=hebDayOfMonth(d);
+    h+=`<div class="wd ${k<0?'past':k===0?'today':''}"><b>${hd?heb(hd).replace(/[׳״]/g,''):''}</b><span>${wdN[d.getDay()]}</span></div>`; }
+  return h+'</div>';
+}
+function dailyRange(){
+  const d=hebDayOfMonth()||1; const r=MONTHLY[d-1];
+  if(r[0]===119) return 'פרק קי״ט'+(r[2]===1?' (חלק א׳)':' (חלק ב׳)');
+  return heb(r[0])+' – '+heb(r[1]);
+}
+function homeHeader(title){
+  return `<header class="top"><h1 id="h1" tabindex="-1">${title}</h1><span style="display:flex;gap:6px;flex-wrap:wrap">${tszBtns()}<button class="iconbtn" id="themeBtn" aria-label="${document.body.classList.contains('dark')?'מעבר למסך בהיר':'מעבר למסך כהה'}" onclick="toggleTheme()">${document.body.classList.contains('dark')?'☀️':'🌙'}</button><button class="iconbtn" aria-label="הגדרות הקראה ונגישות" onclick="openSet()">⚙︎</button></span></header>`;
+}
+let lastMenu='';
+function setTab(t){ document.querySelectorAll('#tabbar [data-t]').forEach(b=>{ const on=b.dataset.t===t; b.classList.toggle('on',on); if(on) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); }); }
 function renderHome(){
-  stopReading(); R_.blocks=[]; updPlayer();
-  let h=`<header class="top"><h1 id="h1" tabindex="-1">סידור</h1>${tszBtns()}<button class="iconbtn" id="themeBtn" aria-label="${document.body.classList.contains('dark')?'מעבר למסך בהיר':'מעבר למסך כהה'}" onclick="toggleTheme()">${document.body.classList.contains('dark')?'☀️':'🌙'}</button><button class="iconbtn" aria-label="הגדרות הקראה ונגישות" onclick="openSet()">⚙︎</button></header>
-  <p class="date">נוסח האר״י – חב״ד · ${esc(hebDateStr())}</p>
-  <button class="big" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}">
-    <span class="em" aria-hidden="true">🔊</span>
-    <span>${cfg.voiceMode?'מצב קולי לעיוורים: פעיל':'הפעל מצב קולי לעיוורים'}<small>הכרזה קולית של המסכים והקראה אוטומטית של התפילה</small></span>
-  </button>`;
-  h+=`<h2 class="sec"><span class="ic" aria-hidden="true">📖</span>תהילים</h2><div class="card"><button class="row" onclick="go('teh')"><span class="ic" aria-hidden="true">📖</span><span class="t">ספר תהילים<small>יומי, שבועי, לפי השם, פרק אישי ו־150 הפרקים</small></span><span class="chev" aria-hidden="true">‹</span></button></div>`;
+  stopReading(); R_.blocks=[]; updPlayer(); setTab(''); lastMenu='';
+  const hr=new Date().getHours();
+  const tod = hr<12? ['hashkama','shacharit'] : hr<18? ['mincha'] : ['maariv','bedtime'];
+  let h=homeHeader('המסע של היום')+`<div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
+  h+=`<button class="tile light" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span class="ic" aria-hidden="true">🔊</span><span class="t">${cfg.voiceMode?'מצב קולי לעיוורים: פעיל':'הפעל מצב קולי לעיוורים'}<small style="color:var(--muted)">הכרזה קולית של המסכים והקראה אוטומטית של התפילה</small></span></button>`;
+  h+=`<div class="tiles" role="list" style="margin-top:14px">`;
+  const it=id=>findItem(id);
+  for(const id of tod){ const x=it(id); h+=tile(id,x.icon,x.title,x.sub,TILE_COLORS[id]); }
+  h+=tile('teh-day','📖','תהילים יומי',dailyRange(),3);
+  h+=tile('teh-age','❤️','תהילים אישי','פרק לפי הגיל',4);
+  h+=tile('bentch','🍞','ברכת המזון','',1);
+  h+=tile('siddur','📚','כל הסידור','כל התפילות והברכות',7);
+  h+=`</div>`;
+  h+=`<p class="foot">נוסח הטקסט מבוסס על סידור „תהלת ה׳” (נוסח האר״י). השם הקדוש מוצג „יְיָ” כמנהג סידורי חב״ד, ומוקרא „אֲדֹנָי”. התפילות מוקראות בקול חזן שנבנה בתוך הסידור, בנוסח תפילה, ללא תלות בקולות המכשיר. „משיב הרוח” ו„טל ומטר” נבחרים אוטומטית לפי התאריך העברי (מנהג ארץ ישראל).<br>קיצורי מקלדת: רווח – הקרא/עצור, חיצים – פסקה הבאה/קודמת, Esc – חזרה.</p>`;
+  app.innerHTML=h; window.scrollTo(0,0);
+  document.getElementById('h1').focus();
+  if(cfg.voiceMode) announce("המסע של היום. בחר תפילה מהרשימה.", SAY.home+' '+tod.map(id=>SAY_TITLES[id]).join(', ')+', תְּהִלִּים יוֹמִי, תְּהִלִּים אִישִׁי, בִּרְכַּת הַמָּזוֹן, כָּל הַסִּדּוּר.');
+}
+function renderSiddurList(){
+  stopReading(); R_.blocks=[]; updPlayer(); setTab('siddur'); lastMenu='siddur';
+  let h=homeHeader('סידור');
   for(const g of SIDDUR){
-    h+=`<h2 class="sec"><span class="ic" aria-hidden="true">${g.icon}</span>${g.group}</h2><div class="card" role="list">`;
-    for(const it of g.items){
-      h+=`<button class="row" role="listitem" onclick="go('${it.id}')"><span class="ic" aria-hidden="true">${it.icon}</span>
-      <span class="t">${it.title}${it.sub?`<small>${it.sub}</small>`:''}</span><span class="chev" aria-hidden="true">‹</span></button>`;
-    }
+    h+=`<h2 class="grp">${g.group}</h2><div class="tiles" role="list">`;
+    for(const it of g.items) h+=tile(it.id,it.icon,it.title,it.sub,TILE_COLORS[it.id]??0);
     h+=`</div>`;
   }
-  h+=`<h2 class="sec"><span class="ic" aria-hidden="true">ℹ️</span>מידע</h2><div class="card"><button class="row" onclick="go('about')"><span class="ic" aria-hidden="true">ℹ️</span><span class="t">אודות<small>Osmo Software · גרסה 1.0</small></span><span class="chev" aria-hidden="true">‹</span></button></div>`;
-  h+=`<p class="foot">נוסח הטקסט מבוסס על סידור „תהלת ה׳” (נוסח האר״י). השם הקדוש מוצג „יְיָ” כמנהג סידורי חב״ד, ומוקרא „אֲדֹנָי”. התפילות מוקראות בקול חזן שנבנה בתוך הסידור, בנוסח תפילה, ללא תלות בקולות המכשיר. „משיב הרוח” ו„טל ומטר” נבחרים אוטומטית לפי התאריך העברי (מנהג ארץ ישראל).<br>קיצורי מקלדת: רווח – הקרא/עצור, חיצים – פסקה הבאה/קודמת, Esc – חזרה.</p>`;
-  app.innerHTML=h;
-  document.getElementById('h1').focus();
-  if(cfg.voiceMode) announce("סידור נוסח חב״ד. מסך ראשי. בחר תפילה מהרשימה.", SAY.home+' סֵפֶר תְּהִלִּים, '+SIDDUR.flatMap(g=>g.items.map(i=>SAY_TITLES[i.id]||i.title)).join(', ')+'.');
+  app.innerHTML=h; window.scrollTo(0,0); document.getElementById('h1').focus();
+  if(cfg.voiceMode) announce("סידור. בחר תפילה מהרשימה.", 'סִדּוּר. '+SIDDUR.flatMap(g=>g.items.map(i=>SAY_TITLES[i.id]||i.title)).join(', ')+'.');
 }
 
 function renderAbout(){
-  stopReading(); R_.blocks=[]; updPlayer();
+  stopReading(); R_.blocks=[]; updPlayer(); setTab('about');
   app.innerHTML=`<div class="reader-head"><button class="iconbtn" aria-label="חזרה לסידור" onclick="go('')">›</button><h1 id="h1" tabindex="-1">אודות</h1><span class="tsz">${tszBtns()}</span></div>
   <div class="card" style="padding:24px 22px;font-size:20px;line-height:1.9">
     <div style="font-size:26px;font-weight:800;margin-bottom:6px">סידור תהלת ה׳ – נוסח חב״ד</div>
@@ -1200,7 +1282,8 @@ function renderItem(id){
 }
 function renderObj(it,opt={}){
   stopReading();
-  let h=`<div class="reader-head"><button class="iconbtn" aria-label="חזרה" onclick="go('${opt.back||''}')">›</button><h1 id="h1" tabindex="-1">${it.title}</h1><span class="tsz">${tszBtns()}</span></div>`;
+  setTab(opt.back==='teh'?'teh':(lastMenu||''));
+  let h=`<div class="reader-head"><button class="iconbtn" aria-label="חזרה" onclick="go('${opt.back||lastMenu}')">›</button><h1 id="h1" tabindex="-1">${it.title}</h1><span class="tsz">${tszBtns()}</span></div>`;
   if(opt.pre) h+=opt.pre;
   h+=`<div class="prayer">`;
   for(const part of it.parts){
@@ -1270,14 +1353,14 @@ function letterPart(L){ const k=PS119.indexOf(L); const vs=TEH[118]; const block
 let tehState={name:'',age:''};
 
 function tehMenu(){
-  stopReading(); R_.blocks=[]; updPlayer();
+  stopReading(); R_.blocks=[]; updPlayer(); setTab('teh');
   const day=hebDayOfMonth(), wd=new Date().getDay();
   app.innerHTML=`<div class="reader-head"><button class="iconbtn" aria-label="חזרה לסידור" onclick="go('')">›</button><h1 id="h1" tabindex="-1">ספר תהילים</h1><span class="tsz">${tszBtns()}</span></div>
-  <div class="card" role="list">
-    <button class="row" role="listitem" onclick="go('teh-day')"><span class="ic" aria-hidden="true">📅</span><span class="t">תהילים יומי – חודשי<small>${day?'היום, '+heb(day)+' בחודש':'לפי היום בחודש העברי'}</small></span><span class="chev" aria-hidden="true">‹</span></button>
-    <button class="row" role="listitem" onclick="go('teh-week')"><span class="ic" aria-hidden="true">🗓️</span><span class="t">תהילים לפי ימי השבוע<small>יום ${DAYS[wd]}</small></span><span class="chev" aria-hidden="true">‹</span></button>
-    <button class="row" role="listitem" onclick="go('teh-name')"><span class="ic" aria-hidden="true">✍️</span><span class="t">פסוקים לפי השם<small>פרק קי״ט לפי אותיות השם ו„נשמה”</small></span><span class="chev" aria-hidden="true">‹</span></button>
-    <button class="row" role="listitem" onclick="go('teh-age')"><span class="ic" aria-hidden="true">❤️</span><span class="t">פרק אישי לפי הגיל<small>כמנהג חב״ד – הגיל ועוד אחד</small></span><span class="chev" aria-hidden="true">‹</span></button>
+  <div class="tiles" role="list">
+    ${tile('teh-day','📅','תהילים יומי',day?'היום, '+heb(day)+' בחודש · '+dailyRange():'לפי היום בחודש העברי',3)}
+    ${tile('teh-week','🗓️','לפי ימי השבוע','יום '+DAYS[wd],2)}
+    ${tile('teh-name','✍️','פסוקים לפי השם','פרק קי״ט לפי אותיות השם',0)}
+    ${tile('teh-age','❤️','תהילים אישי','כמנהג חב״ד – הגיל ועוד אחד',4)}
   </div>
   <h2 class="sec"><span class="ic" aria-hidden="true">📖</span>בחירת פרק</h2>
   <div class="grid" role="list">${Array.from({length:150},(_,i)=>`<button class="gbtn" role="listitem" aria-label="פרק ${heb(i+1)}" onclick="go('teh-${i+1}')">${heb(i+1)}</button>`).join('')}</div>`;
@@ -1330,7 +1413,7 @@ function tehView(id){
 }
 
 function go(id){ location.hash = id? id : ''; if(!id) route(); }
-function route(){ const id=location.hash.slice(1); id==='about'? renderAbout() : id? renderItem(id) : renderHome(); renderSide(id); }
+function route(){ const id=location.hash.slice(1); id==='about'? renderAbout() : id==='siddur'? renderSiddurList() : id? renderItem(id) : renderHome(); renderSide(id); }
 function renderSide(cur){
   const side=document.getElementById('side'); if(!side) return;
   const item=(id,icon,title)=>{ const on = cur===id || (id==='teh' && cur.startsWith('teh')); return `<a href="#${id}" class="sitem${on?' on':''}" ${on?'aria-current="page"':''}><span aria-hidden="true">${icon}</span>${title}</a>`; };
