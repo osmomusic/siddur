@@ -428,6 +428,29 @@ body.hc .devcredit svg *{fill:#ff0!important;stroke:#ff0!important}
 .remprev{margin:4px 0 14px;padding-inline-start:20px}
 .remprev small{color:var(--muted)}
 .remcard .ok.big{width:100%;font-size:20px;padding:14px}
+/* שאל שאלה */
+.asksub{margin:-6px 0 18px;color:var(--muted);font-size:18px}
+.askgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.acard{display:flex;align-items:center;gap:12px;text-align:start;padding:16px 14px;min-height:92px;border-radius:22px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:18px;line-height:1.4;cursor:pointer;box-shadow:0 6px 18px rgba(13,42,82,.08);transition:transform .2s,box-shadow .2s;animation:tileIn .5s both}
+.acard:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(13,42,82,.16),0 0 0 1px var(--accent)}
+.acard:active{transform:scale(.97)}
+.acard .aic{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.asklog{display:flex;flex-direction:column;gap:12px;margin-bottom:110px}
+.amsg{max-width:88%;padding:14px 16px;border-radius:20px;font-size:19px;line-height:1.75;animation:tileIn .35s both}
+.amsg.me{align-self:flex-start;background:var(--navy);color:var(--gold);border-end-start-radius:6px}
+.amsg.bot{align-self:flex-end;background:var(--card);border:1px solid var(--line);border-end-end-radius:6px;box-shadow:0 4px 14px rgba(13,42,82,.07)}
+.amsg.bot small{color:var(--muted)}
+body.ltr .amsg.me{align-self:flex-end} body.ltr .amsg.bot{align-self:flex-start}
+.achips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.achip{border:1px solid var(--accent);background:var(--accent-soft);color:var(--ink);border-radius:20px;padding:7px 14px;font:inherit;font-size:16px;cursor:pointer}
+.achip.gold{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+body.dark .achip.gold{color:#0c1a36}
+.askbar{position:fixed;left:12px;right:12px;bottom:calc(92px + env(safe-area-inset-bottom));z-index:20;display:flex;gap:8px;align-items:center;max-width:760px;margin:0 auto;padding:6px 6px 6px 8px;background:var(--card);border:1px solid var(--line);border-radius:30px;box-shadow:0 8px 24px rgba(13,42,82,.15)}
+.askbar input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:19px;color:var(--ink);padding:10px 12px}
+.askbar input:focus{outline:none}
+.askbar:focus-within{box-shadow:0 0 0 3px var(--accent)}
+.askbar button{flex:none;width:46px;height:46px;border-radius:50%;border:0;background:var(--navy);color:var(--gold);font-size:22px;font-weight:800;cursor:pointer}
+@media (min-width:900px){ .askbar{left:calc(var(--side,300px) + 24px)} .askgrid{grid-template-columns:repeat(3,1fr)} }
 </style>
 </head>
 <body>
@@ -450,7 +473,7 @@ body.hc .devcredit svg *{fill:#ff0!important;stroke:#ff0!important}
 </div>
 
 <nav class="tabbar" id="tabbar" aria-label="ניווט ראשי">
-  <button onclick="openSet()" aria-label="הגדרות"><span class="ti" aria-hidden="true">⚙️</span>הגדרות</button>
+  <button data-t="ask" onclick="go('ask')"><span class="ti" aria-hidden="true">💬</span>שאל</button>
   <button data-t="about" onclick="go('about')"><span class="ti" aria-hidden="true">ℹ️</span>אודות</button>
   <button data-t="" onclick="go('')"><span class="ti" aria-hidden="true">🔥</span>היום</button>
   <button data-t="teh" onclick="go('teh')"><span class="ti" aria-hidden="true">📖</span>תהילים</button>
@@ -1295,6 +1318,20 @@ Object.assign(TR,{
 '. לשינוי העיר: הגדרות.':['. To change the city: Settings.','. Para cambiar la ciudad: Ajustes.','. Pour changer de ville : Réglages.','. Сменить город: Настройки.'],
 'באייפון: פותחים את הקובץ ← „הוסף הכל”. באנדרואיד: פותחים עם Google Calendar. הזמנים משתנים כל יום לפי השקיעה והזריחה, ולכן כדאי ליצור קובץ חדש כשהתקופה מסתיימת.':['iPhone: open the file → “Add All”. Android: open it with Google Calendar. Times change daily with sunrise and sunset, so create a new file when the period ends.','iPhone: abra el archivo → «Añadir todo». Android: ábralo con Google Calendar. Los horarios cambian cada día, así que cree un archivo nuevo al terminar el período.','iPhone : ouvrez le fichier → « Tout ajouter ». Android : ouvrez-le avec Google Agenda. Les horaires changent chaque jour : créez un nouveau fichier à la fin de la période.','iPhone: откройте файл → «Добавить все». Android: откройте в Google Календаре. Время меняется каждый день, поэтому по окончании периода создайте новый файл.']
 });
+Object.assign(TR,{'שאל':['Ask','Preguntar','Demander','Спросить'],'שאל שאלה':['Ask a question','Haz una pregunta','Poser une question','Задать вопрос'],
+'איזה פרק תהילים לרפואה, לפרנסה, לשמירה – וסיפורים מהתנ״ך':['Which psalm for healing, livelihood, protection – and Bible stories','Qué salmo para curación, sustento, protección – e historias bíblicas','Quel psaume pour la guérison, la subsistance, la protection – et récits bibliques','Какой псалом для исцеления, заработка, защиты – и библейские истории'],
+'מדריך לתפילה ולתהילים – לא רב. לשאלות הלכתיות פנו לרב.':['A guide to prayer and Tehillim – not a rabbi. For halachic questions, ask a rabbi.','Guía de oración y Tehilim – no es un rabino. Para preguntas halájicas, consulte a un rabino.','Un guide de prière et de Tehilim – pas un rabbin. Pour les questions de halakha, demandez à un rabbin.','Путеводитель по молитве и Теилим – не раввин. С галахическими вопросами обращайтесь к раввину.'],
+'שאל על תהילים, תפילות…':['Ask about Tehillim, prayers…','Pregunta sobre Tehilim, oraciones…','Questions sur les Tehilim, les prières…','Спросите о Теилим, молитвах…'],
+'איזה פרק תהילים עוזר לחרדה?':['Which psalm helps with anxiety?','¿Qué salmo ayuda con la ansiedad?','Quel psaume aide contre l’angoisse ?','Какой псалом помогает при тревоге?'],
+'תפילה לרפואת חולה':['Prayer for healing','Oración por un enfermo','Prière pour un malade','Молитва об исцелении'],'תהילים לפרנסה':['Tehillim for livelihood','Tehilim para el sustento','Tehilim pour la subsistance','Теилим о заработке'],
+'פרק תהילים לילדים שלי':['A psalm for my children','Un salmo para mis hijos','Un psaume pour mes enfants','Псалом для моих детей'],'איזה פרק תהילים לשמירה?':['Which psalm for protection?','¿Qué salmo para protección?','Quel psaume pour la protection ?','Какой псалом для защиты?'],
+'אני רוצה להודות לה׳':['I want to thank G-d','Quiero agradecer a Dios','Je veux remercier D.ieu','Я хочу поблагодарить Всевышнего'],'ספר לי סיפור מרתק מהתנ״ך':['Tell me a fascinating Bible story','Cuéntame una historia bíblica','Raconte-moi une histoire biblique','Расскажи увлекательную историю из Танаха'],
+'ספר לי על פרק תהילים מיוחד':['Tell me about a special psalm','Háblame de un salmo especial','Parle-moi d’un psaume particulier','Расскажи об особом псалме'],'תהילים לזיווג':['Tehillim for finding a match','Tehilim para encontrar pareja','Tehilim pour trouver son conjoint','Теилим о паре'],
+'תהילים לעילוי נשמה':['Tehillim in memory of the departed','Tehilim en memoria de un difunto','Tehilim pour l’élévation de l’âme','Теилим в память об усопшем'],'תפילה להצלחה במבחן או בעבודה':['Prayer for success in an exam or at work','Oración para el éxito en un examen o trabajo','Prière pour réussir un examen ou au travail','Молитва об успехе на экзамене или в работе'],
+'תהילים לשלום בית':['Tehillim for peace at home','Tehilim para la paz en el hogar','Tehilim pour la paix du foyer','Теилим о мире в доме'],'מה אומרים היום בתהילים?':['What is today’s Tehillim?','¿Qué Tehilim se dice hoy?','Quels Tehilim aujourd’hui ?','Какие Теилим сегодня?'],
+'מה הם עשרת המבצעים של הרבי?':['What are the Rebbe’s ten mitzvah campaigns?','¿Cuáles son las diez campañas del Rebe?','Quelles sont les dix campagnes du Rabbi ?','Что такое десять кампаний Ребе?'],'איזו ברכה מברכים על…?':['Which blessing do I say on…?','¿Qué bendición se dice sobre…?','Quelle bénédiction sur… ?','Какое благословение на…?'],
+'איך מקשיבים לתפילה בקול?':['How do I listen to a prayer aloud?','¿Cómo escuchar la oración en voz alta?','Comment écouter la prière à voix haute ?','Как слушать молитву вслух?'],'סיפור נוסף':['Another story','Otra historia','Une autre histoire','Ещё история'],'פרק נוסף':['Another psalm','Otro salmo','Un autre psaume','Ещё псалом'],
+'לנושאים':['Topics','Temas','Sujets','Темы'],'מצאתי באתר:':['Found on the site:','Encontré en el sitio:','Trouvé sur le site :','Нашёл на сайте:'],'הפעלת מצב קולי':['Turn on voice mode','Activar modo de voz','Activer le mode vocal','Включить голосовой режим']});
 /* ניסוחים שמופיעים בתוך משפטים */
 const TR_RX=[
  [/פסקה (\d+) מתוך (\d+)/, (m,a,b)=>`${T('פסקה')} ${a} ${T('מתוך')} ${b}`],
@@ -1594,6 +1631,11 @@ ICO['⏰']=SV(`<defs>${GOLD}<radialGradient id="gClock" cx=".4" cy=".35" r=".7">
 <g stroke="#0f2c5c" stroke-width="1.6">${[0,30,60,90,120,150,180,210,240,270,300,330].map(a=>{const r=Math.PI*a/180;return `<path d="M${32+Math.sin(r)*16} ${35-Math.cos(r)*16}L${32+Math.sin(r)*18.5} ${35-Math.cos(r)*18.5}"/>`}).join('')}</g>
 <path d="M32 35V23M32 35l8 5" stroke="#0f2c5c" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="35" r="2.4" fill="#8a2a2a"/>
 <path d="M20 56l-4 5M44 56l4 5" stroke="url(#gGold)" stroke-width="4" stroke-linecap="round"/>`);
+ICO['💬']=SV(`<defs>${GOLD}<linearGradient id="gBub" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f5f92"/><stop offset="1" stop-color="#0f2c5c"/></linearGradient></defs>
+<path d="M8 12h34a6 6 0 0 1 6 6v16a6 6 0 0 1-6 6H22l-9 8v-8H8a6 6 0 0 1-6-6V18a6 6 0 0 1 6-6z" fill="url(#gBub)" stroke="url(#gGold)" stroke-width="2"/>
+<path d="M30 24h20a6 6 0 0 1 6 6v14a6 6 0 0 1-6 6h-2v8l-9-8H30a6 6 0 0 1-6-6V30a6 6 0 0 1 6-6z" fill="#fffaf0" stroke="url(#gGold)" stroke-width="2"/>
+<g fill="#b08a3e"><circle cx="34" cy="37" r="2.4"/><circle cx="40" cy="37" r="2.4"/><circle cx="46" cy="37" r="2.4"/></g>
+<path d="M10 22h22M10 28h16" stroke="#ecd28c" stroke-width="2.4" stroke-linecap="round"/>`);
 ICO['📜']=ICO['🙏'];
 ICO['🌅']=ICO['🌄']; ICO['✨']=ICO['🕯️']; ICO['⭐']=ICO['🌙'];
 let _icoN=0;
@@ -1668,6 +1710,7 @@ function renderHome(){
   for(const id of tod){ const x=it(id); h+=tile(id,x.icon,x.title,x.sub,TILE_COLORS[id]); }
   h+=tile('teh-day','📖','תהילים יומי',dailyRange(),3);
   h+=tile('teh-age','❤️','תהילים אישי','פרק לפי הגיל',4);
+  h+=tile('ask','💬','שאל שאלה','איזה פרק תהילים לרפואה, לפרנסה, לשמירה – וסיפורים מהתנ״ך',3);
   h+=tile('remind','⏰','מתזכר תפילה','תזכורת לשחרית, מנחה וערבית בלוח השנה',0);
   h+=tile('bentch','🍞','ברכת המזון','',1);
   h+=DM_TILE();
@@ -1853,7 +1896,7 @@ function tehView(id){
 }
 
 function go(id){ location.hash = id? id : ''; if(!id) route(); }
-function route(){ const id=location.hash.slice(1); id==='remind'? renderRemind() : id==='about'? renderAbout() : id==='siddur'? renderSiddurList() : id? renderItem(id) : renderHome(); renderSide(id); }
+function route(){ const id=location.hash.slice(1); id==='ask'? renderAsk() : id==='remind'? renderRemind() : id==='about'? renderAbout() : id==='siddur'? renderSiddurList() : id? renderItem(id) : renderHome(); renderSide(id); }
 function renderSide(cur){
   const side=document.getElementById('side'); if(!side) return;
   const item=(id,icon,title)=>{ const on = cur===id || (id==='teh' && cur.startsWith('teh')); return `<a href="#${id}" class="sitem${on?' on':''}" ${on?'aria-current="page"':''}><span aria-hidden="true">${icoOf(icon)}</span>${title}</a>`; };
@@ -2111,6 +2154,118 @@ function renderRemind(){
   </div>`;
   app.innerHTML=h; remPreview(); window.scrollTo(0,0); document.getElementById('h1').focus();
   if(cfg.voiceMode) announce(T('מתזכר תפילה')+'. '+T('בחרו תפילות והוסיפו ללוח השנה.'));
+}
+
+/* ===================== שאל שאלה – מדריך תפילה ותהילים ===================== */
+const ASK=[
+ {id:'fear',icon:'🤍',q:'איזה פרק תהילים עוזר לחרדה?',kw:'חרדה פחד לחץ דאגה מצוקה צרה פחדים אנחה anxiety fear stress ansiedad miedo angoisse peur тревога страх',
+  a:'בעת לחץ ודאגה נוהגים לומר פרקים שמדברים על ביטחון בה׳. פרק כ״ג („ה׳ רועי לא אחסר”) מזכיר שאנחנו לא לבד, פרק כ״ז („ה׳ אורי וישעי ממי אירא”) נותן אומץ, ופרק קכ״א („אשא עיני אל ההרים”) מזכיר מאיפה מגיעה העזרה. בשעת צרה אומרים גם את פרק כ׳ („יענך ה׳ ביום צרה”) ואת פרק ק״ל („ממעמקים קראתיך”).',
+  ch:[23,27,121,20,130]},
+ {id:'heal',icon:'🩺',q:'תפילה לרפואת חולה',kw:'רפואה חולה מחלה בריאות ניתוח בית חולים refuah healing sick illness curación enfermo guérison malade исцеление больной',
+  a:'נהוג לומר לרפואת חולה את פרקים כ׳, ל׳, מ״א, פ״ח ו־ק״ג, ולהזכיר את שם החולה ושם אמו. מנהג נוסף הוא לומר מפרק קי״ט את הפסוקים לפי אותיות שם החולה – אפשר לעשות זאת כאן ב„פסוקים לפי השם”. כמובן, לצד התפילה – לפעול לפי הוראות הרופאים.',
+  ch:[20,30,41,88,103],links:[['teh-name','פסוקים לפי שם החולה']]},
+ {id:'parnassa',icon:'💼',q:'תהילים לפרנסה',kw:'פרנסה כסף עבודה משכורת עסק חובות parnassah income work job sustento trabajo travail argent заработок работа',
+  a:'לפרנסה נוהגים לומר את פרק כ״ג, את פרק ל״ד, את פרק ס״ב ובעיקר את פרק קמ״ה („אשרי”), שבו נאמר „פותח את ידך ומשביע לכל חי רצון”. אומרים „אשרי” שלוש פעמים ביום, בשחרית ובמנחה, ומכוונים במיוחד בפסוק „פותח את ידך”.',
+  ch:[23,34,62,145]},
+ {id:'kids',icon:'👨‍👧',q:'פרק תהילים לילדים שלי',kw:'ילדים ילד בן בת חינוך זרע של קיימא הריון לידה children kids pregnancy niños embarazo enfants grossesse дети беременность',
+  a:'לברכת ילדים ולחינוכם נוהגים לומר את פרק קכ״ז („אם ה׳ לא יבנה בית”) ואת פרק קכ״ח („בניך כשתילי זיתים”). לזרע של קיימא נוהגים לומר את פרק קי״ג („מושיבי עקרת הבית אם הבנים שמחה”), ולאישה בלידה – את פרק כ׳. וכמנהג חב״ד, כל ילד יכול לומר בכל יום את הפרק האישי שלו לפי גילו.',
+  ch:[127,128,113,20],links:[['teh-age','הפרק האישי לפי גיל']]},
+ {id:'protect',icon:'🛡️',q:'איזה פרק תהילים לשמירה?',kw:'שמירה הגנה מזיקים סכנה בטחון צבא חייל protection safety soldier protección seguridad protection sécurité защита безопасность солдат',
+  a:'פרק צ״א („יושב בסתר עליון”) נקרא „שיר של פגעים” ונאמר לשמירה מכל רע. פרק קכ״א („ה׳ שומרך ה׳ צלך”) מדבר על שמירת ה׳ בכל מקום, ופרק כ׳ נאמר בעת סכנה. לחיילים ולנוסעים נוהגים לומר את כולם.',
+  ch:[91,121,20]},
+ {id:'thanks',icon:'🙌',q:'אני רוצה להודות לה׳',kw:'תודה הודיה להודות נס ישועה שמחה thanks gratitude gracias agradecer merci remercier спасибо благодарность',
+  a:'פרק ק׳ („מזמור לתודה”) נאמר במיוחד כהודיה. פרק קי״ח („הודו לה׳ כי טוב”) ופרק קל״ו („כי לעולם חסדו”) הם שירי הודיה, ופרק ל׳ נאמר אחרי הצלה. מי שניצל מסכנה, החלים ממחלה או חזר מטיסה מברך „הגומל” בפני עשרה.',
+  ch:[100,118,136,30],links:[['special','ברכת הגומל']]},
+ {id:'story',icon:'📖',q:'ספר לי סיפור מרתק מהתנ״ך',kw:'סיפור סיפורים תנך תורה ילדים story stories bible historia biblia histoire bible история библия',story:true},
+ {id:'special',icon:'✨',q:'ספר לי על פרק תהילים מיוחד',kw:'פרק מיוחד הסבר משמעות פירוש ידוע מפורסם explain meaning famous psalm explicar salmo expliquer psaume объяснить псалом',special:true},
+ {id:'shidduch',icon:'💍',q:'תהילים לזיווג',kw:'זיווג שידוך חתונה בן זוג נישואין marriage match shidduch pareja boda mariage âme sœur свадьба пара',
+  a:'יש הנוהגים לומר לזיווג הגון את פרקים ל״ב, ל״ח, ע׳, ע״א, קכ״א וקכ״ד, ולהתפלל במיוחד בברכת „שומע תפילה” בשמונה עשרה. אפשר לומר גם את הפסוקים לפי האותיות של השם.',
+  ch:[32,38,70,71,121,124],links:[['teh-name','פסוקים לפי השם']]},
+ {id:'memorial',icon:'🕯️',q:'תהילים לעילוי נשמה',kw:'עילוי נשמה נפטר אזכרה יארצייט שבעה פטירה אבל memorial yahrzeit mourning memoria duelo mémoire deuil память траур',
+  a:'לעילוי נשמה נוהגים לומר את פרקים ט״ז, י״ז, ל״ג, ע״ב, צ״א, ק״ד וק״ל, ואחריהם את הפסוקים מפרק קי״ט לפי אותיות שם הנפטר, ולסיום את אותיות נ־ש־מ־ה. באתר יש לזה כלי מוכן ב„פסוקים לפי השם”.',
+  ch:[16,17,33,72,91,104,130],links:[['teh-name','פסוקים לפי שם הנפטר']]},
+ {id:'success',icon:'🎯',q:'תפילה להצלחה במבחן או בעבודה',kw:'הצלחה מבחן בגרות ראיון עבודה פרויקט success exam test interview éxito examen succès examen успех экзамен',
+  a:'לפני מבחן, ראיון או החלטה חשובה נוהגים לומר את פרק כ׳ („יתן לך כלבבך וכל עצתך ימלא”) ואת פרק קכ״א. טוב גם לתת צדקה לפני, ולהתפלל במילים שלך בברכת „אתה חונן לאדם דעת” בשמונה עשרה.',
+  ch:[20,121]},
+ {id:'shalom',icon:'🏠',q:'תהילים לשלום בית',kw:'שלום בית זוגיות משפחה מריבה בית שקט peace home marriage family paz hogar familia paix foyer famille мир дом семья',
+  a:'לשלום בית נוהגים לומר את פרק קכ״ח („אשתך כגפן פוריה בירכתי ביתך”), את פרק קכ״ב („יהי שלום בחילך”) ואת פרק קל״ג („הנה מה טוב ומה נעים”).',
+  ch:[128,122,133]},
+ {id:'daily',icon:'📅',q:'מה אומרים היום בתהילים?',kw:'היום יומי חודש חלוקה תהילים היום daily today hoy diario aujourd’hui сегодня ежедневно',
+  a:'כמנהג חב״ד, את ספר התהילים מסיימים כל חודש עברי לפי חלוקה קבועה לימי החודש. החלק של היום מחכה לך כאן, מנוקד ועם הקראה.',links:[['teh-day','תהילים יומי']],dyn:'daily'},
+ {id:'mivtzoim',icon:'🕍',q:'מה הם עשרת המבצעים של הרבי?',kw:'מבצעים רבי חבד ליובאוויטש מבצע תפילין נרות מזוזה צדקה mivtzoim rebbe campaigns campañas campagnes кампании ребе',
+  a:'הרבי מליובאוויטש עודד עשרה „מבצעים” – מצוות שכל יהודי יכול לקיים ולקרב בהן אחרים: אהבת ישראל, חינוך, לימוד תורה, תפילין, מזוזה, צדקה, בית מלא ספרים, נרות שבת וחג, כשרות וטהרת המשפחה. באתר תמצאו את הנחת תפילין המהירה ואת סדר הדלקת נרות שבת.',
+  links:[['tefillin','הנחת תפילין מהירה'],['candles','הדלקת נרות שבת']]},
+ {id:'bracha',icon:'🍎',q:'איזו ברכה מברכים על…?',kw:'ברכה ברכות מברכים אוכל פרי מזונות שהכל האדמה העץ blessing food bendición comida bénédiction nourriture благословение еда',
+  a:'על לחם – „המוציא”, על מאפים ודגנים – „מזונות”, על יין – „הגפן”, על פרי העץ – „העץ”, על ירקות – „האדמה”, ועל כל השאר – „שהכל”. אחרי האוכל מברכים ברכת המזון, מעין שלוש או בורא נפשות. הפירוט המלא כאן:',
+  links:[['food','מה מברכים?'],['bentch','ברכת המזון'],['meein','מעין שלוש']]},
+ {id:'access',icon:'🔊',q:'איך מקשיבים לתפילה בקול?',kw:'הקראה קול שמיעה עיוור ליקוי ראייה נגישות להקשיב listen audio blind accessibility escuchar ciego écouter aveugle слушать слепой',
+  a:'בכל תפילה לוחצים על „▶ הקרא” בתחתית המסך, או על כל פסקה כדי להתחיל ממנה. ב„מצב קולי לליקויי ראייה” האתר מכריז על כל מסך ומתחיל להקריא אוטומטית. את מהירות ההקראה וגודל האותיות משנים בהגדרות ⚙︎.',
+  links:[['__voice','הפעלת מצב קולי']]},
+];
+const STORIES=[
+ {t:'דוד וגלית',ch:'שמואל א׳, פרק י״ז',s:'צבא הפלשתים עמד מול צבא ישראל, ובכל יום יצא גלית – לוחם ענק בשריון כבד – ולעג לישראל. כולם פחדו. דוד, נער רועה צאן שבא להביא אוכל לאחיו, שמע את הלעג ואמר: „אני אלחם בו”. הוא סירב לשריון של המלך שאול, לקח רק מקל, קלע וחמש אבנים חלקות מהנחל, ויצא בשם ה׳. אבן אחת פגעה במצחו של גלית, והענק נפל. הלקח: הכוח האמיתי בא מהאמונה, לא מהגודל.'},
+ {t:'יונה והדג',ch:'ספר יונה',s:'ה׳ שלח את הנביא יונה להזהיר את העיר הגדולה נינוה שתחזור בתשובה. יונה ניסה לברוח באונייה לכיוון ההפוך, אבל סערה גדולה קמה בים. הוא ביקש מהמלחים להשליך אותו למים, ושם בלע אותו דג גדול. שלושה ימים התפלל יונה מבטן הדג, והדג פלט אותו ליבשה. הפעם הלך לנינוה – וכל אנשי העיר חזרו בתשובה ונסלח להם. קוראים את הסיפור ביום כיפור, כי הוא מלמד שתשובה אמיתית יכולה לשנות הכול.'},
+ {t:'יוסף ואחיו',ch:'בראשית, פרקים ל״ז–מ״ה',s:'יוסף, הבן האהוב של יעקב, חלם חלומות שבהם אחיו משתחווים לו, והאחים קינאו בו ומכרו אותו לעבד במצרים. שם עבר ניסיונות קשים והגיע לכלא, אבל בזכות פתרון החלומות של פרעה נעשה למשנה למלך. כשהיה רעב בארץ, האחים באו למצרים לקנות אוכל ולא זיהו אותו. יוסף בחן אותם, וכשראה שהשתנו – התגלה אליהם ובכה: „אני יוסף”. הוא סלח להם ואמר שכל זה היה מאת ה׳, כדי להציל חיים.'},
+ {t:'אסתר המלכה',ch:'מגילת אסתר',s:'בממלכת פרס זמם המן הרשע להשמיד את כל היהודים, והמלך אחשוורוש הסכים. אסתר, יתומה יהודייה שנבחרה למלכה והסתירה את מוצאה, שמעה מדודה מרדכי על הגזירה. היא ביקשה מכל היהודים לצום שלושה ימים, ואז נכנסה למלך בלי שהוזמנה – בסכנת חיים. במשתה שערכה חשפה את תוכניתו של המן, והגזירה התהפכה. על הנס הזה חוגגים את פורים.'},
+ {t:'דניאל בגוב האריות',ch:'דניאל, פרק ו׳',s:'דניאל היה יועץ חשוב של המלך דריוש בבבל, והשרים קינאו בו. הם שכנעו את המלך לחוקק חוק שאסור להתפלל לאיש מלבד המלך במשך שלושים יום. דניאל המשיך להתפלל לה׳ שלוש פעמים ביום מול חלון פתוח לכיוון ירושלים, והושלך לגוב האריות. בבוקר מיהר המלך לגוב ומצא את דניאל חי ושלם – „אלוהי שלח מלאכו וסגר פי האריות”.'},
+ {t:'רות ונעמי',ch:'מגילת רות',s:'אחרי שבעלה ושני בניה מתו בארץ מואב, החליטה נעמי לחזור לבית לחם. כלתה רות, נסיכה מואבייה, סירבה לעזוב אותה ואמרה: „עמך עמי ואלוהייך אלוהיי”. בבית לחם ליקטה רות שיבולים בשדהו של בועז, שהתרשם מחסדה ונשא אותה לאישה. מצאצאיהם נולד דוד המלך. קוראים את המגילה בשבועות, חג קבלת התורה.'},
+];
+const SPECIAL_PS=[
+ [23,'„מזמור לדוד, ה׳ רועי לא אחסר”','אחד הפרקים המוכרים ביותר. דוד, שהיה רועה צאן, משווה את ה׳ לרועה שדואג לכל צרכי הצאן שלו – גם „בגיא צלמוות”. רבים אומרים אותו בסעודה השלישית בשבת ובעתות קושי.'],
+ [91,'„יושב בסתר עליון”','נקרא „שיר של פגעים” – פרק של שמירה מכל רע. אומרים אותו לפני השינה, בדרך ובזמני סכנה. לפי המסורה, משה רבנו אמר אותו כשהקים את המשכן.'],
+ [121,'„שיר למעלות, אשא עיני אל ההרים”','פרק קצר על ההשגחה של ה׳: „לא ינום ולא יישן שומר ישראל”. רבים תולים אותו בחדר של יולדת ותינוק, ואומרים אותו לשמירה בדרך.'],
+ [20,'„יענך ה׳ ביום צרה”','פרק של תפילה בעת צרה, שנאמר בימי חול לפני „ובא לציון”. בו הפסוק „אלה ברכב ואלה בסוסים, ואנחנו בשם ה׳ אלוהינו נזכיר”.'],
+ [100,'„מזמור לתודה”','בזמן בית המקדש היה פרק זה נאמר בשעת הבאת קרבן תודה. היום אומרים אותו בתפילת שחרית של ימי חול, כהודיה על כל הטוב.'],
+ [150,'„הללויה, הללו אל בקדשו”','הפרק האחרון בספר תהילים, ששיאו „כל הנשמה תהלל יה”. הוא מונה כלי נגינה רבים ומזמין את כל הבריאה לשבח את ה׳.'],
+ [119,'„אשרי תמימי דרך”','הפרק הארוך ביותר בתנ״ך – 176 פסוקים, שמונה לכל אות מא׳ עד ת׳. ממנו נוהגים לומר פסוקים לפי אותיות השם, לעילוי נשמה ולרפואה.'],
+];
+const ASK_HEB=n=>heb(n);
+let ASK_LOG=[];
+function askAnswerHTML(item){
+  if(item.story){ const s=STORIES[Math.floor(Math.random()*STORIES.length)]; return {text:`<b>${esc(s.t)}</b> <small>(${esc(s.ch)})</small><br>${esc(s.s)}`, say:s.t+'. '+s.s, more:'story'}; }
+  if(item.special){ const p=SPECIAL_PS[Math.floor(Math.random()*SPECIAL_PS.length)]; return {text:`<b>פרק ${heb(p[0])} – ${esc(p[1])}</b><br>${esc(p[2])}`, say:'פרק '+p[0]+'. '+p[2], chips:[p[0]], more:'special'}; }
+  let txt=esc(item.a);
+  if(item.dyn==='daily'){ const r=dailyRange(); if(r) txt+=` <b>היום: ${esc(r)}.</b>`; }
+  return {text:txt, say:item.a, chips:item.ch||[], links:item.links||[]};
+}
+function askChipsHTML(ans){
+  let h='';
+  if(ans.chips&&ans.chips.length) h+=ans.chips.map(n=>`<button class="achip" onclick="go('teh-${n}')">${T('תהילים')} ${heb(n)}</button>`).join('');
+  if(ans.links) h+=ans.links.map(([id,t])=> id==='__voice'? `<button class="achip gold" onclick="toggleVoiceMode()">${esc(t)}</button>` : `<button class="achip gold" onclick="go('${id}')">${esc(t)}</button>`).join('');
+  if(ans.more) h+=`<button class="achip" onclick="askTopic('${ans.more==='story'?'story':'special'}')">${ans.more==='story'?'סיפור נוסף':'פרק נוסף'}</button>`;
+  return h? `<div class="achips">${h}</div>`:'';
+}
+function askMatch(q){
+  const n=normQ(q); if(!n) return null; const words=n.split(' ').filter(w=>w.length>1); let best=null, bs=0;
+  for(const it of ASK){ const hay=normQ(it.q+' '+it.kw); let sc=0; for(const w of words){ if(hay.includes(w)) sc+= w.length>3?3:1; } if(sc>bs){bs=sc;best=it;} }
+  return bs>=2? best : null;
+}
+function askPush(role,html,say){ ASK_LOG.push({role,html}); askRenderLog(); if(role==='bot'){ document.getElementById('live').textContent=say||''; if(cfg.voiceMode&&say){ stopAll(); LANG==='he'? utter(say,()=>{},'read') : sayInLang(trText(say)); } } }
+function askRenderLog(){
+  const box=document.getElementById('askLog'); if(!box) return;
+  box.innerHTML=ASK_LOG.map(m=>`<div class="amsg ${m.role}">${m.html}</div>`).join('');
+  const cards=document.getElementById('askCards'); if(cards) cards.hidden=ASK_LOG.length>0;
+  const last=box.lastElementChild; if(last) last.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function askTopic(id){ const it=ASK.find(x=>x.id===id); if(!it) return; askPush('me',esc(it.q)); const a=askAnswerHTML(it); askPush('bot',a.text+askChipsHTML(a),stripNikud(a.say||'')); }
+function askFree(q){
+  q=(q||'').trim(); if(!q) return; askPush('me',esc(q));
+  const num=q.match(/(?:פרק|תהילים|תהלים|psalm|salmo|psaume|псалом)?\s*(\d{1,3})/i);
+  const it=askMatch(q);
+  if(it){ const a=askAnswerHTML(it); askPush('bot',a.text+askChipsHTML(a),stripNikud(a.say||'')); return; }
+  const r=doSearch(q).filter(x=>!x.ext).slice(0,4);
+  if(r.length){ askPush('bot',`מצאתי באתר:`+`<div class="achips">${r.map(x=>`<button class="achip gold" onclick="go('${x.id}')">${esc(x.title)}</button>`).join('')}</div>`,'מצאתי באתר '+r.map(x=>x.title).join(', ')); return; }
+  askPush('bot',`עוד לא יודע לענות על זה. נסו לבחור נושא מהרשימה, או לחפש תפילה או פרק. <b>לשאלות הלכתיות – פנו לרב.</b>`+`<div class="achips"><button class="achip" onclick="askReset()">לנושאים</button></div>`,'עוד לא יודע לענות על זה. לשאלות הלכתיות פנו לרב.');
+}
+function askReset(){ ASK_LOG=[]; renderAsk(); }
+function renderAsk(){
+  stopReading(); R_.blocks=[]; updPlayer(); setTab('ask');
+  let h=`<header class="top"><h1 id="h1" tabindex="-1">שאל שאלה</h1></header><p class="asksub">מדריך לתפילה ולתהילים – לא רב. לשאלות הלכתיות פנו לרב.</p>`;
+  h+=`<div class="askgrid" id="askCards" role="list">${ASK.map(it=>`<button class="acard" role="listitem" onclick="askTopic('${it.id}')"><span class="aic" aria-hidden="true">${it.icon}</span><span>${esc(it.q)}</span></button>`).join('')}</div>`;
+  h+=`<div id="askLog" class="asklog" aria-live="polite"></div>`;
+  h+=`<form class="askbar" onsubmit="event.preventDefault();askFree(this.q.value);this.q.value=''"><label for="askIn" class="sr">שאל על תהילים, תפילות</label><input id="askIn" name="q" type="text" autocomplete="off" enterkeyhint="send" placeholder="שאל על תהילים, תפילות…"><button type="submit" aria-label="שליחה">↑</button></form>`;
+  app.innerHTML=h; askRenderLog(); window.scrollTo(0,0); document.getElementById('h1').focus();
+  if(cfg.voiceMode) announce('שאל שאלה. בחרו נושא או כתבו שאלה.');
 }
 
 /* ===================== חיפוש באתר ===================== */
