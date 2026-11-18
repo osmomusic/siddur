@@ -239,28 +239,6 @@ body.hc .tile::after{display:none}
     <h2 id="dlgT">הגדרות הקראה ונגישות</h2>
     <div id="noVoice" class="warn" hidden>לא נמצא קול עברי במכשיר. באייפון: הגדרות ← נגישות ← תוכן מוקרא ← קולות ← עברית, והורד את הקול „Carmit”.</div>
     <div class="field">
-      <label for="sEngine">סגנון הקראה</label>
-      <select id="sEngine">
-        <option value="chant">קול חזן מובנה – בנוסח תפילה</option>
-        <option value="read">קול מובנה – קריאה רגילה</option>
-        <option value="device">קול המכשיר</option>
-      </select>
-      <small>הקול המובנה נבנה בתוך הסידור עצמו ואינו תלוי במכשיר. ההוראות הקטנות (בלי ניקוד) מוקראות בקול המכשיר.</small>
-    </div>
-    <div class="field">
-      <label for="sAshk">הגייה</label>
-      <select id="sAshk"><option value="0">ישראלית (ספרדית)</option><option value="1">אשכנזית – חב״ד</option></select>
-    </div>
-    <div class="field">
-      <label for="sPitch">גובה קול החזן: <span id="pitchV"></span></label>
-      <input type="range" id="sPitch" min="-6" max="8" step="1">
-    </div>
-    <div class="field">
-      <label for="sGender">קול המכשיר – גבר או אישה</label>
-      <select id="sGender"><option value="male">קול גבר</option><option value="female">קול אישה</option></select>
-      <small>אם במכשיר אין קול גברי בעברית (למשל באייפון יש רק „כרמית”), הסידור מנמיך את הקול כך שיישמע גברי. במחשב Windows יש קול גבר בשם „Asaf”, ובדפדפן Edge יש „Avri”.</small>
-    </div>
-    <div class="field">
       <label for="sVoice">קול ההקראה</label>
       <select id="sVoice"></select>
     </div>
@@ -822,7 +800,7 @@ function numWords(n){
 }
 
 /* ===================== הגדרות ===================== */
-const DEF={voice:'',rate:0.9,fs:24,voiceMode:false,auto:true,hc:false,nikud:true,theme:'auto',ui:1,engine:'chant',ashk:false,pitch:0,devGender:'male'};
+const DEF={voice:'',rate:0.9,fs:24,voiceMode:false,auto:true,hc:false,nikud:true,theme:'auto',ui:1};
 let cfg={...DEF};
 try{cfg={...DEF,...JSON.parse(localStorage.getItem('siddurCfg')||'{}')}}catch(e){}
 function saveCfg(){try{localStorage.setItem('siddurCfg',JSON.stringify(cfg))}catch(e){}}
@@ -836,273 +814,18 @@ function applyCfg(){
   m.content = cfg.hc? '#000000' : dark? '#2a2019' : '#efd6bd';
 }
 
-/* ===================== מנוע „קול חזן” מובנה – סינתזת פורמנטים + נוסח תפילה ===================== */
-const CHAZAN = (()=>{
-const SR=22050, FMS=5, FRM=Math.round(SR*FMS/1000);
-const VOW={a:[730,1240,2600],e:[500,1800,2550],i:[300,2250,3000],o:[500,880,2450],u:[330,800,2300],'@':[520,1500,2500]};
-const C={
- b:{F:[250,900,2300],stop:1,cAV:.2,bAF:0.18,Fc:1200,Fbw:1600,bAH:0},
- p:{F:[250,900,2300],stop:1,cAV:0,bAF:0.24,Fc:1200,Fbw:1600,bAH:.3},
- d:{F:[300,1700,2600],stop:1,cAV:.2,bAF:0.21,Fc:4000,Fbw:3000,bAH:0},
- t:{F:[300,1700,2600],stop:1,cAV:0,bAF:0.30,Fc:4500,Fbw:3000,bAH:.25},
- g:{F:[300,1900,2400],stop:1,cAV:.2,bAF:0.21,Fc:2300,Fbw:1200,bAH:0},
- k:{F:[300,1900,2400],stop:1,cAV:0,bAF:0.27,Fc:2300,Fbw:1200,bAH:.3},
- f:{F:[300,1000,2300],dur:85,AF:.14,Fc:3500,Fbw:2500},
- v:{F:[300,1000,2300],dur:60,AV:.55,AF:0,Fc:3000,Fbw:2000},
- s:{F:[300,1700,2600],dur:95,AF:.6,Fc:4800,Fbw:1600},
- z:{F:[300,1700,2600],dur:75,AV:.45,AF:.25,Fc:4600,Fbw:1600},
- S:{F:[300,1900,2500],dur:100,AF:.6,Fc:2800,Fbw:1200},
- x:{F:[400,1400,2400],dur:85,AF:.35,Fc:1500,Fbw:900,AH:0},
- h:{F:null,dur:50,AH:.35},
- m:{F:[250,1100,2300],dur:70,AV:.5},
- n:{F:[250,1500,2500],dur:62,AV:.5},
- l:{F:[360,1100,2700],dur:58,AV:.7},
- r:{F:[450,1250,2300],dur:58,AV:.6,AF:.04,Fc:1300,Fbw:700},
- y:{F:[280,2250,3000],dur:45,AV:.75},
- '?':{F:null,dur:22,AV:0},
-};
-
-/* ---------- ממנוקד לפונמות ---------- */
-const VM={'ְ':'@','ֱ':'e','ֲ':'a','ֳ':'o','ִ':'i','ֵ':'E','ֶ':'e','ַ':'a','ָ':'A','ֹ':'O','ֺ':'O','ֻ':'u','ׇ':'o'};
-const HATAF={'ֱ':1,'ֲ':1,'ֳ':1};
-function units(w){
-  const u=[];
-  for(const ch of w){ if(ch>='א'&&ch<='ת') u.push({L:ch,m:''}); else if(u.length) u[u.length-1].m+=ch; }
-  for(const x of u){ x.dag=x.m.includes('ּ'); x.sin=x.m.includes('ׂ'); x.v=''; x.haf=false;
-    for(const c of x.m){ if(VM[c]){ x.v=VM[c]; x.haf=!!HATAF[c]; } } }
-  return u;
-}
-function vowelOut(v,ashk){
-  if(v==='A') return ashk?['o']:['a'];
-  if(v==='E') return ashk?['e','y']:['e'];
-  if(v==='O') return ashk?['o','y']:['o'];
-  return [v];
-}
-function g2p(w,ashk){
-  const u=units(w), n=u.length, out=[]; let lastV='';
-  const pushV=(v,short)=>{ for(const p of vowelOut(v,ashk)) out.push({p, v:p!=='y', short:!!short}); lastV=v; };
-  const pushC=(p)=>{ if(p==='ts'){ out.push({p:'t'},{p:'s',short:1}); } else out.push({p}); };
-  for(let i=0;i<n;i++){
-    const x=u[i], L=x.L, last=i===n-1, prev=u[i-1], next=u[i+1]; const v=x.v;
-    if(L==='ו'){
-      if(v==='O'){ if(i===0 || (prev && prev.v==='' && prev.L!=='ו')){ pushV('O'); continue; } pushC('v'); pushV('O'); continue; }
-      if(x.dag && v===''){ pushV('u'); continue; }
-    }
-    if(L==='י' && v==='' && !x.dag){
-      if(next && next.L==='ו' && next.v==='' && !next.dag && i===n-2) continue;
-      if(i===0){ pushC('y'); continue; }
-      if(lastV==='i'||lastV==='e') continue;
-      if(lastV==='E'){ if(!ashk) out.push({p:'y'}); continue; }
-      pushC('y'); continue;
-    }
-    if(L==='א'||L==='ע'){
-      if(v===''||v==='@') continue;
-      if(out.length && out[out.length-1].v) out.push({p:'?'});
-      pushV(v,x.haf); continue;
-    }
-    if(L==='ה'){ if(last && v==='' && !x.dag) continue; if(last && v==='a'){ pushV('a'); pushC('h'); continue; } }
-    if(L==='ח' && last && v==='a'){ pushV('a'); pushC('x'); continue; }
-    const cmap={'ב':x.dag?'b':'v','ג':'g','ד':'d','ה':'h','ו':'v','ז':'z','ח':'x','ט':'t','י':'y','כ':x.dag?'k':'x','ך':x.dag?'k':'x','ל':'l','מ':'m','ם':'m','נ':'n','ן':'n','ס':'s','פ':x.dag?'p':'f','ף':'f','צ':'ts','ץ':'ts','ק':'k','ר':'r','ש':x.sin?'s':'S','ת':(ashk&&!x.dag)?'s':'t'};
-    pushC(cmap[L]||'?');
-    if(v==='@'){
-      const na=!last && (i===0 || (prev&&prev.v==='@') || (x.dag&&i>0) || (i===1&&u[0].L==='ו'&&u[0].dag&&u[0].v===''));
-      if(na) pushV('@',true);
-      continue;
-    }
-    if(v) pushV(v,x.haf);
-  }
-  const vi=[]; out.forEach((p,k)=>{ if(p.v&&!p.short) vi.push(k); });
-  if(vi.length){
-    let s=vi[vi.length-1];
-    if(vi.length>1){
-      if(ashk) s=vi[vi.length-2];
-      else {
-        const lv=vi.map(k=>out[k].p), endsC=!out[out.length-1].v;
-        if(/ךָ$/.test(w) || (lv.length>=2 && lv[lv.length-1]==='e' && lv[lv.length-2]==='e' && endsC)) s=vi[vi.length-2];
-      }
-    }
-    out[s].stress=true;
-  }
-  return out;
-}
-const strip=(t)=>t.replace(/[֑-ׇ]/g,'');
-
-/* ---------- טקסט → ביטויים → נוסח (מנגינה) ---------- */
-function phrases(text,ashk){
-  text=text.replace(/יְיָ/g,'אֲדֹנָי')
-    .replace(/(^|[\s\u05BE])([ובלכמש][\u05B0-\u05BC]*)?י[\u05B0-\u05BC]*ה[\u05B0-\u05BC]*ו([\u05B0-\u05BC]*)ה(?![\u05D0-\u05EA])/g,(m,a,pre,v)=>a+(pre||'')+(v.includes('\u05B4')?'אֱלֹהִים':'אֲדֹנָי'))
-    .replace(/\u05BE/g,' ').replace(/\u05C3/g,'.').replace(/\u05C0/g,',');
-  const re=/([א-ת֑-ׇ]+)|([,;.:!?])/g; let m; const ph=[]; let cur=[];
-  while((m=re.exec(text))){
-    if(m[1]){ cur.push({w:m[1],raw:strip(m[1]),ph:g2p(m[1],ashk)}); }
-    else if(cur.length){ ph.push({words:cur,type:/[,;]/.test(m[2])?'comma':'full'}); cur=[]; }
-  }
-  if(cur.length) ph.push({words:cur,type:'full'});
-  return ph;
-}
-function melody(ph,style){
-  ph.forEach((P,pi)=>{
-    const W=P.words, nW=W.length, full=P.type==='full';
-    W.forEach((wd,wi)=>{
-      const vs=wd.ph.filter(p=>p.v); let sI=vs.findIndex(p=>p.stress); if(sI<0) sI=vs.length-1;
-      const lastW=wi===nW-1, bracha=wd.raw==='אדני' && wi>0 && W[wi-1].raw==='אתה' && !lastW;
-      vs.forEach((p,k)=>{
-        let c, dm=1, vib=0;
-        if(style==='chant'){ // מנגינה לפי ניתוח הקלטת החזן: עלייה בפתיחה, טון קריאה, ירידה הדרגתית ונחיתה לטוניקה
-          const lastP=pi===ph.length-1, wpos=nW>1? wi/(nW-1) : 1;
-          const R= wpos<0.3? 7 : (wpos<0.65? 5.5 : 4.5);
-          c=[R];
-          if(wi===0 && k<sI) c = k===0? [pi===0?1:3, R] : [R];
-          if(p.stress){ c = (wi%2===0)? [R+2,R+3,R+2] : [R+2]; dm=1.25; }
-          if(bracha && p.stress){ c=[7,9,8,7,5]; dm=1.8; vib=1; }
-          if(lastW){
-            if(full){ if(k<sI) c=[4]; else if(p.stress){ c= lastP? [5,4,2,0] : [5,4,2]; dm= lastP?3:2.5; vib=1; } else c=[lastP?0:2]; }
-            else    { if(k<sI) c=[R]; else if(p.stress){ c=[R+2,R,R-2]; dm=1.9; vib=1; } else c=[R-2]; }
-          } else if(full && wi===nW-2 && p.stress){ c=[6,5]; dm=1.3; }
-        } else { // קריאה רגילה – ירידה הדרגתית
-          const base=3-3*(wi/Math.max(1,nW-1));
-          c=[base+(p.stress?1.5:0)];
-          if(lastW && k>=sI) { c = full? [base+1,base-2] : [base+1,base+3]; dm=p.stress?1.3:1; }
-        }
-        p.c=c; p.dm=dm; p.vib=vib;
-      });
-    });
-  });
-}
-
-/* ---------- רצועות פרמטרים ---------- */
-function build(ph,opt){
-  const segs=[]; const chant=opt.style==='chant', K=(chant?1.12:1)/opt.rate, CK=chant?1.15:1;
-  const seg=(ms,o)=>segs.push(Object.assign({n:Math.max(1,Math.round(ms*K/FMS))},o));
-  ph.forEach(P=>{
-    P.words.forEach(wd=>{
-      wd.ph.forEach(p=>{
-        if(p.v){ const ms=(chant? (p.short?60:(p.stress?200:140)) : (p.short?45:(p.stress?140:95)))*(p.dm||1);
-          seg(ms,{F:VOW[p.p],AV:p.short?.75:1,c:p.c||[2],vib:p.vib}); return; }
-        const c=C[p.p]; if(!c) return;
-        if(c.stop){ seg(50*CK,{F:c.F,AV:c.cAV}); seg(12,{F:c.F,AF:c.bAF,Fc:c.Fc,Fbw:c.Fbw}); if(c.bAH) seg(22,{F:null,AH:c.bAH}); return; }
-        seg(c.dur*CK*(p.short?.6:1),{F:c.F,AV:c.AV||0,AH:c.AH||0,AF:c.AF||0,Fc:c.Fc,Fbw:c.Fbw});
-      });
-      seg(8,{F:null,AV:0,gap:1});
-    });
-    seg(P.type==='full'?(chant?650:480):(chant?300:230),{F:null,AV:0,pause:1});
-  });
-  const N=segs.reduce((a,s)=>a+s.n,0);
-  const T={F1:new Float32Array(N),F2:new Float32Array(N),F3:new Float32Array(N),AV:new Float32Array(N),AH:new Float32Array(N),AF:new Float32Array(N),Fc:new Float32Array(N),Fbw:new Float32Array(N),P:new Float32Array(N).fill(NaN),VB:new Float32Array(N)};
-  // מילוי פורמנטים חסרים (ה, ע, הפסקות) מהתנועה הבאה
-  for(let i=segs.length-1, nxt=VOW['@'];i>=0;i--){ if(segs[i].F) nxt=segs[i].F; else segs[i].F=nxt; }
-  let f=0;
-  for(const s of segs){
-    for(let j=0;j<s.n;j++,f++){
-      T.F1[f]=s.F[0];T.F2[f]=s.F[1];T.F3[f]=s.F[2];
-      T.AV[f]=s.AV||0;T.AH[f]=s.AH||0;T.AF[f]=s.AF||0;T.Fc[f]=s.Fc||3000;T.Fbw[f]=s.Fbw||2000;T.VB[f]=s.vib||0;
-      if(s.c){ const c=s.c, pos=s.n>1? j/(s.n-1)*(c.length-1):0, a=Math.floor(pos), b=Math.min(c.length-1,a+1); T.P[f]=c[a]+(c[b]-c[a])*(pos-a); }
-    }
-  }
-  // מילוי גובה צליל בעיצורים
-  let lastP=NaN; for(let i=0;i<N;i++){ if(!isNaN(T.P[i])) lastP=T.P[i]; else T.P[i]=lastP; }
-  let nextP=2; for(let i=N-1;i>=0;i--){ if(!isNaN(T.P[i])) nextP=T.P[i]; else T.P[i]=nextP; }
-  smooth(T.F1,7);smooth(T.F2,7);smooth(T.F3,7);smooth(T.AV,3);smooth(T.AH,3);smooth(T.AF,2);smooth(T.P,opt.style==='chant'?12:8);smooth(T.VB,20);
-  return {T,N};
-}
-function smooth(a,w){ if(w<2) return; const b=Float32Array.from(a), h=w>>1;
-  for(let i=0;i<a.length;i++){ let s=0,c=0; for(let k=i-h;k<=i+h;k++){ if(k>=0&&k<b.length){s+=b[k];c++;} } a[i]=s/c; } }
-
-/* ---------- סינתזה ---------- */
-function res(F,BW){ const r=Math.exp(-Math.PI*BW/SR), C=-r*r, B=2*r*Math.cos(2*Math.PI*F/SR); return [1-B-C,B,C]; }
-function render({T,N},opt){
-  const out=new Float32Array(N*FRM+Math.round(SR*0.6));
-  const tonic=opt.tonic||110;
-  let ph=0, gp=0, t=0;
-  const st=[[0,0],[0,0],[0,0],[0,0]]; let tilt=0, lp1=0, lp2=0, gate=0;
-  let nb=[0,0,0,0]; // bandpass state
-  let seed=12345; const rnd=()=>{ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x3fffffff-1; };
-  for(let f=0;f<N;f++){
-    const r1=res(T.F1[f],70), r2=res(T.F2[f],100), r3=res(T.F3[f],140), r4=res(3500,250);
-    const R=[r1,r2,r3,r4];
-    // מסנן מעביר־פס לחיכוך (RBJ)
-    const w0=2*Math.PI*Math.min(T.Fc[f],SR*0.45)/SR, Q=Math.max(.4,T.Fc[f]/T.Fbw[f]), al=Math.sin(w0)/(2*Q), a0=1+al;
-    const bb0=al/a0, bb2=-al/a0, ba1=-2*Math.cos(w0)/a0, ba2=(1-al)/a0;
-    const AV=T.AV[f], AH=T.AH[f], AF=T.AF[f], P=T.P[f], VB=T.VB[f];
-    for(let s=0;s<FRM;s++,t++){
-      const f0=tonic*Math.pow(2,P/12)*(1+VB*0.018*Math.sin(2*Math.PI*5.7*t/SR))*(1+0.002*rnd());
-      ph+=f0/SR; if(ph>=1) ph-=1;
-      const g = ph<0.4? 0.5*(1-Math.cos(Math.PI*ph/0.4)) : (ph<0.56? Math.cos(Math.PI*(ph-0.4)/0.32) : 0);
-      tilt=0.55*tilt+0.45*(g-gp)*40; gp=g; const src=tilt;
-      const nz=rnd();
-      let x=AV*src + AH*nz*0.25;
-      for(let k=0;k<4;k++){ const [A,B,Cc]=R[k], y=A*x+B*st[k][0]+Cc*st[k][1]; st[k][1]=st[k][0]; st[k][0]=y; x=y; }
-      const yb=bb0*nz+bb2*nb[1]-ba1*nb[2]-ba2*nb[3]; nb[1]=nb[0]; nb[0]=nz; nb[3]=nb[2]; nb[2]=yb;
-      let o=x*0.06+AF*yb*0.16;
-      lp1+=0.55*(o-lp1); lp2+=0.55*(lp1-lp2);
-      const on=(AV>0.03||AF>0.03||AH>0.03)?1:0; gate+= (on-gate)*0.004;
-      out[t]=lp2*gate;
-    }
-  }
-  return out;
-}
-function finish(x,opt){
-  // הסרת DC, נרמול, ריוורב של בית כנסת
-  let p=0,m=0; for(let i=0;i<x.length;i++){ const y=x[i]-p+0.995*m; p=x[i]; m=y; x[i]=y; }
-  let ss=0,c=0; for(let i=0;i<x.length;i++){ if(Math.abs(x[i])>1e-4){ss+=x[i]*x[i];c++;} }
-  const g=0.13/Math.sqrt(ss/Math.max(1,c)||1e-6); for(let i=0;i<x.length;i++) x[i]*=g;
-  const wet=opt.style==='chant'?0.2:0.08;
-  const combs=[557,593,641,677].map(d=>({b:new Float32Array(d),i:0,l:0}));
-  const aps=[113,277].map(d=>({b:new Float32Array(d),i:0}));
-  const y=new Float32Array(x.length);
-  for(let n=0;n<x.length;n++){
-    let s=0; for(const cb of combs){ const o=cb.b[cb.i]; cb.l=o*0.8+cb.l*0.2; cb.b[cb.i]=x[n]+cb.l*0.8; cb.i=(cb.i+1)%cb.b.length; s+=o; }
-    s*=0.25; for(const ap of aps){ const o=ap.b[ap.i], v=s+o*0.5; ap.b[ap.i]=v; ap.i=(ap.i+1)%ap.b.length; s=o-v*0.5; }
-    y[n]=Math.max(-0.98,Math.min(0.98,x[n]+wet*s));
-  }
-  return y;
-}
-function wav(x){
-  const b=new ArrayBuffer(44+x.length*2), d=new DataView(b);
-  const W=(o,s)=>{for(let i=0;i<s.length;i++)d.setUint8(o+i,s.charCodeAt(i))};
-  W(0,'RIFF');d.setUint32(4,36+x.length*2,true);W(8,'WAVE');W(12,'fmt ');d.setUint32(16,16,true);d.setUint16(20,1,true);d.setUint16(22,1,true);
-  d.setUint32(24,SR,true);d.setUint32(28,SR*2,true);d.setUint16(32,2,true);d.setUint16(34,16,true);W(36,'data');d.setUint32(40,x.length*2,true);
-  for(let i=0;i<x.length;i++) d.setInt16(44+i*2,Math.max(-1,Math.min(1,x[i]))*32767,true);
-  return b;
-}
-function synth(text,opt){
-  const ph=phrases(text,opt.ashk); if(!ph.length) return null;
-  melody(ph,opt.style);
-  return finish(render(build(ph,opt),opt),opt);
-}
-return {synth,wav,g2p,phrases,SR};
-})();
-
 /* ===================== דיבור ===================== */
 const synth = window.speechSynthesis;
 let voices=[];
-const MALE_RE=/asaf|avri|male\b|גבר|daniel|yossi|yaron|amir|eyal|ariel|david|oren/i;
-const FEMALE_RE=/carmit|hila|female|lihi|noa|shira|כרמית|google/i;
-function voiceGender(v){ const n=(v.name||'')+' '+(v.voiceURI||''); if(MALE_RE.test(n)) return 'male'; if(FEMALE_RE.test(n)) return 'female'; return ''; }
-function pickVoice(){
-  const want=cfg.devGender||'male';
-  const chosen=voices.find(v=>v.name===cfg.voice);
-  if(chosen && (voiceGender(chosen)===want || cfg.voiceManual)) return chosen;
-  return voices.find(v=>voiceGender(v)===want) || chosen || voices[0] || null;
-}
-const BUILTIN=[{id:'builtin:bass',name:'גבר – בס (קול מובנה)',pitch:-5},{id:'builtin:baritone',name:'גבר – בריטון (קול מובנה)',pitch:0},{id:'builtin:tenor',name:'גבר – טנור (קול מובנה)',pitch:4},{id:'builtin:young',name:'גבר – צעיר (קול מובנה)',pitch:7}];
+function pickVoice(){ return voices.find(v=>v.name===cfg.voice) || voices[0] || null; }
 function loadVoices(){
   voices = synth? synth.getVoices().filter(v=>/^he|^iw/i.test(v.lang)) : [];
   const sel=document.getElementById('sVoice'); sel.innerHTML='';
-  const g1=document.createElement('optgroup'); g1.label='קולות גבר מובנים – עובדים בכל מכשיר';
-  BUILTIN.forEach(b=>{const o=document.createElement('option');o.value=b.id;o.textContent=b.name;g1.appendChild(o)}); sel.appendChild(g1);
-  if(voices.length){ const g2=document.createElement('optgroup'); g2.label='קולות המכשיר'; sel.appendChild(g2);
-    voices.forEach(v=>{const o=document.createElement('option');o.value=v.name;const g=voiceGender(v);o.textContent=v.name+(g==='male'?' – גבר':g==='female'?' – אישה':'')+' ('+v.lang+')';g2.appendChild(o)});
-    if(cfg.engine==='device'){ const pv=pickVoice(); sel.value=pv?pv.name:BUILTIN[1].id; } else sel.value=builtinFor(cfg.pitch);
-  } else sel.value=builtinFor(cfg.pitch);
-  document.getElementById('noVoice').hidden = true;
-  return;
-  voices.forEach(v=>{const o=document.createElement('option');o.value=v.name;const g=voiceGender(v);o.textContent=v.name+(g==='male'?' – גבר':g==='female'?' – אישה':'')+' ('+v.lang+')';sel.appendChild(o)});
+  voices.forEach(v=>{const o=document.createElement('option');o.value=v.name;o.textContent=v.name+' ('+v.lang+')';sel.appendChild(o)});
   if(!voices.length){const o=document.createElement('option');o.textContent='ברירת מחדל של המכשיר';o.value='';sel.appendChild(o)}
   const pv=pickVoice(); sel.value = pv? pv.name : '';
   document.getElementById('noVoice').hidden = voices.length>0;
 }
-function builtinFor(p){ p=p||0; let best=BUILTIN[1]; for(const b of BUILTIN) if(Math.abs(b.pitch-p)<Math.abs(best.pitch-p)) best=b; return best.id; }
 if(synth){ synth.onvoiceschanged=loadVoices; }
 
 const SPEAK_MAP=[
@@ -1118,50 +841,20 @@ function chunks(t){
   for(const p of parts){ if((cur+' '+p).length>160 && cur){out.push(cur);cur=p}else cur=cur?cur+' '+p:p }
   if(cur) out.push(cur); return out;
 }
-const audioEl=new Audio(); audioEl.preload='auto';
-try{ if(navigator.audioSession) navigator.audioSession.type='playback'; }catch(e){}
-let curURL=null, audTok=0;
 const hasNikud=(t)=>(t.match(/[\u05B0-\u05BC]/g)||[]).length > t.length*0.15;
-function stopAll(){ audTok++; try{audioEl.pause()}catch(e){} audioEl.onended=null; if(synth) synth.cancel(); }
-const audCache=new Map();
-function chazanURL(text,style){
-  style=style||(cfg.engine==='read'?'read':'chant');
-  const key=[style,cfg.rate,cfg.ashk,cfg.pitch,text].join('|');
-  if(audCache.has(key)) return audCache.get(key);
-  let x=null;
-  try{ x=CHAZAN.synth(text,{style,rate:cfg.rate,ashk:!!cfg.ashk,tonic:(style==='read'?110:121)*Math.pow(2,(cfg.pitch||0)/12)}); }catch(e){ console.log(e); }
-  const url = x? URL.createObjectURL(new Blob([CHAZAN.wav(x)],{type:'audio/wav'})) : null;
-  audCache.set(key,url);
-  if(audCache.size>40){ const k=audCache.keys().next().value; const u=audCache.get(k); audCache.delete(k); if(u&&u!==curURL) URL.revokeObjectURL(u); }
-  return url;
-}
-function prefetch(text,style){ if(cfg.engine!=='device' && text && hasNikud(text)) setTimeout(()=>chazanURL(text,style),30); }
-function chazanPlay(text,onend,style){
-  const tok=++audTok;
-  const url=chazanURL(text,style);
-  if(!url){ onend&&onend(); return; }
-  curURL=url;
-  audioEl.onended=()=>{ if(tok===audTok) onend&&onend(); };
-  audioEl.src=curURL;
-  audioEl.play().catch(()=>{ document.getElementById('live').textContent='לחץ על „הקרא” כדי להתחיל'; R_.playing=false; updPlayer(); });
-}
+function stopAll(){ if(synth) synth.cancel(); }
+function prefetch(){}
 let unlocked=false;
 function unlockAudio(){
   if(unlocked) return; unlocked=true;
-  try{ const sil=new Float32Array(2205); audioEl.src=URL.createObjectURL(new Blob([CHAZAN.wav(sil)],{type:'audio/wav'})); audioEl.play().catch(()=>{}); }catch(e){}
   try{ if(synth){ const u=new SpeechSynthesisUtterance(' '); u.volume=0; synth.speak(u);} }catch(e){}
 }
-function utter(text,onend,style){
-  if(cfg.engine!=='device' && hasNikud(text)) return chazanPlay(text,onend,style);
-  deviceUtter(text,onend);
-}
+function utter(text,onend){ deviceUtter(text,onend); }
 function deviceUtter(text,onend){
   if(!synth){onend&&onend();return}
   const u=new SpeechSynthesisUtterance(speakable(text));
   u.lang='he-IL'; u.rate=cfg.rate;
   const v=pickVoice(); if(v) u.voice=v;
-  // אין קול גברי במכשיר – מנמיכים את הקול כדי שיישמע גברי
-  u.pitch = (cfg.devGender!=='female' && (!v || voiceGender(v)!=='male')) ? 0.55 : 1;
   u.onend=()=>onend&&onend(); u.onerror=(e)=>{ if(e.error!=='interrupted'&&e.error!=='canceled') onend&&onend(); };
   synth.speak(u);
 }
@@ -1287,7 +980,7 @@ function renderHome(){
   h+=tile('bentch','🍞','ברכת המזון','',1);
   h+=tile('siddur','📚','כל הסידור','כל התפילות והברכות',7);
   h+=`</div>`;
-  h+=`<p class="foot">נוסח הטקסט מבוסס על סידור „תהלת ה׳” (נוסח האר״י). השם הקדוש מוצג „יְיָ” כמנהג סידורי חב״ד, ומוקרא „אֲדֹנָי”. התפילות מוקראות בקול חזן שנבנה בתוך הסידור, בנוסח תפילה, ללא תלות בקולות המכשיר. „משיב הרוח” ו„טל ומטר” נבחרים אוטומטית לפי התאריך העברי (מנהג ארץ ישראל).<br>קיצורי מקלדת: רווח – הקרא/עצור, חיצים – פסקה הבאה/קודמת, Esc – חזרה.</p>`;
+  h+=`<p class="foot">נוסח הטקסט מבוסס על סידור „תהלת ה׳” (נוסח האר״י). השם הקדוש מוצג „יְיָ” כמנהג סידורי חב״ד, ומוקרא „אֲדֹנָי”. „משיב הרוח” ו„טל ומטר” נבחרים אוטומטית לפי התאריך העברי (מנהג ארץ ישראל).<br>קיצורי מקלדת: רווח – הקרא/עצור, חיצים – פסקה הבאה/קודמת, Esc – חזרה.</p>`;
   app.innerHTML=h; window.scrollTo(0,0);
   document.getElementById('h1').focus();
   if(cfg.voiceMode) announce("המסע של היום. בחר תפילה מהרשימה.", SAY.home+' '+tod.map(id=>SAY_TITLES[id]).join(', ')+', תְּהִלִּים יוֹמִי, תְּהִלִּים אִישִׁי, בִּרְכַּת הַמָּזוֹן, כָּל הַסִּדּוּר.');
@@ -1339,7 +1032,7 @@ function renderObj(it,opt={}){
       const shown = cfg.nikud===false? stripNikud(b.x) : b.x;
       let inner = b.bold? `<span class="b">${esc(shown)}</span>` : esc(shown);
       if(b.num) inner=`<span class="vn" aria-hidden="true">${b.num}</span> `+inner;
-      h+=`<p class="${cls}" tabindex="0" data-say="${esc(VOC[b.x]||b.x).replace(/"/g,'&quot;')}">${inner}</p>`;
+      h+=`<p class="${cls}" tabindex="0" data-say="${esc(b.x).replace(/"/g,'&quot;')}">${inner}</p>`;
     }
   }
   if(opt.post) h+=opt.post;
@@ -1496,25 +1189,16 @@ function openSet(){
   loadVoices();
   sRate.value=cfg.rate; rateV.textContent=cfg.rate.toFixed(1);
   sFs.value=cfg.fs; fsV.textContent=cfg.fs;
-  sVoiceMode.checked=cfg.voiceMode; sAuto.checked=cfg.auto; sCity.value=cfg.geo?'geo':(cfg.city||'jerusalem'); sUi.value=Math.round((cfg.ui||1)*100); uiV.textContent=sUi.value+'%'; sTheme.value=cfg.theme||'auto'; sGender.value=cfg.devGender||'male'; sEngine.value=cfg.engine||'chant'; sAshk.value=cfg.ashk?'1':'0'; sPitch.value=cfg.pitch||0; pitchV.textContent=(cfg.pitch>0?'+':'')+(cfg.pitch||0); sHc.checked=cfg.hc; sNikud.checked=cfg.nikud!==false;
+  sVoiceMode.checked=cfg.voiceMode; sAuto.checked=cfg.auto; sCity.value=cfg.geo?'geo':(cfg.city||'jerusalem'); sUi.value=Math.round((cfg.ui||1)*100); uiV.textContent=sUi.value+'%'; sTheme.value=cfg.theme||'auto'; sHc.checked=cfg.hc; sNikud.checked=cfg.nikud!==false;
   try{dlg.showModal()}catch(e){dlg.setAttribute('open','')}
 }
-sVoice.onchange=()=>{
-  const b=BUILTIN.find(x=>x.id===sVoice.value);
-  if(b){ cfg.pitch=b.pitch; if(cfg.engine==='device') cfg.engine='read'; sEngine.value=cfg.engine; sPitch.value=cfg.pitch; pitchV.textContent=(cfg.pitch>0?'+':'')+cfg.pitch; saveCfg(); stopAll(); unlockAudio(); utter("שָׁלוֹם, זֶה הַקּוֹל שֶׁנִּבְחַר.",null,'read'); return; }
-  cfg.voice=sVoice.value; cfg.voiceManual=true; cfg.engine='device'; sEngine.value='device'; saveCfg(); stopAll(); deviceUtter("זה הקול שנבחר");
-};
-sGender.onchange=()=>{cfg.devGender=sGender.value;cfg.voiceManual=false;const v=pickVoice();if(v){cfg.voice=v.name;sVoice.value=v.name;}saveCfg();stopAll();deviceUtter(cfg.devGender==='male'?"זה קול הגבר":"זה קול האישה")};
+sVoice.onchange=()=>{cfg.voice=sVoice.value;saveCfg();stopAll();unlockAudio();deviceUtter("זה הקול שנבחר")};
 sRate.oninput=()=>{cfg.rate=+sRate.value;rateV.textContent=cfg.rate.toFixed(1);saveCfg()};
-sRate.onchange=()=>{stopAll();utter(cfg.engine==='device'?"מהירות ההקראה":"בָּרוּךְ אַתָּה יְיָ.")};
+sRate.onchange=()=>{stopAll();utter("מהירות ההקראה")};
 sFs.oninput=()=>{cfg.fs=+sFs.value;fsV.textContent=cfg.fs;saveCfg();applyCfg()};
 sVoiceMode.onchange=()=>{cfg.voiceMode=sVoiceMode.checked;saveCfg()};
 sAuto.onchange=()=>{cfg.auto=sAuto.checked;saveCfg()};
 sHc.onchange=()=>{cfg.hc=sHc.checked;saveCfg();applyCfg()};
-sEngine.onchange=()=>{cfg.engine=sEngine.value;saveCfg();unlockAudio();stopAll();utter("בָּרוּךְ אַתָּה יְיָ.")};
-sAshk.onchange=()=>{cfg.ashk=sAshk.value==='1';saveCfg();stopAll();utter("בָּרוּךְ אַתָּה יְיָ.")};
-sPitch.oninput=()=>{cfg.pitch=+sPitch.value;if(cfg.engine!=='device')sVoice.value=builtinFor(cfg.pitch);pitchV.textContent=(cfg.pitch>0?'+':'')+cfg.pitch;saveCfg()};
-sPitch.onchange=()=>{stopAll();utter("בָּרוּךְ אַתָּה יְיָ.")};
 sUi.oninput=()=>{cfg.ui=+sUi.value/100;uiV.textContent=sUi.value+'%';saveCfg();applyCfg()};
 sCity.onchange=()=>{
   if(sCity.value==='geo'){
