@@ -142,7 +142,7 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 .tnav .big{margin:0}
 
 #side{display:none}
-@media (min-width:960px){
+@media (min-width:960px) and (hover:hover) and (pointer:fine){
   .shell{display:grid;grid-template-columns:300px 1fr;min-height:100vh}
   #side{display:block;position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--card);border-left:1px solid var(--line);padding:18px 12px 120px}
   .shell>main.wrap{max-width:860px;width:100%;padding:24px 40px 160px}
@@ -160,7 +160,7 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
   .prayer{max-width:760px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}
 }
-@media (min-width:1400px){ .shell{grid-template-columns:340px 1fr} .player{right:340px} }
+@media (min-width:1400px) and (hover:hover) and (pointer:fine){ .shell{grid-template-columns:340px 1fr} .player{right:340px} }
 
 #app,#side{zoom:var(--ui,1)}
 .player{zoom:min(var(--ui,1),1.3)}
@@ -258,7 +258,7 @@ body.dark .tabbar{background:rgba(34,28,24,.94)}
 .tabbar button:focus-visible{outline:3px solid var(--accent)}
 body:not(.reading) .player{display:none}
 body.reading .tabbar{display:none}
-@media (min-width:960px){ .tabbar{display:none} body:not(.reading) .player{display:block} }
+@media (min-width:960px) and (hover:hover) and (pointer:fine){ .tabbar{display:none} body:not(.reading) .player{display:block} }
 body.hc .tile{background:#000;color:#ffef3a;border:2px solid #ffef3a;box-shadow:none}
 body.hc .tile::after{display:none}
 .zman{color:var(--muted);font-size:15px;line-height:1.7;margin:0 4px 14px}
@@ -450,10 +450,21 @@ body.dark .achip.gold{color:#0c1a36}
 .askbar input:focus{outline:none}
 .askbar:focus-within{box-shadow:0 0 0 3px var(--accent)}
 .askbar button{flex:none;width:46px;height:46px;border-radius:50%;border:0;background:var(--navy);color:var(--gold);font-size:22px;font-weight:800;cursor:pointer}
-@media (min-width:900px){ .askbar{left:calc(var(--side,300px) + 24px)} .askgrid{grid-template-columns:repeat(3,1fr)} }
+@media (min-width:960px) and (hover:hover) and (pointer:fine){ .askbar{left:calc(300px + 24px)} }
+@media (min-width:700px){ .askgrid{grid-template-columns:repeat(3,1fr)} }
 .acard{font-size:16px;padding:12px 10px;gap:9px;min-height:80px;line-height:1.35}
 .acard .aic{width:38px;height:38px;font-size:19px}
 @media (max-width:360px){.askgrid{grid-template-columns:1fr}}
+/* טאבלט – אותו מבנה כמו בטלפון, ממורכז ומרווח */
+@media (min-width:600px) and (not ((hover:hover) and (pointer:fine))), (min-width:600px) and (max-width:959px){
+  main.wrap{max-width:760px;margin-inline:auto}
+  .tabbar{max-width:640px;margin-inline:auto}
+  .askbar{max-width:720px}
+  .player .in{max-width:720px;margin-inline:auto}
+  header.top h1{font-size:46px}
+  .tile{min-height:112px}
+  figure.rebbe .ring{width:min(240px,40vw)}
+}
 </style>
 </head>
 <body>
