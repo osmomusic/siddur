@@ -450,6 +450,19 @@ const TEFILLIN = [
   B(MITZVA+"לְהָנִיחַ תְּפִלִּין."),
   N("אחר כך מניחים תפילין של ראש. אין מפסיקים בדיבור בין תפילין של יד לתפילין של ראש."),
 ];
+const TEFILLIN_QUICK = [
+  N("מניחים תפילין של יד על הזרוע השמאלית (איטר יד – על הימנית), על השריר שמול הלב. לפני הידוק הרצועה מברכים:"),
+  B(MITZVA+"לְהָנִיחַ תְּפִלִּין."),
+  N("מהדקים את הרצועה וכורכים שבע כריכות על הזרוע. אין מדברים עד אחרי הנחת תפילין של ראש."),
+];
+const TEFILLIN_HEAD = [
+  N("מניחים תפילין של ראש מעל מקום צמיחת השיער, מכוון מול בין העיניים, והקשר מאחורי הראש. לפי מנהג חב״ד אין מברכים על תפילין של ראש."),
+  N("כורכים את רצועת היד שלוש כריכות על האצבע האמצעית, ואת השאר סביב כף היד."),
+];
+const TEFILLIN_OFF = [
+  N("אם יש זמן, אפשר להמשיך ולהתפלל את כל קריאת שמע או את התפילה כולה."),
+  N("חולצים בסדר הפוך: פותחים את הכריכות מהאצבע, חולצים תפילין של ראש, ואחר כך תפילין של יד."),
+];
 const BEFORE_PRAYER = [
   B("הֲרֵינִי מְקַבֵּל עָלַי מִצְוַת עֲשֵׂה שֶׁל וְאָהַבְתָּ לְרֵעֲךָ כָּמוֹךָ."),
 ];
@@ -781,7 +794,7 @@ const SIDDUR = [
       {title:"תפילה קודם התפילה", blocks:BEFORE_PRAYER},
       {title:"הליכה לבית הכנסת", blocks:TO_SHUL},
     ]},
-    {id:"shacharit", icon:"☀️", title:"שחרית לימות החול", parts:[
+    {id:"shacharit", icon:"🌞", title:"שחרית לימות החול", parts:[
       {title:"ברוך שאמר", blocks:BARUCH_SHEAMAR},
       {title:"אשרי", blocks:ASHREI},
       {title:"ישתבח", blocks:YISHTABACH},
@@ -790,6 +803,12 @@ const SIDDUR = [
       {title:"אמת ויציב", blocks:[N("ממשיכים מיד אחרי „אני יי אלהיכם אמת”:")].concat(EMET_VEYATZIV)},
       {title:"שמונה עשרה", blocks:AMIDA('shacharit')},
       {title:"עלינו לשבח", blocks:ALEINU},
+    ]},
+    {id:"tefillin", icon:"☀️", title:"הנחת תפילין מהירה", sub:"ברכה, הנחה וקריאת שמע", parts:[
+      {title:"תפילין של יד", blocks:TEFILLIN_QUICK},
+      {title:"תפילין של ראש", blocks:TEFILLIN_HEAD},
+      {title:"קריאת שמע", blocks:SHEMA.slice(1,5)},
+      {title:"חליצת התפילין", blocks:TEFILLIN_OFF},
     ]},
     {id:"mincha", icon:"🌤️", title:"מנחה לימות החול", parts:[
       {title:"אשרי", blocks:[N("לפני אשרי נוהגים לומר את פרשת התמיד והקטורת.")].concat(ASHREI)},
@@ -914,7 +933,7 @@ const VOC={
 "פוסעים שלוש פסיעות לאחור ואומרים:":"פּוֹסְעִים שָׁלֹשׁ פְּסִיעוֹת לְאָחוֹר, וְאוֹמְרִים.",
 "בחורף: משיב הרוח ומוריד הגשם. בקיץ: מוריד הטל.":"בַּחֹרֶף: מַשִּׁיב הָרוּחַ וּמוֹרִיד הַגֶּשֶׁם. בַּקַּיִץ: מוֹרִיד הַטָּל.",
 };
-const SAY_TITLES={hashkama:"סֵדֶר הַשְׁכָּמַת הַבֹּקֶר",shacharit:"שַׁחֲרִית לִימוֹת הַחֹל",mincha:"מִנְחָה לִימוֹת הַחֹל",maariv:"עַרְבִית לִימוֹת הַחֹל",bedtime:"קְרִיאַת שְׁמַע שֶׁעַל הַמִּטָּה",candles:"סֵדֶר הַדְלָקַת נֵרוֹת שַׁבָּת",nishmat:"נִשְׁמַת כָּל חַי",havdalah:"הַבְדָּלָה",chanukah:"הַדְלָקַת נֵרוֹת חֲנֻכָּה",food:"מָה מְבָרְכִים",bentch:"בִּרְכַּת הַמָּזוֹן",meein:"בְּרָכָה מֵעֵין שָׁלֹשׁ",sight:"בִּרְכוֹת הָרְאִיָּה וְהָרֵיחַ",special:"בְּרָכוֹת מְיֻחָדוֹת"};
+const SAY_TITLES={hashkama:"סֵדֶר הַשְׁכָּמַת הַבֹּקֶר",shacharit:"שַׁחֲרִית לִימוֹת הַחֹל",tefillin:"הַנָּחַת תְּפִלִּין",mincha:"מִנְחָה לִימוֹת הַחֹל",maariv:"עַרְבִית לִימוֹת הַחֹל",bedtime:"קְרִיאַת שְׁמַע שֶׁעַל הַמִּטָּה",candles:"סֵדֶר הַדְלָקַת נֵרוֹת שַׁבָּת",nishmat:"נִשְׁמַת כָּל חַי",havdalah:"הַבְדָּלָה",chanukah:"הַדְלָקַת נֵרוֹת חֲנֻכָּה",food:"מָה מְבָרְכִים",bentch:"בִּרְכַּת הַמָּזוֹן",meein:"בְּרָכָה מֵעֵין שָׁלֹשׁ",sight:"בִּרְכוֹת הָרְאִיָּה וְהָרֵיחַ",special:"בְּרָכוֹת מְיֻחָדוֹת"};
 const SAY={
   home:"סִדּוּר נֻסַּח חַבַּד. מָסָךְ רָאשִׁי. בְּחַר תְּפִלָּה מֵהָרְשִׁימָה.",
   about:"אוֹדוֹת. פִּתּוּחַ תּוֹכְנָה: אוֹסְמוֹ סוֹפְטְוֵר. טֶלֶפוֹן: אֶפֶס חָמֵשׁ אֶפֶס, חָמֵשׁ שֶׁבַע שְׁמוֹנֶה, שְׁמוֹנֶה שְׁמוֹנֶה שְׁמוֹנֶה אַחַת. גִּרְסָה אַחַת.",
@@ -1174,11 +1193,16 @@ ${['#e53935','#fb8c00','#fdd835','#43a047','#1e88e5','#5e35b1'].map((c,i)=>`<pat
 '🔊':SV(`<defs>${GOLD}</defs><path d="M8 24h10l14-12v40L18 40H8z" fill="#0f2c5c" stroke="url(#gGold)" stroke-width="2" stroke-linejoin="round"/>
 <path d="M40 22a14 14 0 0 1 0 20M46 16a22 22 0 0 1 0 32" stroke="url(#gGold)" stroke-width="3.4" fill="none" stroke-linecap="round"/>`)
 };
+ICO['🌞']=SV(`<defs><linearGradient id="gMorn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ec5ff"/><stop offset=".7" stop-color="#ffe3a3"/><stop offset="1" stop-color="#ffc26b"/></linearGradient><radialGradient id="gSunM" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fffbe0"/><stop offset=".55" stop-color="#ffd84d"/><stop offset="1" stop-color="#ffa52e"/></radialGradient><linearGradient id="gHill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fae5a"/><stop offset="1" stop-color="#3f6e2c"/></linearGradient></defs>
+<rect x="4" y="4" width="56" height="56" rx="12" fill="url(#gMorn)"/>
+<g stroke="#ffd24d" stroke-width="2.4" stroke-linecap="round">${[0,30,60,90,120,150,180].map(a=>{const r=Math.PI*a/180;return `<path d="M${32-Math.cos(r)*17} ${40-Math.sin(r)*17}L${32-Math.cos(r)*24} ${40-Math.sin(r)*24}"/>`}).join('')}</g>
+<circle cx="32" cy="40" r="12" fill="url(#gSunM)"/>
+<path d="M4 44q14-8 28-2t28-2v16a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" fill="url(#gHill)"/>`);
 ICO['🌅']=ICO['🌄']; ICO['✨']=ICO['🕯️']; ICO['⭐']=ICO['🌙'];
 let _icoN=0;
 const icoOf=(e)=>{ const v=ICO[e]; if(!v) return e; const n='_'+(++_icoN); return v.replace(/id="(g\w+)"/g,(m,a)=>`id="${a}${n}"`).replace(/url\(#(g\w+)\)/g,(m,a)=>`url(#${a}${n})`); };
 
-const TILE_COLORS={hashkama:0,shacharit:2,mincha:5,maariv:6,bedtime:7,candles:4,nishmat:3,havdalah:1,chanukah:2,food:3,bentch:1,meein:4,sight:7,special:0};
+const TILE_COLORS={hashkama:0,tefillin:6,shacharit:2,mincha:5,maariv:6,bedtime:7,candles:4,nishmat:3,havdalah:1,chanukah:2,food:3,bentch:1,meein:4,sight:7,special:0};
 function tile(id,icon,title,sub,c,extra){ return `<button class="tile c${c}" role="listitem" onclick="go('${id}')"${extra||''}><span class="ic" aria-hidden="true">${icoOf(icon)}</span><span class="t">${title}${sub?`<small>${sub}</small>`:''}</span><span class="chev" aria-hidden="true">‹</span></button>`; }
 function weekStrip(){
   const now=new Date(); const wdN=['א','ב','ג','ד','ה','ו','ש']; let h='<div class="week" aria-hidden="true">';
@@ -1219,8 +1243,8 @@ function chanukahNow(){ const h=hebDate(); return !!h && ((h.month==='Kislev'&&h
 function prayerPlan(now=new Date()){
   const z=zmanim(now), wd=now.getDay(); let ids, label, key;
   if(now<z.alot){ ids=['bedtime','maariv']; label='לילה'; key='night'; }
-  else if(now<z.chatzot){ ids=['hashkama','shacharit']; label='שחרית'; key='morning'; }
-  else if(now<z.sunset){ ids=['mincha']; label='מנחה'; key='mincha'; }
+  else if(now<z.chatzot){ ids=wd===6?['hashkama','shacharit']:['hashkama','tefillin','shacharit']; label='שחרית'; key='morning'; }
+  else if(now<z.sunset){ ids=wd===6?['mincha']:['mincha','tefillin']; label='מנחה'; key='mincha'; }
   else if(now<z.tzeit){ ids=['maariv','mincha']; label='אחרי השקיעה – ערבית'; key='dusk'; }
   else { ids=['maariv','bedtime']; label='ערבית'; key='evening'; }
   if(wd===5 && now>=z.chatzot && now<z.sunset){ ids=['candles'].concat(ids); key+='-erev'; }
