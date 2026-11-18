@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://siddurchabad.co.il/</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://siddurchabad.co.il/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://siddurchabad.co.il/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://siddurchabad.co.il/?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://siddurchabad.co.il/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://siddurchabad.co.il/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://siddurchabad.co.il/"/>
+  </url>
+  <url>
+    <loc>https://siddurchabad.co.il/?lang=en</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://siddurchabad.co.il/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://siddurchabad.co.il/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://siddurchabad.co.il/?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://siddurchabad.co.il/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://siddurchabad.co.il/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://siddurchabad.co.il/"/>
+  </url>
+  <url>
+    <loc>https://siddurchabad.co.il/?lang=es</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://siddurchabad.co.il/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://siddurchabad.co.il/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://siddurchabad.co.il/?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://siddurchabad.co.il/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://siddurchabad.co.il/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://siddurchabad.co.il/"/>
+  </url>
+  <url>
+    <loc>https://siddurchabad.co.il/?lang=fr</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://siddurchabad.co.il/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://siddurchabad.co.il/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://siddurchabad.co.il/?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://siddurchabad.co.il/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://siddurchabad.co.il/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://siddurchabad.co.il/"/>
+  </url>
+  <url>
+    <loc>https://siddurchabad.co.il/?lang=ru</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://siddurchabad.co.il/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://siddurchabad.co.il/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://siddurchabad.co.il/?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://siddurchabad.co.il/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://siddurchabad.co.il/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://siddurchabad.co.il/"/>
+  </url>
+</urlset>

@@ -89,6 +89,7 @@ ol.steps{line-height:1.9;padding-inline-start:22px}
     <button class="on" data-s="banner">הודעה בדף הבית</button>
     <button data-s="texts">טקסטים ואודות</button>
     <button data-s="design">תמונה ועיצוב</button>
+    <button data-s="seo">קידום וחיפוש</button>
     <button data-s="stats">סטטיסטיקות</button>
     <button data-s="gh">חיבור ל־GitHub <span class="pill" id="ghPill">לא מחובר</span></button>
   </nav>
@@ -144,6 +145,26 @@ ol.steps{line-height:1.9;padding-inline-start:22px}
       <div><label for="cAccent">צבע הדגשה (זהב)</label><input id="cAccent" type="color"></div>
     </div>
     <button id="cReset" style="margin-top:10px">החזרה לצבעי חב״ד המקוריים</button>
+  </section>
+
+  <section id="s-seo" class="card">
+    <h2>קידום אורגני וחיפוש באתר</h2>
+    <p class="muted">כותרת ותיאור שמופיעים בתוצאות החיפוש של Google, ומילות מפתח. השאר ריק כדי להשתמש בברירת המחדל שכבר מותאמת למילים „סידור חב״ד עם הקראה”, „תהלת ה׳”, „סידור לליקויי ראייה” ועוד.</p>
+    <label for="seoT">כותרת לגוגל <span class="muted" id="seoTc"></span></label>
+    <input id="seoT" type="text" maxlength="70" placeholder="סידור חב״ד עם הקראה – תהלת ה׳ | סידור לליקויי ראייה">
+    <label for="seoD">תיאור לגוגל <span class="muted" id="seoDc"></span></label>
+    <textarea id="seoD" maxlength="200" placeholder="סידור תהלת ה׳ בנוסח חב״ד – מנוקד, עם הקראה קולית ונגישות מלאה לליקויי ראייה…"></textarea>
+    <label for="seoK">מילות מפתח (מופרדות בפסיקים)</label>
+    <textarea id="seoK" placeholder="סידור חב״ד, סידור עם הקראה, תהילת ה׳ …"></textarea>
+    <div id="gPrev" style="margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff;direction:rtl">
+      <div style="color:#1a0dab;font-size:19px;font-family:Arial,sans-serif" id="gpT"></div>
+      <div style="color:#006621;font-size:14px;direction:ltr;text-align:right">https://siddurchabad.co.il</div>
+      <div style="color:#545454;font-size:14px;font-family:Arial,sans-serif" id="gpD"></div>
+    </div>
+    <h2 style="margin-top:24px;font-size:22px">מילים נוספות לחיפוש באתר</h2>
+    <p class="muted">כשגולש מחפש באתר את אחת המילים האלה, הוא יגיע לתפילה שבחרת. מתאים לכינויים, לשגיאות כתיב נפוצות ולמילים בשפות אחרות.</p>
+    <div id="swList"></div>
+    <button id="swAdd" style="margin-top:8px">+ הוספת מילה</button>
   </section>
 
   <section id="s-stats" class="card">
@@ -233,6 +254,7 @@ function fill(){
   $('aDev').value=d.about.developer||''; $('aPhone').value=d.about.phone||''; $('aVer').value=d.about.version||'';
   $('pOn').checked=d.photo.on!==false; $('pCap').value=d.photo.caption||''; $('pImg').src='/'+(d.photo.src||'rebbe.jpg')+'?v='+Date.now();
   $('cNavy').value=d.colors.navy||'#0f2c5c'; $('cAccent').value=d.colors.accent||'#b08a3e';
+  d.seo=d.seo||{}; $('seoT').value=d.seo.title||''; $('seoD').value=d.seo.description||''; $('seoK').value=d.seo.keywords||''; SW=(d.seo.searchWords||[]).map(x=>({...x})); swRender(); gprev();
   $('gc').value=d.stats.goatcounter||''; newPhoto=null; preview(); stats(); dirty();
 }
 function collect(){
@@ -242,6 +264,7 @@ function collect(){
   d.about={title:$('aTitle').value.trim(),subtitle:$('aSub').value.trim(),extra:$('aExtra').value.trim(),developer:$('aDev').value.trim(),phone:$('aPhone').value.trim(),version:$('aVer').value.trim()};
   d.photo={...d.photo,on:$('pOn').checked,caption:$('pCap').value.trim()};
   d.colors={navy:$('cNavy').value,accent:$('cAccent').value};
+  d.seo={title:$('seoT').value.trim(),description:$('seoD').value.trim(),keywords:$('seoK').value.trim(),searchWords:SW.filter(x=>x.word.trim()&&TARGETS.some(t=>t[0]===x.to)).map(x=>({word:x.word.trim().slice(0,60),to:x.to}))};
   d.stats={goatcounter:$('gc').value.trim().toLowerCase().replace(/[^a-z0-9-]/g,'')};
 }
 function dirty(){ if(!DATA) return; collect(); const ch=JSON.stringify(DATA)!==ORIG||!!newPhoto; $('status').textContent=ch?'יש שינויים שלא נשמרו':'אין שינויים שלא נשמרו'; $('status').style.color=ch?'#b3261e':''; }
@@ -264,6 +287,18 @@ $('pFile').onchange=async()=>{
   }
   newPhoto=c.toDataURL('image/jpeg',.85); $('pImg').src=newPhoto; dirty();
 };
+
+/* קידום וחיפוש */
+const TARGETS=[['hashkama','סדר השכמת הבוקר'],['shacharit','שחרית'],['tefillin','הנחת תפילין'],['mincha','מנחה'],['maariv','ערבית'],['bedtime','קריאת שמע שעל המיטה'],['candles','נרות שבת'],['nishmat','נשמת כל חי'],['havdalah','הבדלה'],['chanukah','חנוכה'],['food','מה מברכים'],['bentch','ברכת המזון'],['meein','מעין שלוש'],['sight','ברכות הראייה'],['special','ברכות מיוחדות'],['teh','ספר תהילים'],['teh-day','תהילים יומי'],['teh-week','תהילים לפי ימי השבוע'],['teh-name','פסוקים לפי השם'],['teh-age','תהילים אישי'],['about','אודות']];
+let SW=[];
+const escA=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function swRender(){ $('swList').innerHTML=SW.map((x,i)=>`<div class="row" style="margin-top:8px"><input type="text" style="flex:1;min-width:150px" value="${escA(x.word)}" data-i="${i}" data-k="word" placeholder="מילה לחיפוש" aria-label="מילה לחיפוש"><select data-i="${i}" data-k="to" style="flex:1;min-width:150px" aria-label="מובילה אל">${TARGETS.map(t=>`<option value="${t[0]}"${t[0]===x.to?' selected':''}>${t[1]}</option>`).join('')}</select><button data-del="${i}" aria-label="מחיקה">✕</button></div>`).join('')||'<p class="muted">עוד לא נוספו מילים.</p>';
+  $('swList').querySelectorAll('[data-k]').forEach(el=>el.oninput=el.onchange=()=>{ SW[+el.dataset.i][el.dataset.k]=el.value; dirty(); });
+  $('swList').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{ SW.splice(+b.dataset.del,1); swRender(); dirty(); }); }
+$('swAdd').onclick=()=>{ SW.push({word:'',to:'shacharit'}); swRender(); const l=$('swList').querySelectorAll('input'); l[l.length-1].focus(); };
+function gprev(){ const t=$('seoT').value.trim()||'סידור חב״ד עם הקראה – תהלת ה׳ | סידור לליקויי ראייה | siddurchabad.co.il', d=$('seoD').value.trim()||'סידור תהלת ה׳ בנוסח חב״ד (נוסח האר״י) – מנוקד, עם הקראה קולית ונגישות מלאה לליקויי ראייה…';
+  $('gpT').textContent=t.length>60?t.slice(0,60)+'…':t; $('gpD').textContent=d.length>160?d.slice(0,160)+'…':d; $('seoTc').textContent=`(${$('seoT').value.length}/60)`; $('seoDc').textContent=`(${$('seoD').value.length}/160)`; }
+['seoT','seoD'].forEach(id=>$(id).addEventListener('input',gprev));
 
 /* סטטיסטיקות */
 function stats(){

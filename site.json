@@ -1,7 +1,16 @@
 {
-  "banner": { "on": false, "text": "", "link": "", "style": "gold" },
+  "banner": {
+    "on": false,
+    "text": "",
+    "link": "",
+    "style": "gold"
+  },
   "homeTitle": "המסע של היום",
-  "photo": { "on": true, "src": "rebbe.jpg", "caption": "הרבי מליובאוויטש" },
+  "photo": {
+    "on": true,
+    "src": "rebbe.jpg",
+    "caption": "הרבי מליובאוויטש"
+  },
   "about": {
     "title": "סידור תהלת ה׳ – נוסח חב״ד",
     "subtitle": "סידור מנוקד עם הקראה קולית ונגישות לליקויי ראייה",
@@ -10,6 +19,46 @@
     "version": "1.0",
     "extra": ""
   },
-  "colors": { "navy": "#0f2c5c", "accent": "#b08a3e" },
-  "stats": { "goatcounter": "" }
+  "colors": {
+    "navy": "#0f2c5c",
+    "accent": "#b08a3e"
+  },
+  "stats": {
+    "goatcounter": ""
+  },
+  "seo": {
+    "title": "",
+    "description": "",
+    "keywords": "",
+    "searchWords": [
+      {
+        "word": "סידר",
+        "to": "shacharit"
+      },
+      {
+        "word": "תהילת השם",
+        "to": "teh"
+      },
+      {
+        "word": "בירכת המזון",
+        "to": "bentch"
+      },
+      {
+        "word": "siddur",
+        "to": "shacharit"
+      },
+      {
+        "word": "sidur",
+        "to": "shacharit"
+      },
+      {
+        "word": "siddour",
+        "to": "shacharit"
+      },
+      {
+        "word": "сидур",
+        "to": "shacharit"
+      }
+    ]
+  }
 }

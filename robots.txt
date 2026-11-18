@@ -1,3 +1,6 @@
 User-agent: *
+Allow: /
 Disallow: /admin/
 Disallow: /ADMIN/
+
+Sitemap: https://siddurchabad.co.il/sitemap.xml
