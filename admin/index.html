@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ניהול – סידור חב״ד</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Noto+Serif+Hebrew:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4ecda;--card:#fffdf7;--ink:#0d2a52;--muted:#6b6150;--navy:#0f2c5c;--gold:#b08a3e;--gold2:#ecd28c;--line:#e2d4b2;--ok:#2e7d32;--err:#b3261e}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"Noto Serif Hebrew",serif;color:var(--ink);font-size:17px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(236,210,140,.35),transparent 60%),var(--bg)}
+h1,h2{font-family:"Frank Ruhl Libre",serif;margin:0}
+.wrap{max-width:860px;margin:0 auto;padding:22px 16px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 8px 24px rgba(13,42,82,.08)}
+label{display:block;font-weight:600;margin:14px 0 6px}
+input[type=text],input[type=password],input[type=tel],input[type=url],textarea,select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;font:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:90px;resize:vertical}
+input:focus,textarea:focus,select:focus{outline:3px solid var(--gold2);border-color:var(--gold)}
+button{font:inherit;cursor:pointer;border-radius:12px;border:1px solid var(--gold);padding:11px 18px;background:#fff;color:var(--ink);transition:transform .15s,box-shadow .15s}
+button:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(13,42,82,.15)}
+button.pri{background:var(--navy);color:var(--gold2);font-weight:700}
+button.pri:disabled{opacity:.55;cursor:wait}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.muted{color:var(--muted);font-size:15px;line-height:1.6}
+.msg{margin-top:12px;padding:10px 14px;border-radius:12px;display:none}
+.msg.ok{display:block;background:#e7f3e8;color:var(--ok)} .msg.err{display:block;background:#fbe9e7;color:var(--err)}
+/* login */
+#login{max-width:420px;margin:8vh auto 0;text-align:center}
+#login .crest{width:76px;height:76px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:var(--gold2);font-family:"Frank Ruhl Libre",serif;font-size:30px;box-shadow:0 0 0 4px var(--gold2)}
+#login form{text-align:right}
+/* app */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+header.top h1{font-size:32px;color:var(--navy)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{border-radius:30px;padding:9px 16px}
+.tabs button.on{background:var(--navy);color:var(--gold2)}
+section{display:none} section.on{display:block}
+.sw{display:flex;align-items:center;gap:10px;font-weight:600;margin-top:12px}
+.sw input{width:22px;height:22px}
+.prev-banner{margin-top:12px;padding:14px;border-radius:16px;text-align:center;font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:19px}
+.s-gold{background:linear-gradient(135deg,#f6e7bf,#e7cd88);color:#0d2a52;border:1px solid #b08a3e}
+.s-navy{background:linear-gradient(135deg,#1b3a6e,#0f2c5c);color:#f3e2ac;border:1px solid #b08a3e}
+.s-red{background:linear-gradient(135deg,#a33535,#7a1f1f);color:#fff}
+.photo{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.photo img{width:130px;height:130px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 4px var(--gold2)}
+.colors{display:flex;gap:16px;flex-wrap:wrap}
+.colors div{flex:1;min-width:160px}
+input[type=color]{width:100%;height:46px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:4px}
+.bar{position:sticky;bottom:0;margin-top:18px;padding:12px;background:rgba(244,236,218,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-radius:14px}
+.pill{font-size:14px;padding:4px 10px;border-radius:20px;background:#efe3c4}
+.pill.ok{background:#e7f3e8;color:var(--ok)} .pill.err{background:#fbe9e7;color:var(--err)}
+iframe.stats{width:100%;height:620px;border:1px solid var(--line);border-radius:14px;background:#fff}
+code{background:#efe3c4;padding:1px 6px;border-radius:6px;direction:ltr;display:inline-block}
+ol.steps{line-height:1.9;padding-inline-start:22px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- כניסה -->
+<div id="login" class="card">
+  <div class="crest">ב״ה</div>
+  <h1 style="font-size:28px">ניהול האתר</h1>
+  <p class="muted">siddurchabad.co.il</p>
+  <form id="lf" autocomplete="on">
+    <label for="lu">שם משתמש</label>
+    <input id="lu" type="text" autocomplete="username" dir="ltr" required>
+    <label for="lp">סיסמה</label>
+    <input id="lp" type="password" autocomplete="current-password" dir="ltr" required>
+    <label for="lt">טלפון לאימות</label>
+    <input id="lt" type="tel" autocomplete="tel" dir="ltr" inputmode="tel" required>
+    <button class="pri" style="width:100%;margin-top:18px" id="lb">כניסה</button>
+    <div class="msg" id="lmsg"></div>
+  </form>
+</div>
+
+<!-- מערכת הניהול -->
+<div id="app" hidden>
+  <header class="top">
+    <h1>ניהול האתר</h1>
+    <div class="row"><a href="/" target="_blank"><button>צפייה באתר ↗</button></a><button id="logout">יציאה</button></div>
+  </header>
+  <nav class="tabs" role="tablist">
+    <button class="on" data-s="banner">הודעה בדף הבית</button>
+    <button data-s="texts">טקסטים ואודות</button>
+    <button data-s="design">תמונה ועיצוב</button>
+    <button data-s="stats">סטטיסטיקות</button>
+    <button data-s="gh">חיבור ל־GitHub <span class="pill" id="ghPill">לא מחובר</span></button>
+  </nav>
+
+  <section id="s-banner" class="card on">
+    <h2>הודעה / באנר בדף הבית</h2>
+    <p class="muted">מופיעה מתחת לכותרת בדף הבית, למשל הודעה לחג, זמני שיעור או עדכון לגולשים.</p>
+    <label class="sw"><input type="checkbox" id="bOn"> להציג את ההודעה</label>
+    <label for="bText">טקסט ההודעה</label>
+    <textarea id="bText" placeholder="לדוגמה: חג חנוכה שמח! הדלקת נרות הערב ב־16:30"></textarea>
+    <label for="bLink">קישור (לא חובה)</label>
+    <input id="bLink" type="url" dir="ltr" placeholder="https://">
+    <label for="bStyle">סגנון</label>
+    <select id="bStyle"><option value="gold">זהב</option><option value="navy">כחול נייבי</option><option value="red">אדום – הודעה דחופה</option></select>
+    <div class="muted" style="margin-top:14px">תצוגה מקדימה:</div>
+    <div id="bPrev" class="prev-banner s-gold"></div>
+  </section>
+
+  <section id="s-texts" class="card">
+    <h2>טקסטים ואודות</h2>
+    <label for="tHome">כותרת דף הבית</label>
+    <input id="tHome" type="text">
+    <label for="aTitle">שם הסידור (במסך אודות)</label>
+    <input id="aTitle" type="text">
+    <label for="aSub">תיאור קצר</label>
+    <input id="aSub" type="text">
+    <label for="aExtra">טקסט נוסף במסך אודות (לא חובה)</label>
+    <textarea id="aExtra" placeholder="לדוגמה: הסידור מוקדש לעילוי נשמת…"></textarea>
+    <div class="row" style="gap:14px">
+      <div style="flex:1;min-width:180px"><label for="aDev">פיתוח תוכנה</label><input id="aDev" type="text" dir="ltr"></div>
+      <div style="flex:1;min-width:160px"><label for="aPhone">טלפון ליצירת קשר</label><input id="aPhone" type="tel" dir="ltr"></div>
+      <div style="width:120px"><label for="aVer">גרסה</label><input id="aVer" type="text" dir="ltr"></div>
+    </div>
+  </section>
+
+  <section id="s-design" class="card">
+    <h2>תמונה ועיצוב</h2>
+    <label class="sw"><input type="checkbox" id="pOn"> להציג תמונה בדף הבית</label>
+    <div class="photo" style="margin-top:12px">
+      <img id="pImg" alt="">
+      <div style="flex:1;min-width:220px">
+        <label for="pFile">החלפת תמונה (JPG/PNG)</label>
+        <input id="pFile" type="file" accept="image/*">
+        <p class="muted">התמונה נחתכת לריבוע, מוקטנת ומקבלת את פילטר הנייבי־זהב באופן אוטומטי.</p>
+        <label class="sw"><input type="checkbox" id="pFilter" checked> להחיל פילטר נייבי־זהב</label>
+        <label for="pCap">כיתוב מתחת לתמונה</label>
+        <input id="pCap" type="text">
+      </div>
+    </div>
+    <h2 style="margin-top:22px;font-size:22px">צבעים</h2>
+    <div class="colors">
+      <div><label for="cNavy">צבע ראשי (כותרות וכפתורים)</label><input id="cNavy" type="color"></div>
+      <div><label for="cAccent">צבע הדגשה (זהב)</label><input id="cAccent" type="color"></div>
+    </div>
+    <button id="cReset" style="margin-top:10px">החזרה לצבעי חב״ד המקוריים</button>
+  </section>
+
+  <section id="s-stats" class="card">
+    <h2>סטטיסטיקות כניסה</h2>
+    <p class="muted">האתר יושב על GitHub Pages, שאין לו סטטיסטיקות מובנות. לכן הסטטיסטיקות עובדות דרך <b>GoatCounter</b> – שירות חינמי, בלי עוגיות ובלי פרטים אישיים. הוא סופר כניסות לאתר וגם כמה פעמים נפתחה כל תפילה.</p>
+    <ol class="steps muted">
+      <li>פותחים חשבון חינמי ב־<a href="https://www.goatcounter.com/signup" target="_blank" rel="noopener">goatcounter.com/signup</a>, ובוחרים קוד, למשל <code>siddurchabad</code>.</li>
+      <li>כותבים כאן את הקוד ושומרים.</li>
+      <li>בהגדרות החשבון ב־GoatCounter, תחת Settings ← Sites/Dashboard, אפשר לסמן שלוח הנתונים ציבורי לצפייה כדי שיוצג כאן.</li>
+    </ol>
+    <label for="gc">קוד GoatCounter</label>
+    <input id="gc" type="text" dir="ltr" placeholder="siddurchabad">
+    <div id="gcBox" style="margin-top:14px"></div>
+  </section>
+
+  <section id="s-gh" class="card">
+    <h2>חיבור ל־GitHub</h2>
+    <p class="muted">השמירה מתבצעת ישירות לאתר דרך GitHub. בשביל זה צריך <b>מפתח גישה אישי</b> שמאפשר לשנות רק את המאגר של הסידור. המפתח נשמר רק בדפדפן הזה, ולא נשלח לשום מקום חוץ מ־GitHub.</p>
+    <ol class="steps muted">
+      <li>נכנסים ל־<a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub ← יצירת מפתח חדש (Fine-grained)</a>.</li>
+      <li>שם: <code>siddur-admin</code>. תוקף: לבחירתך (למשל שנה).</li>
+      <li>Repository access ← <b>Only select repositories</b> ← <code>osmomusic/siddur</code>.</li>
+      <li>Permissions ← Repository permissions ← <b>Contents: Read and write</b>.</li>
+      <li>Generate token, מעתיקים ומדביקים כאן.</li>
+    </ol>
+    <label for="ghTok">מפתח GitHub</label>
+    <input id="ghTok" type="password" dir="ltr" placeholder="github_pat_…" autocomplete="off">
+    <div class="row" style="margin-top:12px"><button class="pri" id="ghSave">שמירה ובדיקה</button><button id="ghForget">מחיקת המפתח מהדפדפן</button></div>
+    <div class="msg" id="ghMsg"></div>
+  </section>
+
+  <div class="bar">
+    <span class="muted" id="status">אין שינויים שלא נשמרו</span>
+    <div class="row"><button id="undo">ביטול שינויים</button><button class="pri" id="save">שמירה ופרסום באתר</button></div>
+  </div>
+  <div class="msg" id="smsg"></div>
+</div>
+</div>
+
+<script>
+/* ===== כניסה – הסיסמה לא שמורה בקוד, רק טביעת אצבע מוצפנת (PBKDF2) ===== */
+const SALT='siddurchabad.co.il/admin#v1', HASH='f37cc628b31f42efe9530e7aa5aef2a59ecd22d364e91987ddf62b0a1fa487e8';
+const REPO='osmomusic/siddur', BRANCH='main';
+const $=id=>document.getElementById(id);
+async function pbkdf2(str){
+  const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(str),'PBKDF2',false,['deriveBits']);
+  const b=await crypto.subtle.deriveBits({name:'PBKDF2',salt:new TextEncoder().encode(SALT),iterations:200000,hash:'SHA-256'},k,256);
+  return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+const normPhone=p=>p.replace(/\D/g,'').replace(/^972/,'0');
+let fails=+(sessionStorage.getItem('admFails')||0);
+$('lf').onsubmit=async e=>{
+  e.preventDefault(); const m=$('lmsg');
+  if(fails>=5){ m.className='msg err'; m.textContent='יותר מדי ניסיונות. סגור את הדפדפן ונסה שוב מאוחר יותר.'; return; }
+  $('lb').disabled=true; $('lb').textContent='בודק…';
+  const h=await pbkdf2($('lu').value.trim().toLowerCase()+'|'+$('lp').value+'|'+normPhone($('lt').value));
+  $('lb').disabled=false; $('lb').textContent='כניסה';
+  if(h===HASH){ sessionStorage.setItem('admOk',HASH); sessionStorage.removeItem('admFails'); showApp(); }
+  else { fails++; sessionStorage.setItem('admFails',fails); m.className='msg err'; m.textContent='פרטי הכניסה שגויים.'; $('lp').value=''; }
+};
+$('logout').onclick=()=>{ sessionStorage.removeItem('admOk'); location.reload(); };
+if(sessionStorage.getItem('admOk')===HASH) showApp();
+
+/* ===== נתונים ===== */
+let DATA=null, ORIG='', fileSha=null, newPhoto=null;
+const tok=()=>localStorage.getItem('siddurGhTok')||'';
+async function gh(path,opt={}){
+  const r=await fetch('https://api.github.com/repos/'+REPO+path,{...opt,headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+tok(),'X-GitHub-Api-Version':'2022-11-28',...(opt.headers||{})}});
+  if(!r.ok){ const t=await r.text(); throw new Error(r.status+' '+t.slice(0,160)); } return r.json();
+}
+const b64=s=>btoa(unescape(encodeURIComponent(s)));
+const unb64=s=>decodeURIComponent(escape(atob(s.replace(/\n/g,''))));
+async function loadData(){
+  try{
+    if(tok()){ const f=await gh('/contents/site.json?ref='+BRANCH); fileSha=f.sha; DATA=JSON.parse(unb64(f.content)); }
+    else DATA=await fetch('/site.json?v='+Date.now(),{cache:'no-store'}).then(r=>r.json());
+  }catch(e){ DATA=await fetch('/site.json?v='+Date.now(),{cache:'no-store'}).then(r=>r.json()); }
+  ORIG=JSON.stringify(DATA); fill();
+}
+function fill(){
+  const d=DATA; d.banner=d.banner||{}; d.about=d.about||{}; d.photo=d.photo||{}; d.colors=d.colors||{}; d.stats=d.stats||{};
+  $('bOn').checked=!!d.banner.on; $('bText').value=d.banner.text||''; $('bLink').value=d.banner.link||''; $('bStyle').value=d.banner.style||'gold';
+  $('tHome').value=d.homeTitle||''; $('aTitle').value=d.about.title||''; $('aSub').value=d.about.subtitle||''; $('aExtra').value=d.about.extra||'';
+  $('aDev').value=d.about.developer||''; $('aPhone').value=d.about.phone||''; $('aVer').value=d.about.version||'';
+  $('pOn').checked=d.photo.on!==false; $('pCap').value=d.photo.caption||''; $('pImg').src='/'+(d.photo.src||'rebbe.jpg')+'?v='+Date.now();
+  $('cNavy').value=d.colors.navy||'#0f2c5c'; $('cAccent').value=d.colors.accent||'#b08a3e';
+  $('gc').value=d.stats.goatcounter||''; newPhoto=null; preview(); stats(); dirty();
+}
+function collect(){
+  const d=DATA;
+  d.banner={on:$('bOn').checked,text:$('bText').value.trim(),link:$('bLink').value.trim(),style:$('bStyle').value};
+  d.homeTitle=$('tHome').value.trim()||'המסע של היום';
+  d.about={title:$('aTitle').value.trim(),subtitle:$('aSub').value.trim(),extra:$('aExtra').value.trim(),developer:$('aDev').value.trim(),phone:$('aPhone').value.trim(),version:$('aVer').value.trim()};
+  d.photo={...d.photo,on:$('pOn').checked,caption:$('pCap').value.trim()};
+  d.colors={navy:$('cNavy').value,accent:$('cAccent').value};
+  d.stats={goatcounter:$('gc').value.trim().toLowerCase().replace(/[^a-z0-9-]/g,'')};
+}
+function dirty(){ if(!DATA) return; collect(); const ch=JSON.stringify(DATA)!==ORIG||!!newPhoto; $('status').textContent=ch?'יש שינויים שלא נשמרו':'אין שינויים שלא נשמרו'; $('status').style.color=ch?'#b3261e':''; }
+function preview(){ const p=$('bPrev'); p.className='prev-banner s-'+$('bStyle').value; p.textContent=$('bText').value||'(אין טקסט)'; p.style.opacity=$('bOn').checked?1:.45; }
+document.querySelectorAll('input,textarea,select').forEach(el=>{ if(['lu','lp','lt','ghTok','pFile'].includes(el.id)) return; el.addEventListener('input',()=>{preview();dirty();}); el.addEventListener('change',()=>{preview();dirty();if(el.id==='gc')stats();}); });
+$('cReset').onclick=()=>{ $('cNavy').value='#0f2c5c'; $('cAccent').value='#b08a3e'; dirty(); };
+$('undo').onclick=()=>{ DATA=JSON.parse(ORIG); fill(); };
+
+/* תמונה – חיתוך לריבוע, הקטנה ופילטר */
+$('pFile').onchange=async()=>{
+  const f=$('pFile').files[0]; if(!f) return;
+  const img=await createImageBitmap(f); const S=640, c=document.createElement('canvas'); c.width=c.height=S; const x=c.getContext('2d');
+  const m=Math.min(img.width,img.height); x.drawImage(img,(img.width-m)/2,(img.height-m)/2.6,m,m,0,0,S,S);
+  if($('pFilter').checked){
+    const id=x.getImageData(0,0,S,S), a=id.data; const lo=[10,26,56], mid=[176,138,62], hi=[252,244,222];
+    for(let i=0;i<a.length;i+=4){ let g=(a[i]*.299+a[i+1]*.587+a[i+2]*.114)/255; g=Math.min(1,Math.max(0,(g-.5)*1.12+.5));
+      const t=g<.55? g/.55 : (g-.55)/.45, A=g<.55?lo:mid, B=g<.55?mid:hi; for(let k=0;k<3;k++) a[i+k]=A[k]+(B[k]-A[k])*t; }
+    x.putImageData(id,0,0);
+    const v=x.createRadialGradient(S/2,S/2,S*.32,S/2,S/2,S*.62); v.addColorStop(0,'rgba(10,26,56,0)'); v.addColorStop(1,'rgba(10,26,56,.95)'); x.fillStyle=v; x.fillRect(0,0,S,S);
+  }
+  newPhoto=c.toDataURL('image/jpeg',.85); $('pImg').src=newPhoto; dirty();
+};
+
+/* סטטיסטיקות */
+function stats(){
+  const g=$('gc').value.trim().toLowerCase().replace(/[^a-z0-9-]/g,''), box=$('gcBox');
+  if(!g){ box.innerHTML='<p class="muted">עוד לא הוגדר קוד. אחרי השמירה הספירה תתחיל אוטומטית.</p>'; return; }
+  box.innerHTML=`<div class="row"><a href="https://${g}.goatcounter.com" target="_blank" rel="noopener"><button class="pri">פתיחת לוח הנתונים המלא ↗</button></a></div>
+  <p class="muted">אם לוח הנתונים מוגדר כציבורי, הוא מוצג כאן:</p><iframe class="stats" src="https://${g}.goatcounter.com" title="סטטיסטיקות" loading="lazy"></iframe>`;
+}
+
+/* GitHub */
+async function ghCheck(){
+  const p=$('ghPill');
+  if(!tok()){ p.className='pill err'; p.textContent='לא מחובר'; return false; }
+  try{ const r=await gh(''); if(!r.permissions||!r.permissions.push) throw new Error('no push'); p.className='pill ok'; p.textContent='מחובר'; return true; }
+  catch(e){ p.className='pill err'; p.textContent='מפתח לא תקין'; return false; }
+}
+$('ghSave').onclick=async()=>{ const v=$('ghTok').value.trim(); const m=$('ghMsg'); if(!v){ m.className='msg err'; m.textContent='הדבק מפתח.'; return; }
+  localStorage.setItem('siddurGhTok',v); $('ghTok').value=''; const ok=await ghCheck();
+  m.className='msg '+(ok?'ok':'err'); m.textContent=ok?'מחובר! עכשיו אפשר לשמור שינויים לאתר.':'המפתח לא עובד. ודא שנבחר המאגר osmomusic/siddur והרשאת Contents: Read and write.';
+  if(ok) loadData(); };
+$('ghForget').onclick=()=>{ localStorage.removeItem('siddurGhTok'); ghCheck(); $('ghMsg').className='msg ok'; $('ghMsg').textContent='המפתח נמחק מהדפדפן.'; };
+
+$('save').onclick=async()=>{
+  const m=$('smsg'); collect();
+  if(!(await ghCheck())){ m.className='msg err'; m.textContent='כדי לשמור צריך קודם להתחבר ל־GitHub (בלשונית „חיבור ל־GitHub”).'; openTab('gh'); return; }
+  $('save').disabled=true; $('save').textContent='שומר…';
+  try{
+    if(newPhoto){
+      const name='photo-'+Date.now()+'.jpg';
+      await gh('/contents/'+name,{method:'PUT',body:JSON.stringify({message:'ניהול: החלפת תמונה בדף הבית',content:newPhoto.split(',')[1],branch:BRANCH})});
+      DATA.photo.src=name; newPhoto=null;
+    }
+    try{ const f=await gh('/contents/site.json?ref='+BRANCH); fileSha=f.sha; }catch(e){}
+    const body={message:'ניהול: עדכון תוכן האתר',content:b64(JSON.stringify(DATA,null,2)+'\n'),branch:BRANCH}; if(fileSha) body.sha=fileSha;
+    const r=await gh('/contents/site.json',{method:'PUT',body:JSON.stringify(body)}); fileSha=r.content.sha;
+    ORIG=JSON.stringify(DATA); dirty();
+    m.className='msg ok'; m.textContent='נשמר! השינויים יופיעו באתר תוך כדקה (אם לא – רענן את הדף).';
+  }catch(e){ m.className='msg err'; m.textContent='השמירה נכשלה: '+e.message; }
+  $('save').disabled=false; $('save').textContent='שמירה ופרסום באתר';
+};
+window.addEventListener('beforeunload',e=>{ if($('status').textContent.startsWith('יש')){ e.preventDefault(); e.returnValue=''; } });
+
+/* לשוניות */
+function openTab(s){ document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.s===s)); document.querySelectorAll('section').forEach(x=>x.classList.toggle('on',x.id==='s-'+s)); }
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>openTab(b.dataset.s));
+function showApp(){ $('login').hidden=true; $('app').hidden=false; ghCheck(); loadData(); }
+</script>
+</body>
+</html>

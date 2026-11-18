@@ -351,6 +351,13 @@ body.ltr .bsd{left:auto;right:14px}
 body.ltr .reader-head .iconbtn:first-child{transform:scaleX(-1)}
 .langnote{font-size:15px;color:var(--muted);background:var(--accent-soft);border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin:0 0 12px}
 .langbtn{font-size:22px}
+/* באנר מנוהל */
+.sbanner{margin:4px 0 16px;padding:14px 18px;border-radius:18px;font-size:19px;line-height:1.6;text-align:center;font-family:"Frank Ruhl Libre",serif;font-weight:700;animation:tileIn .5s both}
+.sbanner a{color:inherit;text-decoration:underline}
+.sbanner.s-gold{background:linear-gradient(135deg,#f6e7bf,#e7cd88);color:#0d2a52;border:1px solid #b08a3e}
+.sbanner.s-navy{background:linear-gradient(135deg,#1b3a6e,#0f2c5c);color:#f3e2ac;border:1px solid #b08a3e}
+.sbanner.s-red{background:linear-gradient(135deg,#a33535,#7a1f1f);color:#fff;border:1px solid #e3b4b4}
+body.hc .sbanner{background:#000;color:#ff0;border:2px solid #ff0}
 </style>
 </head>
 <body>
@@ -1332,7 +1339,7 @@ function updPlayer(){
 /* ===================== מסכים ===================== */
 const app=document.getElementById('app');
 function findItem(id){ for(const g of SIDDUR) for(const it of g.items) if(it.id===id) return it; }
-function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
 /* ===================== אייקונים מצוירים (SVG) – חפצי קדושה מוחשיים ===================== */
 const SV=(b)=>`<svg viewBox="0 0 64 64" width="46" height="46" xmlns="http://www.w3.org/2000/svg" focusable="false">${b}</svg>`;
@@ -1527,7 +1534,8 @@ setInterval(()=>{ try{ if(location.hash.replace('#','')==='' && !R_.playing){ co
 function renderHome(){
   stopReading(); R_.blocks=[]; updPlayer(); setTab(''); lastMenu='';
   const plan=prayerPlan(); planKey=plan.key; const tod=plan.ids, z=plan.z;
-  let h=homeHeader('המסע של היום')+`<figure class="rebbe"><span class="ring"><img src="rebbe.jpg" alt="הרבי מליובאוויטש" width="640" height="640" decoding="async"></span><figcaption>הרבי מליובאוויטש</figcaption></figure><div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
+  const P=SITE.photo||{};
+  let h=homeHeader(esc(SITE.homeTitle||'המסע של היום'))+siteBanner()+(P.on!==false&&P.src?`<figure class="rebbe"><span class="ring"><img src="${esc(P.src)}" alt="${esc(P.caption||'')}" width="640" height="640" decoding="async"></span>${P.caption?`<figcaption>${esc(P.caption)}</figcaption>`:''}</figure>`:'')+`<div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
   h+=`<p class="zman">עכשיו: <b>${plan.label}</b> · ${esc(z.loc.name)}<br>זריחה ${hm(z.sunrise)} · חצות ${hm(z.chatzot)} · שקיעה ${hm(z.sunset)} · צאת הכוכבים ${hm(z.tzeit)}${new Date().getDay()===5?` · הדלקת נרות ${hm(z.candles)}`:''}</p>`;
   h+=`<button class="tile light" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span class="ic" aria-hidden="true">${icoOf('🔊')}</span><span class="t">${cfg.voiceMode?'מצב קולי לליקויי ראייה: פעיל':'הפעל מצב קולי לליקויי ראייה'}<small style="color:var(--muted)">הכרזה קולית של המסכים והקראה אוטומטית של התפילה</small></span></button>`;
   h+=`<div class="tiles" role="list" style="margin-top:14px">`;
@@ -1556,18 +1564,20 @@ function renderSiddurList(){
 }
 
 function renderAbout(){
+  const A=SITE.about||{};
   stopReading(); R_.blocks=[]; updPlayer(); setTab('about');
   app.innerHTML=`<div class="reader-head"><button class="iconbtn" aria-label="חזרה לסידור" onclick="go('')">›</button><h1 id="h1" tabindex="-1">אודות</h1><span class="tsz">${tszBtns()}</span></div>
   <div class="card" style="padding:24px 22px;font-size:20px;line-height:1.9">
-    <div style="font-size:26px;font-weight:800;margin-bottom:6px">סידור תהלת ה׳ – נוסח חב״ד</div>
-    <div>סידור מנוקד עם הקראה קולית ונגישות לליקויי ראייה</div>
+    <div style="font-size:26px;font-weight:800;margin-bottom:6px">${esc(A.title||'')}</div>
+    <div>${esc(A.subtitle||'')}</div>
+    ${A.extra?`<div style="margin-top:10px;white-space:pre-line">${esc(A.extra)}</div>`:''}
     <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
-    <div><b>פיתוח תוכנה:</b> <span dir="ltr">Osmo Softwares</span></div>
-    <div><b>טלפון:</b> <a href="tel:0505788881" dir="ltr" style="color:inherit">050-5788881</a></div>
-    <div><b>גרסה:</b> <span dir="ltr">1.0</span></div>
+    <div><b>פיתוח תוכנה:</b> <span dir="ltr">${esc(A.developer||'')}</span></div>
+    <div><b>טלפון:</b> <a href="tel:${esc((A.phone||'').replace(/[^0-9+]/g,''))}" dir="ltr" style="color:inherit">${esc(A.phone||'')}</a></div>
+    <div><b>גרסה:</b> <span dir="ltr">${esc(A.version||'')}</span></div>
   </div>`;
   window.scrollTo(0,0); document.getElementById('h1').focus();
-  if(cfg.voiceMode) announce("אודות. פיתוח תוכנה: Osmo Softwares. טלפון: 050-5788881. גרסה 1.0.", SAY.about);
+  if(cfg.voiceMode) announce(`אודות. פיתוח תוכנה: ${A.developer}. טלפון: ${A.phone}. גרסה ${A.version}.`, SAY.about);
 }
 
 function renderItem(id){
@@ -1790,7 +1800,24 @@ function toggleVoiceMode(){
   unlockAudio(); if(cfg.voiceMode) utter(SAY.vm,()=>renderHome(),'read'); else { stopAll(); renderHome(); }
 }
 
+/* ===================== תוכן מנוהל מתוך /admin (site.json) ===================== */
+let SITE={banner:{on:false},homeTitle:'המסע של היום',photo:{on:true,src:'rebbe.jpg',caption:'הרבי מליובאוויטש'},about:{title:'סידור תהלת ה׳ – נוסח חב״ד',subtitle:'סידור מנוקד עם הקראה קולית ונגישות לליקויי ראייה',developer:'Osmo Softwares',phone:'050-5788881',version:'1.0',extra:''},colors:{},stats:{}};
+function applySite(){
+  const r=document.documentElement.style, c=SITE.colors||{};
+  if(c.navy && !document.body.classList.contains('dark')) r.setProperty('--navy',c.navy); else r.removeProperty('--navy');
+  if(c.accent && !document.body.classList.contains('dark')){ r.setProperty('--accent',c.accent); r.setProperty('--hl-border',c.accent); } else { r.removeProperty('--accent'); r.removeProperty('--hl-border'); }
+  const g=(SITE.stats||{}).goatcounter;
+  if(g && /^[a-z0-9-]+$/i.test(g) && !document.getElementById('gcScript')){
+    window.goatcounter={no_onload:true};
+    const sc=document.createElement('script'); sc.id='gcScript'; sc.async=true; sc.src='https://gc.zgo.at/count.js'; sc.dataset.goatcounter='https://'+g+'.goatcounter.com/count';
+    sc.onload=()=>gcCount(); document.head.appendChild(sc);
+  }
+}
+function gcCount(){ try{ if(window.goatcounter&&window.goatcounter.count){ const id=location.hash.slice(1)||'home'; const it=findItem(id); window.goatcounter.count({path:'/'+id, title: it? it.title : (id==='home'?'דף הבית':id)}); } }catch(e){} }
+window.addEventListener('hashchange',()=>setTimeout(gcCount,50));
+function siteBanner(){ const b=SITE.banner||{}; if(!b.on||!b.text) return ''; const t=esc(b.text).replace(/\n/g,'<br>'); const inner=b.link&&/^https?:\/\//.test(b.link)? `<a href="${esc(b.link)}" target="_blank" rel="noopener">${t}</a>` : t; return `<div class="sbanner s-${esc(b.style||'gold')}" role="note">${inner}</div>`; }
 applyCfg(); loadVoices(); i18nStart(); route();
+fetch('site.json?v='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{ if(!j) return; SITE={...SITE,...j,about:{...SITE.about,...(j.about||{})},photo:{...SITE.photo,...(j.photo||{})}}; applySite(); route(); gcCount(); }).catch(()=>{});
 try{ matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{ if(cfg.theme==='auto') applyCfg(); }); }catch(e){}
 </script>
 </body>

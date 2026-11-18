@@ -1,0 +1,15 @@
+{
+  "banner": { "on": false, "text": "", "link": "", "style": "gold" },
+  "homeTitle": "המסע של היום",
+  "photo": { "on": true, "src": "rebbe.jpg", "caption": "הרבי מליובאוויטש" },
+  "about": {
+    "title": "סידור תהלת ה׳ – נוסח חב״ד",
+    "subtitle": "סידור מנוקד עם הקראה קולית ונגישות לליקויי ראייה",
+    "developer": "Osmo Softwares",
+    "phone": "050-5788881",
+    "version": "1.0",
+    "extra": ""
+  },
+  "colors": { "navy": "#0f2c5c", "accent": "#b08a3e" },
+  "stats": { "goatcounter": "" }
+}
