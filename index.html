@@ -1607,7 +1607,7 @@ function renderHome(){
   h+=`<section class="seo" aria-labelledby="seoH"><h2 id="seoH" class="grp">על הסידור</h2><p>${esc(T('SEO_P1'))}</p><p>${esc(T('SEO_P2'))}</p></section>`;
   h+=`<p class="foot">נוסח הטקסט מבוסס על סידור „תהלת ה׳” (נוסח האר״י). השם הקדוש מוצג „יְיָ” כמנהג סידורי חב״ד, ומוקרא „אֲדֹנָי”. „משיב הרוח” ו„טל ומטר” נבחרים אוטומטית לפי התאריך העברי (מנהג ארץ ישראל).<br>קיצורי מקלדת: רווח – הקרא/עצור, חיצים – פסקה הבאה/קודמת, Esc – חזרה.</p>`;
   app.innerHTML=h; window.scrollTo(0,0);
-  document.getElementById('h1').focus();
+  document.getElementById('h1').focus(); applyPendingQ();
   if(cfg.voiceMode) announce("המסע של היום. בחר תפילה מהרשימה.", SAY.home+' '+tod.map(id=>SAY_TITLES[id]).join(', ')+', תְּהִלִּים יוֹמִי, תְּהִלִּים אִישִׁי, בִּרְכַּת הַמָּזוֹן, כָּל הַסִּדּוּר.');
 }
 function renderSiddurList(){
@@ -1860,6 +1860,8 @@ function toggleVoiceMode(){
 }
 
 /* ===================== חיפוש באתר ===================== */
+let PENDING_Q=(()=>{ try{ return new URLSearchParams(location.search).get('q')||''; }catch(e){ return ''; } })();
+function applyPendingQ(){ if(!PENDING_Q||location.hash) return; const i=document.getElementById('sq'); if(i){ i.value=PENDING_Q; runSearch(PENDING_Q,true); } }
 const ALIASES={
  hashkama:'מודה אני, נטילת ידיים, נעגל וואסער, אשר יצר, אלוקי נשמה, ברכות השחר, ברכות התורה, טלית, ציצית, השכמה, בוקר, modeh ani, morning blessings, birchot hashachar, tallit, modé aní, bendiciones de la mañana, bénédictions du matin, моде ани, утренние благословения',
  shacharit:'שחרית, תפילת שחרית, תפילת בוקר, שמונה עשרה, עמידה, קריאת שמע, ברוך שאמר, אשרי, ישתבח, עלינו, shacharit, shaharit, morning prayer, amidah, shema, shajarit, oración de la mañana, chaharit, prière du matin, шахарит, утренняя молитва',
@@ -1920,6 +1922,7 @@ function doSearch(q){
 }
 function searchBox(){ return `<form class="sbox" role="search" onsubmit="event.preventDefault();runSearch(this.q.value)"><label for="sq" class="sr">חיפוש תפילה, ברכה או פרק תהילים</label><span class="sic" aria-hidden="true">🔍</span><input id="sq" name="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="חיפוש: ברכת המזון, תפילין, תהילים כ״ג…" oninput="runSearch(this.value,true)"><button type="submit" aria-label="חיפוש">חיפוש</button></form><div id="sres" aria-live="polite"></div>`; }
 function runSearch(q,live){
+  if(normQ(q)!==normQ(PENDING_Q)) PENDING_Q='';
   const box=document.getElementById('sres'); if(!box) return;
   if(!normQ(q)){ box.innerHTML=''; return; }
   const r=doSearch(q);
@@ -1947,7 +1950,7 @@ function gcCount(){ try{ if(window.goatcounter&&window.goatcounter.count){ const
 window.addEventListener('hashchange',()=>setTimeout(gcCount,50));
 function siteBanner(){ const b=SITE.banner||{}; if(!b.on||!b.text) return ''; const t=esc(b.text).replace(/\n/g,'<br>'); const inner=b.link&&/^https?:\/\//.test(b.link)? `<a href="${esc(b.link)}" target="_blank" rel="noopener">${t}</a>` : t; return `<div class="sbanner s-${esc(b.style||'gold')}" role="note">${inner}</div>`; }
 applyCfg(); loadVoices(); i18nStart(); route();
-(function(){ const q=new URLSearchParams(location.search).get('q'); if(q && !location.hash){ const i=document.getElementById('sq'); if(i){ i.value=q; runSearch(q,true); } } })();
+applyPendingQ();
 (function(){ if(LANG==='he') return; const M={en:['Chabad Siddur with Read-Aloud – Tehillat Hashem | siddurchabad.co.il','Free Chabad siddur (Tehillat Hashem, Nusach Ari) with Hebrew read-aloud and full accessibility for the visually impaired. Shacharit, Mincha, Maariv, Grace after meals, tefillin, Tehillim. Interface in English.'],
  es:['Sidur Jabad con lectura en voz alta – Tehilat Hashem','Sidur Jabad gratuito (Tehilat Hashem, Nusaj Arí) con lectura en hebreo y accesible para personas con discapacidad visual. Shajarit, Minjá, Arvit, Birkat Hamazón, tefilín, Tehilim. Interfaz en español.'],
  fr:['Siddour ’Habad avec lecture audio – Tehilat Hachem','Siddour ’Habad gratuit (Tehilat Hachem, rite du Ari) avec lecture en hébreu, accessible aux malvoyants. Cha’harit, Min’ha, Arvit, Birkat Hamazone, tefilin, Tehilim. Interface en français.'],
