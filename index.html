@@ -274,7 +274,7 @@ body.hc .tile::after{display:none}
       <label for="sFs">גודל אותיות התפילה: <span id="fsV"></span></label>
       <input type="range" id="sFs" min="18" max="90" step="2">
     </div>
-    <label class="sw"><input type="checkbox" id="sVoiceMode"> מצב קולי לעיוורים</label>
+    <label class="sw"><input type="checkbox" id="sVoiceMode"> מצב קולי לליקויי ראייה</label>
     <div class="field" style="margin-top:0"><small>מכריז בקול על כל מסך, מתחיל להקריא אוטומטית כשנכנסים לתפילה, והחלקה ימינה/שמאלה על הטקסט עוברת פסקה. משתמשי VoiceOver יכולים להשאיר כבוי ולהשתמש בכפתורי הנגן.</small></div>
     <label class="sw"><input type="checkbox" id="sAuto"> המשך אוטומטי לפסקה הבאה</label>
     <label class="sw"><input type="checkbox" id="sNikud"> הצג ניקוד</label>
@@ -1235,7 +1235,7 @@ function renderHome(){
   const hr=new Date().getHours();
   const tod = hr<12? ['hashkama','shacharit'] : hr<18? ['mincha'] : ['maariv','bedtime'];
   let h=homeHeader('המסע של היום')+`<div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
-  h+=`<button class="tile light" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span class="ic" aria-hidden="true">🔊</span><span class="t">${cfg.voiceMode?'מצב קולי לעיוורים: פעיל':'הפעל מצב קולי לעיוורים'}<small style="color:var(--muted)">הכרזה קולית של המסכים והקראה אוטומטית של התפילה</small></span></button>`;
+  h+=`<button class="tile light" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span class="ic" aria-hidden="true">🔊</span><span class="t">${cfg.voiceMode?'מצב קולי לליקויי ראייה: פעיל':'הפעל מצב קולי לליקויי ראייה'}<small style="color:var(--muted)">הכרזה קולית של המסכים והקראה אוטומטית של התפילה</small></span></button>`;
   h+=`<div class="tiles" role="list" style="margin-top:14px">`;
   const it=id=>findItem(id);
   for(const id of tod){ const x=it(id); h+=tile(id,x.icon,x.title,x.sub,TILE_COLORS[id]); }
@@ -1266,7 +1266,7 @@ function renderAbout(){
   app.innerHTML=`<div class="reader-head"><button class="iconbtn" aria-label="חזרה לסידור" onclick="go('')">›</button><h1 id="h1" tabindex="-1">אודות</h1><span class="tsz">${tszBtns()}</span></div>
   <div class="card" style="padding:24px 22px;font-size:20px;line-height:1.9">
     <div style="font-size:26px;font-weight:800;margin-bottom:6px">סידור תהלת ה׳ – נוסח חב״ד</div>
-    <div>סידור מנוקד עם הקראה קולית ונגישות לעיוורים</div>
+    <div>סידור מנוקד עם הקראה קולית ונגישות לליקויי ראייה</div>
     <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
     <div><b>פיתוח תוכנה:</b> <span dir="ltr">Osmo Software</span></div>
     <div><b>טלפון:</b> <a href="tel:0505788881" dir="ltr" style="color:inherit">050-5788881</a></div>
