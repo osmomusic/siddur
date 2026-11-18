@@ -322,6 +322,15 @@ body.hc::before,body.hc::after{display:none}
 .tile.light .ic{background:radial-gradient(circle at 35% 30%,#fffdf7,#efe2c2)}
 h2.sec .ic svg{width:30px;height:30px;vertical-align:middle}
 .sitem svg{width:26px;height:26px;vertical-align:middle;flex:none}
+/* לוגו האתר */
+figure.logo{margin:6px auto 18px;width:100%;max-width:520px;position:relative;border-radius:22px;padding:3px;
+  background:linear-gradient(135deg,#8a6a2a,#ecd28c,#b08a3e,#fff3c8,#8a6a2a);
+  box-shadow:0 12px 32px rgba(13,42,82,.30)}
+figure.logo img{display:block;width:100%;height:auto;border-radius:19px}
+figure.logo::after{content:"";position:absolute;inset:3px;border-radius:19px;pointer-events:none;
+  background:linear-gradient(115deg,transparent 35%,rgba(255,240,200,.28) 50%,transparent 65%);background-size:250% 100%;animation:rebbeShine 8s ease-in-out infinite}
+body.hc figure.logo{background:#fff;box-shadow:none}
+@media (min-width:900px){figure.logo{max-width:560px}}
 </style>
 </head>
 <body>
@@ -1215,7 +1224,7 @@ setInterval(()=>{ try{ if(location.hash.replace('#','')==='' && !R_.playing){ co
 function renderHome(){
   stopReading(); R_.blocks=[]; updPlayer(); setTab(''); lastMenu='';
   const plan=prayerPlan(); planKey=plan.key; const tod=plan.ids, z=plan.z;
-  let h=homeHeader('המסע של היום')+`<figure class="rebbe"><span class="ring"><img src="rebbe.jpg" alt="הרבי מליובאוויטש" width="640" height="640" decoding="async"></span><figcaption>הרבי מליובאוויטש</figcaption></figure><div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
+  let h=homeHeader('המסע של היום')+`<figure class="logo"><img src="logo.jpg" alt="SiddurChabad.co.il – סידור חב״ד" width="960" height="625" decoding="async"></figure><div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
   h+=`<p class="zman">עכשיו: <b>${plan.label}</b> · ${esc(z.loc.name)}<br>זריחה ${hm(z.sunrise)} · חצות ${hm(z.chatzot)} · שקיעה ${hm(z.sunset)} · צאת הכוכבים ${hm(z.tzeit)}${new Date().getDay()===5?` · הדלקת נרות ${hm(z.candles)}`:''}</p>`;
   h+=`<button class="tile light" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span class="ic" aria-hidden="true">${icoOf('🔊')}</span><span class="t">${cfg.voiceMode?'מצב קולי לליקויי ראייה: פעיל':'הפעל מצב קולי לליקויי ראייה'}<small style="color:var(--muted)">הכרזה קולית של המסכים והקראה אוטומטית של התפילה</small></span></button>`;
   h+=`<div class="tiles" role="list" style="margin-top:14px">`;
