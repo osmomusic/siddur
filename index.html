@@ -520,6 +520,124 @@ body.dark .tile.light{background:linear-gradient(160deg,#13284f,#0d1d3c);color:#
 body.dark .datepill,body.dark .iconbtn,body.dark .tbtn{background:linear-gradient(180deg,#13284f,#0d1d3c);border-color:rgba(216,178,96,.5);box-shadow:none}
 body.dark .prayer .blk.cur{background:linear-gradient(180deg,#22305a,#1b2850)}
 body.hc .tabbar{background:#000!important;border-color:#ff0!important} body.hc .tabbar button,body.hc .tabbar button.on{background:#000!important;color:#ff0!important}
+/* ===================== עיצוב ירושלים – לפי ההדמיה ===================== */
+/* רקע אבן ירושלמית + קו רקיע */
+body{background:linear-gradient(180deg,#f3ead8 0%,#efe3cb 55%,#e8d8b8 100%)}
+body::before{opacity:.6;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='96'%3E%3Cg fill='none' stroke='%23b99a68' stroke-opacity='.18' stroke-width='1.2'%3E%3Cpath d='M0 0h160M0 48h160M0 96h160M40 0v48M120 0v48M0 48v48M80 48v48M160 48v48'/%3E%3C/g%3E%3Cg fill='%23c9ad7c' fill-opacity='.05'%3E%3Crect x='2' y='2' width='36' height='44' rx='3'/%3E%3Crect x='82' y='50' width='76' height='44' rx='3'/%3E%3C/g%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .3 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.skyline{position:fixed;left:0;right:0;bottom:0;height:min(32vh,260px);z-index:0;pointer-events:none;opacity:.55;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 260' preserveAspectRatio='xMidYMax slice'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23d9c39a'/%3E%3Cstop offset='1' stop-color='%23c4a574'/%3E%3C/linearGradient%3E%3ClinearGradient id='d' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23f6dc8a'/%3E%3Cstop offset='1' stop-color='%23b8892f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23s)' d='M0 260V190h60v-20h40v20h50v-40h30v-30h14v30h30v40h70v-25h50v25h60v-50h18v-40h10v40h18v50h80v-30h60v30h46c4-28 22-52 52-58v-12h8v12c30 6 48 30 52 58h40v-35h70v35h60v-60h16l8-30 8 30h16v60h70v-20h50v20h60v70z'/%3E%3Cpath fill='url(%23d)' d='M774 190c4-28 22-52 52-58v-12h8v12c30 6 48 30 52 58z'/%3E%3Cg fill='%23a8875a' fill-opacity='.5'%3E%3Crect x='0' y='230' width='1200' height='30'/%3E%3C/g%3E%3Cpath d='M0 236h1200M0 248h1200' stroke='%23b99a68' stroke-opacity='.5'/%3E%3C/svg%3E") no-repeat bottom center/cover}
+body.dark{background:linear-gradient(180deg,#0b1730 0%,#14284a 55%,#2a3550 100%)}
+body.dark::before{opacity:.5;background-image:radial-gradient(1px 1px at 12% 18%,#fff8,transparent),radial-gradient(1px 1px at 32% 8%,#fff6,transparent),radial-gradient(1.5px 1.5px at 58% 14%,#fff7,transparent),radial-gradient(1px 1px at 78% 22%,#fff6,transparent),radial-gradient(1px 1px at 90% 6%,#fff5,transparent),radial-gradient(1px 1px at 45% 28%,#fff5,transparent)}
+body.dark .skyline{opacity:.9;filter:brightness(.55) saturate(1.2) drop-shadow(0 -6px 30px rgba(255,190,90,.25))}
+body.hc .skyline{display:none}
+#app,#dpanel,#topnav{position:relative;z-index:1}
+
+/* כותרת וסרט זהב */
+.hero{margin:-4px 0 16px}
+.ribbon{display:flex;align-items:center;gap:12px}
+.ribbon b{display:inline-block;padding:6px 26px;border-radius:999px;background:var(--gold-foil);color:#0c2347;font-family:"Frank Ruhl Libre",serif;font-size:24px;font-weight:900;letter-spacing:.5px;box-shadow:0 6px 16px -6px rgba(10,26,56,.45),inset 0 1px 0 rgba(255,255,255,.6)}
+.ribbon .orn{width:70px;height:12px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 70 12'%3E%3Cpath d='M0 6h46' stroke='%23c79c48' stroke-width='1.4'/%3E%3Cpath d='M46 6c6-6 12-6 14 0s-8 6-8 0 6-4 10 0' fill='none' stroke='%23c79c48' stroke-width='1.4'/%3E%3Ccircle cx='68' cy='6' r='2' fill='%23c79c48'/%3E%3C/svg%3E") no-repeat center/contain}
+.ribbon .orn.r{transform:scaleX(-1)}
+.tagline{margin:8px 0 0;font-family:"Frank Ruhl Libre",serif;font-size:22px;color:var(--ink);letter-spacing:.4px}
+header.top h1::after{display:none}
+
+/* אריחים: כחול עם מסגרת זהב (ראשיים) ושמנת (משניים) */
+.tile{background:linear-gradient(180deg,#fffdf7,#f5ecd8)!important;color:#0d2a52!important;border:1px solid #dcc790!important;
+  box-shadow:0 10px 24px -14px rgba(10,26,56,.45),inset 0 0 0 4px #fffdf7,inset 0 0 0 5px rgba(199,156,72,.35)!important}
+.tile::before{background:radial-gradient(120% 90% at 85% 0%,rgba(255,241,194,.35),transparent 55%)!important}
+.tile .t{text-shadow:none!important}
+.tile .t small{color:#5d5442!important;opacity:1!important}
+.tile .ic{background:radial-gradient(circle at 35% 30%,#fffdf7,#f1e4c3)!important;box-shadow:inset 0 0 0 1.5px #c79c48!important}
+.tile .chev{background:#0d2a52!important;color:#f3dc9c!important;box-shadow:none!important}
+.tile.pri{background:linear-gradient(180deg,#183a6e 0%,#0c2347 100%)!important;color:#fff8e6!important;border:2px solid #c79c48!important;
+  box-shadow:0 16px 30px -14px rgba(10,26,56,.6),inset 0 0 0 4px #0c2347,inset 0 0 0 5px rgba(243,220,156,.55)!important}
+.tile.pri .t small{color:#e9dcb8!important}
+.tile.pri .ic{background:radial-gradient(circle at 35% 30%,rgba(255,241,194,.25),rgba(255,255,255,.04))!important;box-shadow:inset 0 0 0 1.5px rgba(243,220,156,.8)!important}
+.tile.pri .chev{background:transparent!important;color:#f3dc9c!important;box-shadow:inset 0 0 0 1px rgba(243,220,156,.7)!important}
+body.dark .tile:not(.pri){background:linear-gradient(180deg,#fbf3df,#efe2c2)!important}
+body.dark .tile.pri{background:linear-gradient(180deg,#fffdf5,#f2e6c8)!important;color:#0d2a52!important;border-color:#c79c48!important;box-shadow:0 16px 30px -14px rgba(0,0,0,.6),inset 0 0 0 4px #fffdf5,inset 0 0 0 5px rgba(199,156,72,.4)!important}
+body.dark .tile.pri .t small{color:#5d5442!important}
+body.dark .tile.pri .chev{background:#0d2a52!important}
+body.hc .tile,body.hc .tile.pri{background:#000!important;color:#ffef3a!important;border:2px solid #ffef3a!important;box-shadow:none!important}
+body.hc .tile .t small{color:#ffef3a!important}
+
+/* פריסת כרטיסים בטאבלט ובמחשב: 3 בשורה, הראשיים גבוהים וממורכזים */
+@media (min-width:700px){
+  .tiles.home{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .tiles.home .tile{min-height:96px;padding:14px 16px}
+  .tiles.home .tile.pri{flex-direction:column;justify-content:center;text-align:center;min-height:150px;gap:8px}
+  .tiles.home .tile.pri .t{flex:none;font-size:30px}
+  .tiles.home .tile.pri .chev{order:3}
+  .tiles.home .tile.light{grid-column:1/-1}
+}
+
+/* מסך קריאה: דף קלף עם מסגרת זהב */
+.crumbs{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--muted);margin:-6px 0 10px}
+.crumbs a{color:var(--muted);text-decoration:none}
+.crumbs b{color:var(--ink);font-weight:600}
+.prayer{background:linear-gradient(180deg,#fffcf3,#f8efda);border:1px solid #dcc790;border-radius:22px;padding:22px 20px 26px;
+  box-shadow:0 18px 40px -20px rgba(10,26,56,.45),inset 0 0 0 6px #fffcf3,inset 0 0 0 7px rgba(199,156,72,.45),inset 0 0 0 10px #fffcf3,inset 0 0 0 11px rgba(199,156,72,.2)}
+.prayer h3{display:table;margin:22px auto 12px!important;padding:5px 22px!important;border:1px solid #dcc790!important;border-radius:999px;background:linear-gradient(180deg,#fbefd0,#f1dfb0);color:#7a5a1e!important;font-family:"Frank Ruhl Libre",serif!important;font-size:calc(var(--fs)*.72)!important;box-shadow:0 4px 10px -6px rgba(10,26,56,.35)}
+.prayer h3:first-child{margin-top:4px!important}
+.prayer .blk:not(.note){text-align:center}
+.prayer .blk:not(.note):not(:last-child)::after{content:"";display:block;width:120px;height:8px;margin:12px auto 0;opacity:.7;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 8'%3E%3Cpath d='M0 4h50M70 4h50' stroke='%23c79c48' stroke-width='1'/%3E%3Cpath d='M60 0l4 4-4 4-4-4z' fill='%23c79c48'/%3E%3C/svg%3E") no-repeat center/contain}
+.prayer .blk.tl{text-align:center}
+body.dark .prayer{background:linear-gradient(180deg,#fffaf0,#f4e8cc);color:#0d2a52}
+body.dark .prayer .blk.note{color:#5d5442}
+body.hc .prayer{background:#000;border:2px solid #ff0;box-shadow:none}
+body.hc .prayer .blk::after{display:none}
+
+/* נגן: פס כחול עם כפתור זהב עגול */
+.player{background:linear-gradient(180deg,#14305c,#0b2045)!important;border-top:1px solid #c79c48!important;box-shadow:0 -10px 30px -10px rgba(5,14,32,.55)!important}
+.player .pbtn{background:transparent;border:1px solid rgba(243,220,156,.45);color:#f3dc9c}
+.player .pbtn.play{flex:none;width:auto;padding:0 26px;border-radius:999px;background:var(--gold-foil)!important;color:#0c2347!important;border:0;font-weight:800;box-shadow:0 0 0 3px rgba(243,220,156,.25),0 8px 18px -6px rgba(0,0,0,.6)!important}
+.player .in{justify-content:center}
+.player .pstat{color:#e9dcb8}
+.pvol{display:none;align-items:center;gap:8px;color:#f3dc9c}
+.pvol input{accent-color:#c79c48;width:140px}
+body.hc .player{background:#000!important;border-color:#ff0!important} body.hc .player .pbtn{color:#ff0;border-color:#ff0} body.hc .player .pbtn.play{background:#ff0!important;color:#000!important}
+
+/* ===================== מחשב: ניווט עליון ולוח צד ===================== */
+#topnav,#dpanel{display:none}
+@media (min-width:960px) and (hover:hover) and (pointer:fine){
+  html:not(.touch) #side{display:none!important}
+  html:not(.touch) #topnav{display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:25;height:64px;padding:0 32px;
+    background:rgba(250,244,230,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #dcc790;box-shadow:0 6px 18px -12px rgba(10,26,56,.35)}
+  html:not(.touch) body.dark #topnav{background:rgba(10,24,50,.9);border-color:rgba(199,156,72,.5)}
+  .tbrand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#0d2a52;font-family:"Frank Ruhl Libre",serif;font-size:26px}
+  body.dark .tbrand{color:#f3dc9c}
+  .tlinks{display:flex;gap:6px;margin-inline-start:auto;margin-inline-end:auto}
+  .tlinks a{padding:8px 22px;border-radius:12px;text-decoration:none;color:var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:19px;font-weight:600;transition:background .2s}
+  .tlinks a:hover{background:rgba(199,156,72,.15)}
+  .tlinks a.on{background:linear-gradient(180deg,#183a6e,#0c2347);color:#f3dc9c}
+  body.dark .tlinks a.on{background:transparent;color:#f3dc9c;box-shadow:inset 0 -3px 0 #c79c48;border-radius:0}
+  html:not(.touch) .shell{display:grid!important;grid-template-columns:minmax(0,1fr) 300px!important;gap:28px;max-width:1280px;margin:0 auto;padding:0 28px}
+  html:not(.touch) .shell>main.wrap{max-width:none!important;padding:28px 0 170px!important}
+  html:not(.touch) #dpanel{display:block;position:sticky;top:84px;align-self:start;margin-top:28px;max-height:calc(100vh - 190px);overflow:auto}
+  html:not(.touch) .player{right:0!important}
+  html:not(.touch) .pvol{display:flex}
+  html:not(.touch) .askbar{left:calc(50% - 360px)!important;right:auto;width:720px}
+  header.top h1{font-size:64px}
+}
+.pacc{width:100%;display:flex;justify-content:center;align-items:center;gap:8px;padding:12px;border-radius:999px;border:1px solid #c79c48;background:var(--gold-foil);color:#0c2347;font:inherit;font-weight:800;font-size:18px;cursor:pointer;margin-bottom:14px;box-shadow:0 6px 14px -8px rgba(10,26,56,.5)}
+.pbox{background:rgba(255,252,243,.92);border:1px solid #dcc790;border-radius:18px;padding:14px 16px;margin-bottom:14px;box-shadow:0 10px 24px -16px rgba(10,26,56,.4)}
+body.dark .pbox{background:rgba(12,28,58,.92);border-color:rgba(199,156,72,.5);color:#f2ead6}
+.pbox h3{margin:0 0 10px;font-family:"Frank Ruhl Libre",serif;font-size:18px;color:var(--ink);display:flex;gap:8px;align-items:center}
+body.dark .pbox h3{color:#f3dc9c}
+.plabel{font-size:14px;color:var(--muted);margin:4px 0 6px}
+.psz{display:flex;gap:6px;margin-bottom:10px}
+.psz button{flex:1;height:40px;border-radius:10px;border:1px solid #dcc790;background:#fffdf7;color:#0d2a52;font-family:"Frank Ruhl Libre",serif;font-weight:700;cursor:pointer}
+.psz .small{font-size:15px}.psz .mid{font-size:19px}.psz .big{font-size:24px}
+.psz button.on{background:var(--gold-foil);border-color:#c79c48}
+.prow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;font-size:16px}
+.tgl{appearance:none;-webkit-appearance:none;width:44px;height:24px;border-radius:999px;background:#d9cfb8;position:relative;cursor:pointer;transition:background .2s}
+.tgl::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:inset-inline-start .2s}
+.tgl:checked{background:#0d2a52}.tgl:checked::after{inset-inline-start:23px}
+.psel{width:100%;padding:8px 10px;border-radius:10px;border:1px solid #dcc790;background:#fffdf7;color:#0d2a52;font:inherit}
+.pz{display:grid;grid-template-columns:1fr auto;gap:6px 10px;margin:0;font-size:15px}
+.pz dt{color:var(--ink)} .pz dd{margin:0;font-variant-numeric:tabular-nums;font-weight:700;color:#7a5a1e}
+body.dark .pz dt{color:#e9dcb8} body.dark .pz dd{color:#f3dc9c}
 </style>
 </head>
 <body>
@@ -527,10 +645,16 @@ body.hc .tabbar{background:#000!important;border-color:#ff0!important} body.hc .
 <div class="bsd" aria-hidden="true">בס״ד</div>
 <a class="devcredit" href="#about" aria-label="פיתוח תוכנה: OSMO Software’s" title="OSMO Software’s"><svg viewBox="0 0 132 26" width="108" height="21" aria-hidden="true" focusable="false" direction="ltr" style="direction:ltr;unicode-bidi:isolate"><defs><linearGradient id="osmoG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3dc9c"/><stop offset=".55" stop-color="#c49a45"/><stop offset="1" stop-color="#8a6524"/></linearGradient></defs><circle cx="13" cy="13" r="10.5" fill="none" stroke="url(#osmoG)" stroke-width="2.6"/><path d="M6.5 13h3l1.6-4.2 2.6 8.4 2.2-6.2 1.1 2h3.5" fill="none" stroke="var(--navy)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="21.6" cy="6.6" r="2" fill="url(#osmoG)"/><text x="30" y="14.2" font-family="Frank Ruhl Libre,Georgia,serif" font-size="13.5" font-weight="900" letter-spacing="1.6" fill="var(--navy)">OSMO</text><text x="30.6" y="23.4" font-family="Noto Serif Hebrew,Georgia,serif" font-size="6.6" font-weight="700" letter-spacing="1.35" fill="url(#osmoG)">SOFTWARE’S ©</text></svg></a>
 <div id="live" class="sr" aria-live="polite" aria-atomic="true"></div>
+<header id="topnav" aria-label="ניווט עליון">
+  <a class="tbrand" href="#" onclick="go('');return false"><svg viewBox="0 0 40 28" width="38" height="27" aria-hidden="true"><path d="M20 6C14 2 7 2 2 4v20c5-2 12-2 18 2 6-4 13-4 18-2V4c-5-2-12-2-18 2z" fill="none" stroke="#c79c48" stroke-width="2.2" stroke-linejoin="round"/><path d="M20 6v20" stroke="#c79c48" stroke-width="2"/></svg><b>סידור חב״ד</b></a>
+  <nav class="tlinks"><a href="#siddur" data-t="siddur">סידור</a><a href="#teh" data-t="teh">תהילים</a><a href="#" data-t="" onclick="go('');return false">היום</a><a href="#ask" data-t="ask">שאל</a><a href="#about" data-t="about">אודות</a></nav>
+</header>
 <div class="shell">
 <nav id="side" aria-label="תפריט הסידור"></nav>
 <main id="app" class="wrap"></main>
+<aside id="dpanel" aria-label="נגישות וזמני היום"></aside>
 </div>
+<div class="skyline" aria-hidden="true"></div>
 
 <div class="player" id="player" role="region" aria-label="נגן הקראה">
   <div class="in">
@@ -538,6 +662,7 @@ body.hc .tabbar{background:#000!important;border-color:#ff0!important} body.hc .
     <button class="pbtn play" id="bPlay" aria-label="הקרא">▶ הקרא</button>
     <button class="pbtn" id="bNext" aria-label="פסקה הבאה">⏮</button>
     <button class="pbtn" id="bSet" aria-label="הגדרות הקראה ותצוגה">⚙︎</button>
+    <label class="pvol"><span aria-hidden="true">🔊</span><span class="sr">עוצמת קול</span><input type="range" id="sVol" min="0.2" max="1" step="0.05"></label>
   </div>
   <div class="pstat" id="pstat" aria-hidden="true"></div>
 </div>
@@ -1404,6 +1529,12 @@ Object.assign(TR,{'שאל':['Ask','Preguntar','Demander','Спросить'],'ש
 'מה הם עשרת המבצעים של הרבי?':['What are the Rebbe’s ten mitzvah campaigns?','¿Cuáles son las diez campañas del Rebe?','Quelles sont les dix campagnes du Rabbi ?','Что такое десять кампаний Ребе?'],'איזו ברכה מברכים על…?':['Which blessing do I say on…?','¿Qué bendición se dice sobre…?','Quelle bénédiction sur… ?','Какое благословение на…?'],
 'איך מקשיבים לתפילה בקול?':['How do I listen to a prayer aloud?','¿Cómo escuchar la oración en voz alta?','Comment écouter la prière à voix haute ?','Как слушать молитву вслух?'],'סיפור נוסף':['Another story','Otra historia','Une autre histoire','Ещё история'],'פרק נוסף':['Another psalm','Otro salmo','Un autre psaume','Ещё псалом'],
 'לנושאים':['Topics','Temas','Sujets','Темы'],'מצאתי באתר:':['Found on the site:','Encontré en el sitio:','Trouvé sur le site :','Нашёл на сайте:'],'הפעלת מצב קולי':['Turn on voice mode','Activar modo de voz','Activer le mode vocal','Включить голосовой режим']});
+Object.assign(TR,{'סידור חב״ד':['Chabad Siddur','Sidur Jabad','Siddour ’Habad','Сидур Хабад'],'התפילה שלך, בכל מקום':['Your prayer, everywhere','Tu oración, en todo lugar','Votre prière, partout','Ваша молитва – везде'],
+'נגישות':['Accessibility','Accesibilidad','Accessibilité','Доступность'],'הגדרות תצוגה':['Display settings','Ajustes de pantalla','Affichage','Настройки экрана'],'גודל טקסט':['Text size','Tamaño del texto','Taille du texte','Размер текста'],
+'ניגודיות גבוהה':['High contrast','Alto contraste','Contraste élevé','Высокий контраст'],'זמני היום ב':['Times today in ','Horarios de hoy en ','Horaires du jour à ','Время дня: '],
+'עלות השחר':['Dawn','Alba','Aube','Рассвет'],'הנץ החמה':['Sunrise','Amanecer','Lever du soleil','Восход'],'סוף זמן קריאת שמע':['Latest Shema','Fin del Shemá','Fin du Chéma','Последнее время Шма'],
+'סוף זמן תפילה':['Latest Shacharit','Fin de la Amidá','Fin de la prière','Последнее время молитвы'],'חצות היום':['Midday','Mediodía','Midi','Полдень'],'שקיעת החמה':['Sunset','Puesta del sol','Coucher du soleil','Закат'],
+'עוצמת קול':['Volume','Volumen','Volume','Громкость'],'ניווט עליון':['Top navigation','Navegación superior','Navigation','Навигация'],'נגישות וזמני היום':['Accessibility and times','Accesibilidad y horarios','Accessibilité et horaires','Доступность и время'],'מיקום':['Location','Ubicación','Emplacement','Расположение']});
 /* ניסוחים שמופיעים בתוך משפטים */
 const TR_RX=[
  [/פסקה (\d+) מתוך (\d+)/, (m,a,b)=>`${T('פסקה')} ${a} ${T('מתוך')} ${b}`],
@@ -1507,7 +1638,7 @@ function utter(text,onend){ deviceUtter(text,onend); }
 function deviceUtter(text,onend){
   if(!synth){onend&&onend();return}
   const u=new SpeechSynthesisUtterance(speakable(text));
-  u.lang='he-IL'; u.rate=cfg.rate;
+  u.lang='he-IL'; u.rate=cfg.rate; u.volume=cfg.vol??1;
   const v=pickVoice(); if(v) u.voice=v;
   u.onend=()=>onend&&onend(); u.onerror=(e)=>{ if(e.error!=='interrupted'&&e.error!=='canceled') onend&&onend(); };
   synth.speak(u);
@@ -1774,12 +1905,13 @@ function renderHome(){
   stopReading(); R_.blocks=[]; updPlayer(); setTab(''); lastMenu='';
   const plan=prayerPlan(); planKey=plan.key; const tod=plan.ids, z=plan.z;
   const P={...(SITE.photo||{})}; if(!/^[\w.-]+\.(jpe?g|png|webp)$/i.test(P.src||'')) P.src='rebbe.jpg';
-  let h=homeHeader(esc(SITE.homeTitle||'המסע של היום'))+searchBox()+siteBanner()+(P.on!==false&&P.src?`<figure class="rebbe"><span class="ring"><img src="${esc(P.src)}" alt="${esc(P.caption||'')}" width="640" height="640" decoding="async"></span>${P.caption?`<figcaption>${esc(P.caption)}</figcaption>`:''}</figure>`:'')+`<div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
+  let h=homeHeader(esc(SITE.homeTitle||'המסע של היום'))+`<div class="hero" aria-hidden="false"><div class="ribbon"><span class="orn" aria-hidden="true"></span><b>תהלת ה׳</b><span class="orn r" aria-hidden="true"></span></div><p class="tagline">התפילה שלך, בכל מקום</p></div>`+searchBox()+siteBanner()+(P.on!==false&&P.src?`<figure class="rebbe"><span class="ring"><img src="${esc(P.src)}" alt="${esc(P.caption||'')}" width="640" height="640" decoding="async"></span>${P.caption?`<figcaption>${esc(P.caption)}</figcaption>`:''}</figure>`:'')+`<div class="datepill">${esc(hebDateStr())}</div>`+weekStrip();
   h+=`<p class="zman">עכשיו: <b>${plan.label}</b> · ${esc(z.loc.name)}<br>זריחה ${hm(z.sunrise)} · חצות ${hm(z.chatzot)} · שקיעה ${hm(z.sunset)} · צאת הכוכבים ${hm(z.tzeit)}${new Date().getDay()===5?` · הדלקת נרות ${hm(z.candles)}`:''}</p>`;
   h+=`<button class="tile light" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span class="ic" aria-hidden="true">${icoOf('🔊')}</span><span class="t">${cfg.voiceMode?'מצב קולי לליקויי ראייה: פעיל':'הפעל מצב קולי לליקויי ראייה'}<small style="color:var(--muted)">הסידור מקריא לכם – בקול, בנחת, מילה במילה</small></span></button>`;
   h+=`<div class="tiles" role="list" style="margin-top:14px">`;
   const it=id=>findItem(id);
-  for(const id of tod){ const x=it(id); h+=tile(id,x.icon,x.title,x.sub,TILE_COLORS[id]); }
+  h=h.replace(/<div class="tiles" role="list" style="margin-top:14px">$/,'<div class="tiles home" role="list" style="margin-top:14px">');
+  for(const id of tod){ const x=it(id); h+=tile(id,x.icon,x.title,x.sub,TILE_COLORS[id]).replace('class="tile ','class="tile pri '); }
   h+=tile('teh-day','📖','תהילים יומי',dailyRange(),3);
   h+=tile('teh-age','❤️','תהילים אישי','הפרק שלכם לשנה זו',4);
   h+=tile('ask','💬','שאל שאלה','מדריך אישי לתהילים, לתפילה ולסיפורי התנ״ך',3);
@@ -1798,8 +1930,8 @@ function renderSiddurList(){
   stopReading(); R_.blocks=[]; updPlayer(); setTab('siddur'); lastMenu='siddur';
   let h=homeHeader('סידור')+searchBox();
   for(const g of SIDDUR){
-    h+=`<h2 class="grp">${g.group}</h2><div class="tiles" role="list">`;
-    for(const it of g.items) h+=tile(it.id,it.icon,it.title,it.sub,TILE_COLORS[it.id]??0);
+    h+=`<h2 class="grp">${g.group}</h2><div class="tiles${g===SIDDUR[0]?' home':''}" role="list">`;
+    for(const it of g.items){ let t=tile(it.id,it.icon,it.title,it.sub,TILE_COLORS[it.id]??0); if(g===SIDDUR[0]&&['shacharit','mincha','maariv'].includes(it.id)) t=t.replace('class="tile ','class="tile pri '); h+=t; }
     h+=`</div>`;
   }
   h+=`<h2 class="grp">לימוד</h2><div class="tiles" role="list">${DM_TILE()}</div>`;
@@ -1833,6 +1965,7 @@ function renderObj(it,opt={}){
   stopReading();
   setTab(opt.back==='teh'?'teh':(lastMenu||''));
   let h=`<div class="reader-head"><button class="iconbtn" aria-label="חזרה" onclick="go('${opt.back||lastMenu}')">›</button><h1 id="h1" tabindex="-1">${it.title}</h1><span class="tsz">${tszBtns()}</span></div>`;
+  h+=`<nav class="crumbs" aria-label="מיקום"><a href="#${opt.back||lastMenu||''}">${opt.back==='teh'?'תהילים':lastMenu==='siddur'?'סידור':'היום'}</a><span aria-hidden="true">›</span><b>${it.title}</b></nav>`;
   if(opt.pre) h+=opt.pre;
   if(LANG!=='he') h+=`<p class="langnote">🌐 ${T((cfg.script||'translit')==='he'?'הטקסט של התפילות מוצג בעברית המקורית':'התפילה מוצגת בתעתיק. ההקראה הקולית בעברית. אפשר לשנות בהגדרות.')}</p>`;
   h+=`<div class="prayer" dir="rtl" lang="he">`;
@@ -1968,7 +2101,7 @@ function tehView(id){
 }
 
 function go(id){ location.hash = id? id : ''; if(!id) route(); }
-function route(){ const id=location.hash.slice(1); id==='ask'? renderAsk() : id==='remind'? renderRemind() : id==='about'? renderAbout() : id==='siddur'? renderSiddurList() : id? renderItem(id) : renderHome(); renderSide(id); }
+function route(){ const id=location.hash.slice(1); id==='ask'? renderAsk() : id==='remind'? renderRemind() : id==='about'? renderAbout() : id==='siddur'? renderSiddurList() : id? renderItem(id) : renderHome(); renderSide(id); try{ renderPanel(); markTopnav(id); }catch(e){} }
 function renderSide(cur){
   const side=document.getElementById('side'); if(!side) return;
   const item=(id,icon,title)=>{ const on = cur===id || (id==='teh' && cur.startsWith('teh')); return `<a href="#${id}" class="sitem${on?' on':''}" ${on?'aria-current="page"':''}><span aria-hidden="true">${icoOf(icon)}</span>${title}</a>`; };
@@ -2339,6 +2472,31 @@ function renderAsk(){
   app.innerHTML=h; askRenderLog(); window.scrollTo(0,0); document.getElementById('h1').focus();
   if(cfg.voiceMode) announce('שאל שאלה. בחרו נושא או כתבו שאלה.');
 }
+
+
+/* ===================== עיצוב חדש: ניווט עליון, לוח צד, עוצמה ===================== */
+function zmanimExt(){ const z=zmanim(); const sh=(z.sunset-z.sunrise)/12; return {...z, shema:new Date(z.sunrise.getTime()+3*sh), tefila:new Date(z.sunrise.getTime()+4*sh)}; }
+function renderPanel(){
+  const el=document.getElementById('dpanel'); if(!el) return; const z=zmanimExt(); const ui=cfg.ui||1;
+  const sz=[[1,'א','small'],[1.25,'א','mid'],[1.5,'א','big']];
+  el.innerHTML=`<button class="pacc" onclick="toggleVoiceMode()" aria-pressed="${cfg.voiceMode}"><span aria-hidden="true">♿︎</span> נגישות</button>
+  <section class="pbox"><h3><span aria-hidden="true">⚙︎</span> הגדרות תצוגה</h3>
+   <div class="plabel">גודל טקסט</div>
+   <div class="psz" role="group" aria-label="גודל טקסט">${sz.map(([v,t,c])=>`<button class="${c}${Math.abs(ui-v)<.08?' on':''}" onclick="setUi(${v})" aria-label="גודל טקסט ${Math.round(v*100)}%">${t}</button>`).join('')}</div>
+   <label class="prow"><span><span aria-hidden="true">◐</span> ניגודיות גבוהה</span><input type="checkbox" class="tgl" ${cfg.hc?'checked':''} onchange="cfg.hc=this.checked;saveCfg();applyCfg();renderPanel()"></label>
+   <label class="prow"><span><span aria-hidden="true">🌐</span> שפה</span></label>
+   <select class="psel nolang" onchange="setLang(this.value)" aria-label="שפה">${Object.entries(LANGS).map(([k,v])=>`<option value="${k}" ${k===LANG?'selected':''}>${v.name}</option>`).join('')}</select>
+  </section>
+  <section class="pbox"><h3><span aria-hidden="true">☀︎</span> זמני היום ב${esc(z.loc.name)}</h3>
+   <dl class="pz">
+    <dt>עלות השחר</dt><dd>${hm(z.alot)}</dd><dt>הנץ החמה</dt><dd>${hm(z.sunrise)}</dd>
+    <dt>סוף זמן קריאת שמע</dt><dd>${hm(z.shema)}</dd><dt>סוף זמן תפילה</dt><dd>${hm(z.tefila)}</dd>
+    <dt>חצות היום</dt><dd>${hm(z.chatzot)}</dd><dt>שקיעת החמה</dt><dd>${hm(z.sunset)}</dd><dt>צאת הכוכבים</dt><dd>${hm(z.tzeit)}</dd>
+   </dl></section>`;
+}
+function setUi(v){ cfg.ui=v; saveCfg(); applyCfg(); renderPanel(); }
+function markTopnav(id){ document.querySelectorAll('#topnav [data-t]').forEach(a=>{ const t=a.dataset.t; const on= t===''? (id==='') : (id===t || (t==='teh'&&id.startsWith('teh')) || (t==='siddur'&&lastMenu==='siddur'&&id&&!id.startsWith('teh')&&id!=='ask'&&id!=='about')); a.classList.toggle('on',on); if(on) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); }); }
+(function(){ const v=document.getElementById('sVol'); if(v){ v.value=cfg.vol??1; v.oninput=()=>{ cfg.vol=+v.value; saveCfg(); }; } })();
 
 /* ===================== חיפוש באתר ===================== */
 let PENDING_Q=(()=>{ try{ return new URLSearchParams(location.search).get('q')||''; }catch(e){ return ''; } })();
