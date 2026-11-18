@@ -325,6 +325,7 @@ body.hc::before,body.hc::after{display:none}
 .tile:hover .ic{transform:scale(1.1) rotate(-6deg);box-shadow:inset 0 0 0 1px rgba(236,210,140,.9),0 0 16px rgba(236,210,140,.45)}
 .tile:active{transform:scale(.97);transition-duration:.08s}
 .tile .chev{transition:transform .3s}
+a.tile{text-decoration:none;color:#fff}
 .tile:hover .chev{transform:translateX(-5px)}
 .tiles>*{animation:tileIn .55s cubic-bezier(.2,.8,.2,1) both}
 .tiles>*:nth-child(1){animation-delay:.03s}.tiles>*:nth-child(2){animation-delay:.08s}.tiles>*:nth-child(3){animation-delay:.13s}
@@ -1237,6 +1238,9 @@ TR['על הסידור']=['About this siddur','Sobre este sidur','À propos de ce
 TR['150 פרקים']=['150 chapters','150 capítulos','150 chapitres','150 глав'];
 TR['SEO_P1']=['Siddur Tehillat Hashem in Nusach Chabad (Nusach Ha’Ari) – the Rebbe’s siddur – online and free, fully vowelized, with read-aloud in Hebrew. Designed for the visually impaired: large text, high contrast, voice mode and full screen-reader support.','El Sidur Tehilat Hashem en Nusaj Jabad (Nusaj HaArí) – el sidur del Rebe – en línea y gratis, totalmente vocalizado, con lectura en voz alta en hebreo. Pensado para personas con discapacidad visual: letra grande, alto contraste, modo de voz y lector de pantalla.','Le Siddour Tehilat Hachem au rite ’Habad (rite du Ari) – le siddour du Rabbi – en ligne et gratuit, entièrement vocalisé, avec lecture à voix haute en hébreu. Conçu pour les malvoyants : grands caractères, contraste élevé, mode vocal et lecteur d’écran.','Сидур «Теилат а-Шем» по нусаху Хабад (нусах Ари) – сидур Ребе – онлайн и бесплатно, с полными огласовками и озвучиванием на иврите. Создан для слабовидящих: крупный шрифт, высокий контраст, голосовой режим и поддержка экранного диктора.'];
 TR['SEO_P2']=['Includes Shacharit, Mincha and Maariv, quick tefillin, bedtime Shema, Shabbat candles, Havdalah, Chanukah, Grace after meals, blessings on food, daily Tehillim, verses by name and your personal psalm. The interface is available in Hebrew, English, Spanish, French and Russian.','Incluye Shajarit, Minjá y Arvit, tefilín rápido, Shemá antes de dormir, velas de Shabat, Havdalá, Janucá, Birkat Hamazón, bendiciones sobre alimentos, Tehilim diario, versículos según el nombre y el salmo personal. Interfaz en hebreo, inglés, español, francés y ruso.','Comprend Cha’harit, Min’ha et Arvit, tefilin express, Chéma du coucher, bougies de Chabbat, Havdala, ’Hanouka, Birkat Hamazone, bénédictions alimentaires, Tehilim du jour, versets selon le prénom et psaume personnel. Interface en hébreu, anglais, espagnol, français et russe.','Шахарит, Минха и Маарив, быстрое наложение тфилин, Шма перед сном, субботние свечи, авдала, Ханука, Биркат а-мазон, благословения на еду, Теилим на каждый день, стихи по имени и личный псалом. Интерфейс на иврите, английском, испанском, французском и русском.'];
+TR['דבר מלכות']=['Dvar Malchus','Dvar Maljut','Dvar Malkhout','Двар Малхут'];
+TR['החוברת השבועית – נפתחת באתר דבר מלכות']=['Weekly booklet – opens on the Dvar Malchus site','Folleto semanal – se abre en el sitio de Dvar Maljut','Livret hebdomadaire – s’ouvre sur le site Dvar Malkhout','Еженедельная брошюра – откроется на сайте «Двар Малхут»'];
+TR['לימוד']=['Study','Estudio','Étude','Изучение'];
 /* ניסוחים שמופיעים בתוך משפטים */
 const TR_RX=[
  [/פסקה (\d+) מתוך (\d+)/, (m,a,b)=>`${T('פסקה')} ${a} ${T('מתוך')} ${b}`],
@@ -1530,12 +1534,15 @@ ICO['🌞']=SV(`<defs><linearGradient id="gMorn" x1="0" y1="0" x2="0" y2="1"><st
 <g stroke="#ffd24d" stroke-width="2.4" stroke-linecap="round">${[0,30,60,90,120,150,180].map(a=>{const r=Math.PI*a/180;return `<path d="M${32-Math.cos(r)*17} ${40-Math.sin(r)*17}L${32-Math.cos(r)*24} ${40-Math.sin(r)*24}"/>`}).join('')}</g>
 <circle cx="32" cy="40" r="12" fill="url(#gSunM)"/>
 <path d="M4 44q14-8 28-2t28-2v16a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" fill="url(#gHill)"/>`);
+ICO['📜']=ICO['🙏'];
 ICO['🌅']=ICO['🌄']; ICO['✨']=ICO['🕯️']; ICO['⭐']=ICO['🌙'];
 let _icoN=0;
 const icoOf=(e)=>{ const v=ICO[e]; if(!v) return e; const n='_'+(++_icoN); return v.replace(/id="(g\w+)"/g,(m,a)=>`id="${a}${n}"`).replace(/url\(#(g\w+)\)/g,(m,a)=>`url(#${a}${n})`); };
 
 const TILE_COLORS={hashkama:0,tefillin:6,shacharit:2,mincha:5,maariv:6,bedtime:7,candles:4,nishmat:3,havdalah:1,chanukah:2,food:3,bentch:1,meein:4,sight:7,special:0};
 function tile(id,icon,title,sub,c,extra){ return `<button class="tile c${c}" role="listitem" onclick="go('${id}')"${extra||''}><span class="ic" aria-hidden="true">${icoOf(icon)}</span><span class="t">${title}${sub?`<small>${sub}</small>`:''}</span><span class="chev" aria-hidden="true">‹</span></button>`; }
+function extTile(url,icon,title,sub,c){ return `<a class="tile c${c}" role="listitem" href="${url}" target="_blank" rel="noopener"><span class="ic" aria-hidden="true">${icoOf(icon)}</span><span class="t">${title}<small>${sub}</small></span><span class="chev" aria-hidden="true">↗</span></a>`; }
+const DM_TILE=()=>extTile('https://dvarmalchus.org/','📜','דבר מלכות','החוברת השבועית – נפתחת באתר דבר מלכות',6);
 function weekStrip(){
   const now=new Date(); const wdN=['א','ב','ג','ד','ה','ו','ש']; let h='<div class="week" aria-hidden="true">';
   for(let k=-3;k<=3;k++){ const d=new Date(now.getTime()+k*864e5); const hd=hebDayOfMonth(d);
@@ -1602,6 +1609,7 @@ function renderHome(){
   h+=tile('teh-day','📖','תהילים יומי',dailyRange(),3);
   h+=tile('teh-age','❤️','תהילים אישי','פרק לפי הגיל',4);
   h+=tile('bentch','🍞','ברכת המזון','',1);
+  h+=DM_TILE();
   h+=tile('siddur','📚','כל הסידור','כל התפילות והברכות',7);
   h+=`</div>`;
   h+=`<section class="seo" aria-labelledby="seoH"><h2 id="seoH" class="grp">על הסידור</h2><p>${esc(T('SEO_P1'))}</p><p>${esc(T('SEO_P2'))}</p></section>`;
@@ -1618,6 +1626,7 @@ function renderSiddurList(){
     for(const it of g.items) h+=tile(it.id,it.icon,it.title,it.sub,TILE_COLORS[it.id]??0);
     h+=`</div>`;
   }
+  h+=`<h2 class="grp">לימוד</h2><div class="tiles" role="list">${DM_TILE()}</div>`;
   app.innerHTML=h; window.scrollTo(0,0); document.getElementById('h1').focus();
   if(cfg.voiceMode) announce("סידור. בחר תפילה מהרשימה.", 'סִדּוּר. '+SIDDUR.flatMap(g=>g.items.map(i=>SAY_TITLES[i.id]||i.title)).join(', ')+'.');
 }
@@ -1919,6 +1928,7 @@ function doSearch(q){
     if(sc>0) res.push({...e,score:sc});
   }
   res.sort((a,b)=>b.score-a.score); const top=res.length?res[0].score:0;
+  if(/דבר מלכות|dvar mal|маlхут|малхут|חומש|תניא|רמבם|שיחות/.test(n)) res.unshift({id:'__dm',ext:true,score:999});
   return res.filter(x=>x.score>=Math.max(10,top*0.25)).slice(0,10);
 }
 function searchBox(){ return `<form class="sbox" role="search" onsubmit="event.preventDefault();runSearch(this.q.value)"><label for="sq" class="sr">חיפוש תפילה, ברכה או פרק תהילים</label><span class="sic" aria-hidden="true">🔍</span><input id="sq" name="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="חיפוש: ברכת המזון, תפילין, תהילים כ״ג…" oninput="runSearch(this.value,true)"><button type="submit" aria-label="חיפוש">חיפוש</button></form><div id="sres" aria-live="polite"></div>`; }
@@ -1927,7 +1937,7 @@ function runSearch(q,live){
   const box=document.getElementById('sres'); if(!box) return;
   if(!normQ(q)){ box.innerHTML=''; return; }
   const r=doSearch(q);
-  box.innerHTML = r.length? `<p class="scount">${r.length===1?'נמצאה תוצאה אחת':'נמצאו '+r.length+' תוצאות'}</p><div class="tiles" role="list">${r.map(x=>tile(x.id,x.icon,x.title,x.sub,x.c)).join('')}</div>` : `<p class="scount">לא נמצאו תוצאות. נסו מילה אחרת, למשל „שחרית” או „תהילים 20”.</p>`;
+  box.innerHTML = r.length? `<p class="scount">${r.length===1?'נמצאה תוצאה אחת':'נמצאו '+r.length+' תוצאות'}</p><div class="tiles" role="list">${r.map(x=>x.ext?DM_TILE():tile(x.id,x.icon,x.title,x.sub,x.c)).join('')}</div>` : `<p class="scount">לא נמצאו תוצאות. נסו מילה אחרת, למשל „שחרית” או „תהילים 20”.</p>`;
   if(!live && r.length===1) go(r[0].id);
   try{ if(window.goatcounter&&window.goatcounter.count&&!live) window.goatcounter.count({path:'/search?q='+encodeURIComponent(normQ(q)),title:'חיפוש',event:true}); }catch(e){}
 }
