@@ -460,7 +460,7 @@ const TEFILLIN_HEAD = [
   N("כורכים את רצועת היד שלוש כריכות על האצבע האמצעית, ואת השאר סביב כף היד."),
 ];
 const TEFILLIN_OFF = [
-  N("אם יש זמן, אפשר להמשיך ולהתפלל את כל קריאת שמע או את התפילה כולה."),
+  N("אם יש זמן, אפשר להמשיך ולהתפלל את התפילה כולה."),
   N("חולצים בסדר הפוך: פותחים את הכריכות מהאצבע, חולצים תפילין של ראש, ואחר כך תפילין של יד."),
 ];
 const BEFORE_PRAYER = [
@@ -804,10 +804,10 @@ const SIDDUR = [
       {title:"שמונה עשרה", blocks:AMIDA('shacharit')},
       {title:"עלינו לשבח", blocks:ALEINU},
     ]},
-    {id:"tefillin", icon:"☀️", title:"הנחת תפילין מהירה", sub:"ברכה, הנחה וקריאת שמע", parts:[
+    {id:"tefillin", icon:"☀️", title:"הנחת תפילין מהירה", sub:"ברכה, הנחה וקריאת שמע עד „אמת”", parts:[
       {title:"תפילין של יד", blocks:TEFILLIN_QUICK},
       {title:"תפילין של ראש", blocks:TEFILLIN_HEAD},
-      {title:"קריאת שמע", blocks:SHEMA.slice(1,5)},
+      {title:"קריאת שמע", blocks:SHEMA.slice(1).concat([N("ומסיימים מיד, בלי הפסק:"), {t:'p',x:"אֲנִי יְיָ אֱלֹהֵיכֶם אֱמֶת.",bold:true}])},
       {title:"חליצת התפילין", blocks:TEFILLIN_OFF},
     ]},
     {id:"mincha", icon:"🌤️", title:"מנחה לימות החול", parts:[
