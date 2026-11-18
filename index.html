@@ -8,16 +8,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700&family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* סגנון „המסע של היום” – שמנת־אפרסק חם, כחול כהה לטקסט, אריחים צבעוניים */
-  --bg1:#efd6bd; --bg2:#faf5ee; --card:#ffffff; --ink:#24324f; --muted:#7a8296;
-  --accent:#dc955f; --accent-soft:#f7e8d8; --line:#ebe1d6; --hl:#fff1d6; --hl-border:#dc955f;
-  --navy:#dc955f; --gold:#ffffff;
+  /* סגנון חב״ד קלאסי – כחול נייבי עמוק, זהב, ורקע קלף */
+  --bg1:#e9dfc8; --bg2:#f8f3e6; --card:#fffdf7; --ink:#0d2a52; --muted:#6b6150;
+  --accent:#b08a3e; --accent-soft:#f1e6cc; --line:#e2d4b2; --hl:#f8edcf; --hl-border:#b08a3e;
+  --navy:#0f2c5c; --gold:#ecd28c;
   --fs:24px;
 }
 body.dark{
-  --bg1:#2a2019; --bg2:#14110f; --card:#221c18; --ink:#f3ece2; --muted:#b3a99c; --accent:#e3a06e;
-  --accent-soft:#33281f; --line:#3a3029; --hl:#3a2a1c; --hl-border:#e3a06e;
-  --navy:#e3a06e; --gold:#1a120c;
+  --bg1:#0c1a36; --bg2:#070f22; --card:#0f2142; --ink:#f2ead6; --muted:#a9b2c4; --accent:#d8b260;
+  --accent-soft:#182c52; --line:#26396050; --hl:#2a2614; --hl-border:#d8b260;
+  --navy:#d8b260; --gold:#0c1a36;
 }
 body.dark .warn{background:#3a1d1a;color:#ffd7cf}
 body.dark .card{box-shadow:none}
@@ -176,9 +176,32 @@ body.hc h2.sec span.ic{background:#1a1a1a;color:#ffef3a}
 .tile.light .ic{background:var(--accent-soft)}
 .tile.light .t{font-size:22px;text-shadow:none}
 .tile.light .t small{font-size:16px}
-.c0{--c1:#e9ad7c;--c2:#dd935c} .c1{--c1:#a98577;--c2:#946e60} .c2{--c1:#d2ad68;--c2:#c39a52}
-.c3{--c1:#8fb0a0;--c2:#709684} .c4{--c1:#a88a98;--c2:#927282} .c5{--c1:#dc8c57;--c2:#c8743e}
-.c6{--c1:#6f6286;--c2:#5b4f72} .c7{--c1:#7e97b8;--c2:#62799c}
+.c0{--c1:#24497f;--c2:#132e5a} .c1{--c1:#8a3434;--c2:#6b2323} .c2{--c1:#b8924a;--c2:#94722f}
+.c3{--c1:#24566e;--c2:#173d50} .c4{--c1:#4d3f73;--c2:#352a56} .c5{--c1:#93622f;--c2:#74481d}
+.c6{--c1:#132c55;--c2:#0a1a38} .c7{--c1:#2f5f92;--c2:#1f4672}
+/* נגיעות זהב וטיפוגרפיה קלאסית */
+.tile{border:1px solid rgba(236,210,140,.45);box-shadow:0 8px 22px rgba(13,42,82,.18),inset 0 0 0 3px rgba(236,210,140,.12)}
+.tile .ic{background:rgba(236,210,140,.16);box-shadow:inset 0 0 0 1px rgba(236,210,140,.55)}
+.tile .t{font-family:"Frank Ruhl Libre",serif;font-weight:700}
+.tile .t small{font-family:Heebo,sans-serif;font-weight:400}
+.tile .chev{color:#ecd28c}
+.tile.light{border:1px solid var(--line)}
+.tile.light .t{font-family:Heebo,sans-serif}
+header.top h1,.reader-head h1,h2.grp{font-family:"Frank Ruhl Libre",serif}
+header.top h1{color:var(--navy)}
+body.dark header.top h1{color:var(--ink)}
+.bsd{position:absolute;top:calc(8px + env(safe-area-inset-top));left:14px;font-family:"Frank Ruhl Libre",serif;font-size:15px;color:var(--accent);z-index:30;pointer-events:none}
+h2.grp{display:flex;align-items:center;gap:10px;color:var(--navy);font-size:20px}
+h2.grp::before,h2.grp::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+body.dark h2.grp{color:var(--accent)}
+.datepill{border:1px solid var(--line);background:rgba(255,253,247,.7)}
+.wd.today b{background:var(--navy);border-color:var(--accent);color:var(--gold);box-shadow:0 0 0 2px var(--accent)}
+body.dark .wd.today b{color:#0c1a36}
+.tabbar{border-color:var(--accent)}
+.tabbar button.on{background:var(--navy);color:var(--gold)}
+body.dark .tabbar button.on{color:#0c1a36}
+.pbtn.play{border:1px solid var(--accent)}
+.blk.cur{box-shadow:inset -4px 0 0 var(--accent)}
 h2.grp{font-size:18px;color:var(--muted);margin:26px 8px 10px;font-weight:700}
 .datepill{display:inline-block;background:rgba(255,255,255,.55);border-radius:30px;padding:10px 22px;font-size:20px;color:var(--ink);margin:4px 0 6px}
 body.dark .datepill{background:rgba(255,255,255,.08)}
@@ -210,6 +233,7 @@ body.hc .tile::after{display:none}
 </style>
 </head>
 <body>
+<div class="bsd" aria-hidden="true">בס״ד</div>
 <div id="live" class="sr" aria-live="polite" aria-atomic="true"></div>
 <div class="shell">
 <nav id="side" aria-label="תפריט הסידור"></nav>
@@ -811,7 +835,7 @@ function applyCfg(){
   const dark = cfg.theme==='dark' || (cfg.theme==='auto' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
   document.body.classList.toggle('dark', dark && !cfg.hc);
   let m=document.querySelector('meta[name=theme-color]'); if(!m){m=document.createElement('meta');m.name='theme-color';document.head.appendChild(m);}
-  m.content = cfg.hc? '#000000' : dark? '#2a2019' : '#efd6bd';
+  m.content = cfg.hc? '#000000' : dark? '#0c1a36' : '#e9dfc8';
 }
 
 /* ===================== דיבור ===================== */
